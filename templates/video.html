@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div id="video_page">
+    <h2>{{ title }}</h2>
+        <video width="90%" src="/file/{{ link }}" controls></video>
+    </div>
+{% endblock %}
