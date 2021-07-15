@@ -59,3 +59,16 @@ body{
     color: #000;
     margin: 20px;
 }
+#upload{
+    margin-top: 40%;
+    margin-left: 20%;
+}
+#upload input{
+    font-size: 1.5rem;
+    transition-duration: 0.4s;
+}
+#upload h2{
+    font-size: 1.5rem;
+    color: #000;
+    margin: 20px;
+}

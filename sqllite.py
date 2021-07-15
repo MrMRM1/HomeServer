@@ -6,20 +6,21 @@ class Database:
         self.data = sqlite3.connect('data.db')
         self.my_db = self.data.cursor()
         try:
-            self.my_db.execute(f"SELECT * from paths")
+            self.my_db.execute(f"SELECT * from data_user")
         except:
-            self.my_db.execute("CREATE TABLE paths (paths LONGTEXT NULL, data_id CHAR(1) NULL)")
+            self.my_db.execute("CREATE TABLE data_user (paths LONGTEXT NULL, port INT NULL, data_id CHAR(1) NULL)")
 
     def get_data(self):
-        self.my_db.execute(f"SELECT * from paths WHERE data_id = 1")
+        self.my_db.execute(f"SELECT * from data_user WHERE data_id = 1")
         return self.my_db.fetchone()
 
-    def write_data(self, paths):
-        self.my_db.execute(f"SELECT * from paths WHERE data_id = 1")
+    def write_data(self, data, data_type):
+        self.my_db.execute(f"SELECT * from data_user WHERE data_id = 1")
         if self.my_db.fetchone():
-            sql = f'UPDATE paths SET paths = "{paths}" WHERE data_id = 1'
+            sql = f'UPDATE data_user SET {data_type} = "{data}" WHERE data_id = 1'
         else:
-            sql = f'INSERT INTO paths (paths,data_id) VALUES ("{paths}", 1)'
+            sql = f'INSERT INTO data_user ({data_type},data_id) VALUES ("{data}", 1)'
         self.my_db.execute(sql)
         self.data.commit()
+
 
