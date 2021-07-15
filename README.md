@@ -1,2 +1,2 @@
-# filesharinglocal
-File sharing on the local network
+# Home Server
+Share and stream files on the local network
