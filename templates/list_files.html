@@ -2,7 +2,7 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
-    <div id="list">
+    <div id="list" >
         {% for i in items %}
             {% if typs[:4] == 'show' %}
                 <a href="/{{ typs }}/{{ i }}">{{ i.split('\\')[-1] }}</a>

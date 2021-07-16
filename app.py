@@ -1,6 +1,7 @@
 from flask import Flask, render_template, send_from_directory, request, redirect
 import os
 import re
+from sqllite import Database
 app = Flask(__name__)
 
 
@@ -16,14 +17,12 @@ def list_file(format, path):
 
 
 def list_dir():
-    from sqllite import Database
     database = Database()
     dirc = eval(database.get_data()[0])
     return dirc
 
 
 def check_dir(dir):
-    # dir = "E:/Download/المانی/Alvin.und.die.Chipmunks.Deutschweb.2015.mkv"
     dircs = list_dir()
     status = False
     while 1:
@@ -107,9 +106,11 @@ def uploads_file():
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
+        database = Database()
+        path = database.get_data()[3]
         try:
-            f.save(f'./upload/{f.filename}')
+            f.save(f'{path}/{f.filename}')
         except:
-            os.makedirs("./upload")
-            f.save(f'./upload/{f.filename}')
+            os.makedirs(f"{path}")
+            f.save(f'{path}/{f.filename}')
         return render_template('upload.html', title="Upload", text='file uploaded successfully')
