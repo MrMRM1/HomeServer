@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+    <div id="systemcontroll">
+        <form action="/system_PC" method="post">
+             <label for="pwd">Password:</label>
+            <input type="password" id="pwd" name="password">
+            <input type="submit" name="Shutdown" value="Shut down PC" >
+            <input type="submit" name="Sleep" value="Sleep PC">
+        </form>
+
+    </div>
+        <a href="/">Home</a>
+
+    {% if alert%}
+        <script>
+        alert('{{ alert }}')
+        </script>
+    {% endif %}
+{% endblock %}
