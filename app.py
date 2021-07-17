@@ -2,6 +2,8 @@ from flask import Flask, render_template, send_from_directory, request, redirect
 import os
 import re
 from sqllite import Database
+from hashlib import md5
+
 app = Flask(__name__)
 
 
@@ -45,6 +47,35 @@ def check_dir(dir):
 @app.route('/')
 def home_page():
     return render_template("home.html", title="Home")
+
+
+@app.route('/system_PC', methods=['POST'])
+def check_password_system_page():
+    data = request.form['password']
+    database = Database()
+    password = database.get_data()[4]
+    alert = None
+    if data is not None:
+        data = md5(data.encode()).hexdigest()
+        if data == password:
+            try:
+                btn = request.form['Sleep']
+                os.system("rundll32.exe powrprof.dll, SetSuspendState Sleep 2")
+                alert = 'Sleep PC'
+            except:
+                btn = request.form['Shutdown']
+                os.system("shutdown /s /t 2")
+                alert = 'Shutdown PC'
+        else:
+            alert = 'Password incorrect'
+    elif data is None:
+        alert = 'Fill in the password field'
+    return render_template("systemcontroll.html", title="System controll", alert=alert)
+
+
+@app.route('/system_PC', methods=['GET'])
+def system_page():
+    return render_template("systemcontroll.html", title="Home")
 
 
 @app.route('/<path:link>')
