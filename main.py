@@ -9,6 +9,7 @@ from json import loads
 import base64
 import os
 import re
+from hashlib import md5
 v = 111
 database = Database()
 connected_network = False
@@ -84,6 +85,38 @@ def CUL():
     tmp.write(base64.b64decode(icon))
     tmp.close()
     CUL_window.iconbitmap("temp.ico")
+    os.remove("temp.ico")
+
+
+def shutdownslep():
+    def chack_password():
+        password = password_box.get()
+        password_v = password_v_box.get()
+        if password == password_v and password is not None:
+            password = md5(password.encode())
+            database.write_data(password.hexdigest(), "password")
+            messagebox.showinfo(title="successful", message="Password set successfully")
+            set_window.destroy()
+        else:
+            messagebox.showerror(title="ERROR", message="enter valid password")
+
+    set_window = Toplevel(root)
+    set_window.geometry("330x170")
+    set_window.title("set password")
+    set_window.resizable(False, False)
+    Label(set_window, text="Enter password: ", font=('arial', 10, 'bold')).place(x=10, y=10)
+    Label(set_window, text="Repeat password for verification: ", font=('arial', 10, 'bold')).place(x=10, y=60)
+    password_box = Entry(set_window, font=('arial', 10, 'bold'), show="*")
+    password_box.place(x=10, y=35, width=300)
+    password_v_box = Entry(set_window, font=('arial', 10, 'bold'), show="*")
+    password_v_box.place(x=10, y=85, width=300)
+    Button(set_window, text="Close", font=('arial', 10, 'bold'), command=set_window.destroy).place(x=265, y=120)
+    selec_path = Button(set_window, text="set password", font=('arial', 10, 'bold'), command=chack_password)
+    selec_path.place(x=175, y=120)
+    tmp = open("temp.ico", "wb+")
+    tmp.write(base64.b64decode(icon))
+    tmp.close()
+    set_window.iconbitmap("temp.ico")
     os.remove("temp.ico")
 
 
@@ -171,6 +204,7 @@ if connected_network:
     #file menu
     filemenu = Menu(menubar, tearoff=0)
     filemenu.add_command(label="Change upload location", command=CUL)
+    filemenu.add_command(label="Shut down and Sleep PC", command=shutdownslep)
     menubar.add_cascade(label="File", menu=filemenu)
     # help menu
     helpmenu = Menu(menubar, tearoff=0)
