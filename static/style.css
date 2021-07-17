@@ -72,3 +72,45 @@ body{
     color: #000;
     margin: 20px;
 }
+#systemcontroll{
+    background: #0a84ff;
+    width: 70%;
+    height: auto;
+    margin: 20px 15%;
+    padding: 20px;
+    display: block;
+    border-radius: 10px;
+    text-align: center;
+    transition-duration: 0.4s;
+
+}
+#systemcontroll input{
+    margin: 20px 15%;
+    width: 70%;
+    font-size: 1.5rem;
+    border-radius: 10px;
+}
+#systemcontroll label{
+    font-size: 1.5rem;
+    color: aliceblue;
+}
+
+a{
+    display: block;
+    text-align: center;
+    margin: 20px 25%;
+    padding: 20px;
+    background: #0a84ff;
+    border-radius: 10px;
+    font-size: 2rem;
+    text-decoration: none;
+    color: aliceblue;
+    transition-duration: 0.4s;
+}
+a:hover{
+    background: aliceblue;
+    color: #0a84ff;
+    border: 2px solid #0a84ff;
+}
+
+
