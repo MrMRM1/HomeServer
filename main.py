@@ -191,7 +191,7 @@ def port():
         else:
             port_box.insert(END, data)
     except:
-        port_box.insert(END, 5050)
+        port_box.insert(END, 80)
 
 
 if connected_network:
