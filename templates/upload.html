@@ -2,13 +2,59 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
-    <div id="upload">
-    <h2>{{ text }}</h2>
-    <form action = "/upload" method = "POST"
-         enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <input type = "submit"/>
-      </form>
-    <a href="/home">Home</a>
+
+    <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+        <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+            <p class="mt-auto mb-auto fs-4">Upload</p>
+            <img src="{{ url_for('static', filename='icon/upload.png')}}" class="col-1 p-md-2 p-xl-4"/>
+        </div>
     </div>
+
+        <div class="col-10 m-auto  justify-content-center bg-black"></div>
+
+
+            <div class="form-group m-auto mt-4 col-12  d-flex justify-content-center">
+                <div class="col-11 ms-auto me-auto">
+                    <div class="col-8  ms-auto me-auto d-flex">
+                        <input type="file" class="form-control" name="file_input" id="file_input" oninput="input_filename();">
+                    </div>
+                    <div class="d-flex mt-2 col-8 ms-auto me-auto">
+                        <h1 class="col-2 col-form-label">File Name: </h1><h1 id="file_input_label" class="text-break form-control-plaintext"></h1>
+                    </div>
+                    <div class="d-flex mt-1 col-8 ms-auto me-auto">
+                        <h1 class="col-2 col-form-label">File Size: </h1><h1 id="file_input_size" class="text-break form-control-plaintext"></h1>
+                    </div>
+                </div>
+            </div>
+
+            <button  onclick="upload('{{ request.url }}');" id="upload_btn" class="btn btn-primary mt-4 ms-auto me-auto col-5 col-md-2 d-flex justify-content-between">
+                <img src="{{ url_for('static', filename='icon/upload.png')}}" class="col-3" />
+                <h1 class="mt-auto mb-auto">Upload</h1>
+            </button>
+
+            <div class="d-flex justify-content-between mt-3 ms-auto me-auto">
+                <button class="btn btn-primary d-none m-auto col-5 col-md-3 me-md-2 " id="loading_btn" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Uploading...
+                </button>
+
+                <button type="button" id="cancel_btn" class="btn m-auto btn-secondary d-none col-5 col-md-3 ms-md-2">Cancel upload</button>
+            </div>
+
+
+
+            <div id="progress_wrapper" class="d-none col-11 me-auto ms-auto mt-2">
+                <label id="progress_status"></label>
+                <div class="progress mb-3 mt-3">
+                    <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="alert_wrapper" class="col-11 ms-auto me-auto mt-1"></div>
+
+
+        </div>
+    <script src="{{ url_for('static', filename='js/uploader.js')}}"></script>
+
+
 {% endblock %}

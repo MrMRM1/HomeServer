@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% set color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info'] %}
+{% set items_length = items|length + 1 %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+    <div class="flex-row justify-content-center ">
+        <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+            <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+                {% if typs == 'video' %}
+                    <p class="mt-auto mb-auto fs-3">Video Folders</p>
+                {% elif typs == 'audio' %}
+                    <p class="mt-auto mb-auto fs-3">Audio Folders</p>
+                {% elif typs == 'pdf' %}
+                    <p class="mt-auto mb-auto fs-3">PDF Folders</p>
+                {% else %}
+                    <p class="mt-auto mb-auto fs-3">All</p>
+                {% endif %}
+                <img src="{{ url_for('static', filename='icon/folder.png')}}" class="col-1 p-md-2 p-xl-4">
+            </div>
+        </div>
+        {% if items_length != 1  %}
+            <div class="col-8 mt-2 ms-auto me-auto">
+                {% if typs ==  'dl_file' %}
+                     {% for i in range(0, items_length, 2) %}
+                         <div class="d-md-flex ms-auto me-auto justify-content-md-around">
+                            {% if (i + 1) != items_length %}
+                                <a class="btn {{ color[i % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/file/{{ items[i] }}" download>
+                                    <h1 class="mt-auto mb-auto text-break">{{ items[i].split('\\')[-1] }}</h1>
+                                </a>
+                            {% endif %}
+                             {% if ((i + 2) // items_length) != 1 %}
+                                <a class="btn {{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/file/{{ items[i + 1] }}" download>
+                                    <h1 class="mt-auto mb-auto text-break">{{ items[i + 1].split('\\')[-1] }}</h1>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% for i in range(0, items_length, 2) %}
+                        <div class="d-md-flex ms-auto me-auto justify-content-md-around">
+                            {% if (i + 1) != items_length %}
+                                <a class="btn {{ color[i % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/{{ typs }}/{{ items[i] }}">
+                                    <h1 class="mt-auto mb-auto text-break">{{ items[i]}}</h1>
+                                </a>
+                            {% endif %}
+                            {% if ((i + 2) // items_length) != 1 %}
+                                <a class="btn {{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/{{ typs }}/{{ items[i + 1] }}">
+                                    <h1 class="mt-auto mb-auto text-break">{{ items[i + 1] }}</h1>
+                                </a>
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+

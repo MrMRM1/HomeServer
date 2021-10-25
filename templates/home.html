@@ -3,12 +3,40 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-<div id="home">
-    <a href="/video">Video</a>
-    <a href="/audio">Audio</a>
-    <a href="/pdf">PDF</a>
-    <a href="/all_file">All File</a>
-    <a href="/upload">Upload</a>
-    <a href="/system_PC">Shut down and Sleep PC</a>
-</div>
+    <div class="home_page d-flex justify-content-center ">
+
+        <div class="home_box col-8 mt-2">
+            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
+                <a class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/video">
+                    <h1 class="mt-auto mb-auto">Video</h1>
+                    <img src="{{ url_for('static', filename='icon/video.png')}}" class="col-2">
+                </a>
+                <a class="btn btn-success m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/audio">
+                    <h1 class="mt-auto mb-auto">Audio</h1>
+                    <img src="{{ url_for('static', filename='icon/audio.png')}}" class="col-2">
+                </a>
+            </div>
+            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
+                <a class="btn btn-danger m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/pdf">
+                    <h1 class="mt-auto mb-auto">PDF</h1>
+                    <img src="{{ url_for('static', filename='icon/pdf.png')}}" class="col-2">
+                </a>
+                <a class="btn btn-warning m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/all_file">
+                    <h1 class="mt-auto mb-auto">Download</h1>
+                    <img src="{{ url_for('static', filename='icon/download.png')}}" class="col-2">
+                </a>
+            </div>
+            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
+                <a class="btn btn-info m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/upload">
+                    <h1 class="mt-auto mb-auto">Upload</h1>
+                    <img src="{{ url_for('static', filename='icon/upload.png')}}" class="col-2">
+                </a>
+                <a class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/system_PC">
+                    <h1 class="mt-auto mb-auto">System Control</h1>
+                    <img src="{{ url_for('static', filename='icon/system.png')}}" class="col-2">
+                </a>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}
