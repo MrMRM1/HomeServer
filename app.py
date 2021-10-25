@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request, redirect
+from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 import os
 import re
 from sqllite import Database
@@ -10,12 +10,14 @@ app = Flask(__name__)
 def list_file(format, path):
     fils = []
     for i in format:
-        for root, dirs, files in os.walk(path, topdown=False):
-            for name in files:
-                if re.match(rf'.*\.{i}', name):
-                    fils.append(os.path.join(root, name))
-
+        for name in os.listdir(path):
+            if re.match(rf'.*\.{i}', name):
+                fils.append(os.path.join(path, name))
     return fils
+
+
+def list_folders(path):
+    return [x[0] for x in os.walk(path)]
 
 
 def list_dir():
@@ -24,23 +26,15 @@ def list_dir():
     return dirc
 
 
-def check_dir(dir):
+def check_dir(path):
     dircs = list_dir()
     status = False
-    while 1:
-        if dir in dircs:
-            status = True
-            break
-        else:
-            try:
-                dir = dir.split('/')
-                del dir[-1]
-                dir = "/".join(dir)
-            except:
-                break
-        if dir == "":
-            break
-
+    if '.' in path:
+        path = path.split('/')
+        del path[-1]
+        path = "/".join(path)
+    if path in dircs:
+        status = True
     return status
 
 
@@ -70,12 +64,12 @@ def check_password_system_page():
             alert = 'Password incorrect'
     elif data is None:
         alert = 'Fill in the password field'
-    return render_template("systemcontroll.html", title="System controll", alert=alert)
+    return render_template("systemcontroll.html", title="System control", alert=alert)
 
 
 @app.route('/system_PC', methods=['GET'])
 def system_page():
-    return render_template("systemcontroll.html", title="Home")
+    return render_template("systemcontroll.html", title="System Control")
 
 
 @app.route('/<path:link>')
@@ -83,20 +77,24 @@ def controls(link):
     check_path = re.search(r".:\/", link)
     if link in ['video', 'pdf', 'audio', 'all_file']:
         typs = link
-        return render_template("list_files.html", title="Folder list", items=list_dir(), typs=typs)
+        return render_template("list_folders.html", title="List Folders", items=list_dir(), typs=typs)
     elif check_path and check_dir(link[check_path.span()[0]:]):
         if link[:5] == 'video':
-            return render_template("list_files.html", title=link[6:], items=list_file(['mkv', 'mp4'], link[6:]), typs="show_video")
+            return render_template("list_videos.html", title=link[6:], items=list_file(['mkv', 'mp4'], link[6:]),
+                                   typs="show_video")
         elif link[:5] == 'audio':
-            return render_template("list_files.html", title=link[6:], items=list_file(['mp3'], link[6:]), typs="show_audio")
+            return render_template("list_audios.html", title=link[6:], items=list_file(['mp3'], link[6:]),
+                                   typs="show_audio")
         elif link[:3] == 'pdf':
-            return render_template("list_files.html", title=link[4:], items=list_file(['pdf'], link[4:]), typs="show_pdf")
+            return render_template("list_folders.html", title=link[4:], items=list_file(['pdf'], link[4:]),
+                                   typs="show_pdf")
         elif link[:8] == 'all_file':
-            return render_template("list_files.html", title=link[9:], items=list_file(['*'], link[9:]), typs="dl_file")
+            return render_template("list_folders.html", title=link[9:], items=list_file(['*'], link[9:]),
+                                   typs="dl_file")
         elif link[:10] == 'show_video':
             return render_template('video.html', title=link.split('/')[-1], link=link[11:])
         elif link[:10] == 'show_audio':
-            return render_template('audio.html', title=link.split('/')[-1], link=link[11:])
+            return render_template('list_audios.html', title=link.split('/')[-1], link=link[11:])
         elif link[:8] == 'show_pdf':
             return render_template('viewer.html', title=link.split('/')[-1], link=link[9:])
     else:
@@ -144,4 +142,8 @@ def upload_file():
         except:
             os.makedirs(f"{path}")
             f.save(f'{path}/{f.filename}')
-        return render_template('upload.html', title="Upload", text='file uploaded successfully')
+        res = make_response(jsonify({"message": "File uploaded"}), 200)
+
+        return res
+    return render_template('upload.html', title="Upload")
+
