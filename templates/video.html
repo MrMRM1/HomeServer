@@ -11,7 +11,7 @@
         </div>
 
         <div class="col-11 mt-2 ms-auto me-auto d-flex flex-column">
-            <video class="col-12 col-md-8 ms-auto me-auto justify-content-between" controls src="/file/{{ link }}"></video>
+            <video class="col-12 col-md-8 ms-auto me-auto justify-content-between" controls src="/file/{{ link|replace(" ", "%20") }}"></video>
             <p class="text-break text-black mt-2 ms-auto me-auto">{{ title }}</p>
         </div>
 

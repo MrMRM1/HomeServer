@@ -24,12 +24,12 @@
                      {% for i in range(0, items_length, 2) %}
                          <div class="d-md-flex ms-auto me-auto justify-content-md-around">
                             {% if (i + 1) != items_length %}
-                                <a class="btn {{ color[i % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/file/{{ items[i] }}" download>
+                                <a class="btn {{ color[i % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/file/{{ items[i]|replace(" ", "%20") }}" download>
                                     <h1 class="mt-auto mb-auto text-break">{{ items[i].split('\\')[-1] }}</h1>
                                 </a>
                             {% endif %}
                              {% if ((i + 2) // items_length) != 1 %}
-                                <a class="btn {{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/file/{{ items[i + 1] }}" download>
+                                <a class="btn {{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/file/{{ items[i + 1]|replace(" ", "%20") }}" download>
                                     <h1 class="mt-auto mb-auto text-break">{{ items[i + 1].split('\\')[-1] }}</h1>
                                 </a>
                             {% endif %}
@@ -39,12 +39,12 @@
                     {% for i in range(0, items_length, 2) %}
                         <div class="d-md-flex ms-auto me-auto justify-content-md-around">
                             {% if (i + 1) != items_length %}
-                                <a class="btn {{ color[i % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/{{ typs }}/{{ items[i] }}">
+                                <a class="btn {{ color[i % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/{{ typs }}/{{ items[i]|replace(" ", "%20") }}">
                                     <h1 class="mt-auto mb-auto text-break">{{ items[i]}}</h1>
                                 </a>
                             {% endif %}
                             {% if ((i + 2) // items_length) != 1 %}
-                                <a class="btn {{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/{{ typs }}/{{ items[i + 1] }}">
+                                <a class="btn {{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/{{ typs }}/{{ items[i + 1]|replace(" ", "%20") }}">
                                     <h1 class="mt-auto mb-auto text-break">{{ items[i + 1] }}</h1>
                                 </a>
                             {% endif %}
