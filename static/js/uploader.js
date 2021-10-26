@@ -15,6 +15,9 @@ var alert_wrapper = document.getElementById("alert_wrapper");
 var input = document.getElementById("file_input");
 var file_input_label = document.getElementById("file_input_label");
 var file_input_size = document.getElementById("file_input_size");
+let number_file_uploaded = 0;
+let number_files = 0;
+let input_url = "";
 // Function to show alerts
 function show_alert(message, alert) {
 
@@ -27,12 +30,24 @@ function show_alert(message, alert) {
   `
     setTimeout(function () {
         alert_wrapper.innerHTML = '';
-    }, 5000);
+    }, 10000);
 
+}
+function upload_multiple(url) {
+  if (!input.value) {
+
+    show_alert("No file selected", "warning")
+
+    return;
+
+  }
+  number_files = input.files.length;
+  input_url = url;
+  upload(input_url, number_file_uploaded)
 }
 
 // Function to upload file
-function upload(url) {
+function upload(url, files_number) {
 
   // Reject if the file input is empty & throw alert
   if (!input.value) {
@@ -71,7 +86,7 @@ function upload(url) {
   progress_wrapper.classList.remove("d-none");
 
   // Get a reference to the file
-  var file = input.files[0];
+  var file = input.files[files_number];
 
   // Get a reference to the filename
   var filename = file.name;
@@ -104,8 +119,10 @@ function upload(url) {
   request.addEventListener("load", function (e) {
 
     if (request.status == 200) {
-
-      show_alert(`${request.response.message}`, "success");
+      number_file_uploaded = number_file_uploaded + 1 ;
+      if (number_files == number_file_uploaded) {
+        show_alert(`${request.response.message} ` + number_files_upload(), "success");
+      }
 
     }
     else {
@@ -166,42 +183,61 @@ function change_size_number(n){
     return sizefile.toFixed(2) + measure;
 }
 
+function number_files_upload(){
+  return  "(" + number_file_uploaded + "/" + number_files + ")" ;
+}
+
 // Function to update the input placeholder
 function input_filename() {
-  
-  file_input_label.innerText = input.files[0].name;
-  
-  
-  file_input_size.innerText = change_size_number(input.files[0].size) ;
+  let sizes = 0 ;
+  number_files = input.files.length;
+  file_input_label.innerText = number_files_upload() ;
+  for (var i=0; i < input.files.length; i++){
+    sizes = sizes + input.files[i].size;
+
+  }
+  file_input_size.innerText = change_size_number(sizes) ;
 
 }
 
 // Function to reset the page
 function reset() {
 
-  // Clear the input
-  input.value = null;
 
-  // Hide the cancel button
-  cancel_btn.classList.add("d-none");
-
-  // Reset the input element
-  input.disabled = false;
-
-  // Show the upload button
-  upload_btn.classList.remove("d-none");
-
-  // Hide the loading button
-  loading_btn.classList.add("d-none");
-
-  // Hide the progress bar
-  progress_wrapper.classList.add("d-none");
 
   // Reset the progress bar state
   progress.setAttribute("style", `width: 0%`);
 
   // Reset the input placeholder
-  file_input_label.innerText = "";
-  file_input_size.innerText = "";
 
+
+  if (number_files != number_file_uploaded){
+    file_input_label.innerText = number_files_upload();
+    upload_multiple(input_url);
+  }
+  else {
+    // Clear the input
+    input.value = null;
+
+    // Hide the cancel button
+    cancel_btn.classList.add("d-none");
+
+    // Reset the input element
+    input.disabled = false;
+
+    // Show the upload button
+    upload_btn.classList.remove("d-none");
+
+    // Hide the loading button
+    loading_btn.classList.add("d-none");
+
+    // Hide the progress bar
+    progress_wrapper.classList.add("d-none");
+    number_file_uploaded = 0;
+    number_files = 0;
+    input_url = "";
+    file_input_label.innerText = "0";
+    file_input_size.innerText = "";
+
+  }
 }
