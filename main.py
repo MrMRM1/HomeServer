@@ -10,6 +10,8 @@ import base64
 import os
 import re
 from hashlib import md5
+
+
 v = 4
 database = Database()
 connected_network = False
@@ -31,7 +33,23 @@ except:
     root.deiconify()
 
 
+def icon_window(window):
+    """
+    :param window: Display window
+    :return: Set the icon for the desired window
+    """
+    with open("temp.ico", "wb+") as temp:
+        temp.write(base64.b64decode(icon))
+    window.iconbitmap("temp.ico")
+    os.remove("temp.ico")
+
+
 def check_update():
+    """
+    This function checks if updates are available
+    :return: If an update is available, a window with a download link will be displayed, otherwise your message you are
+     using the latest version will be displayed.
+    """
     try:
         req = Request(url=f"http://mrmrm.ir/update/Home%20Server.php?v={v}", headers={'User-Agent': 'Mozilla/5.0'})
         data = loads(urlopen(req).read())
@@ -49,19 +67,21 @@ def check_update():
 
 
 def path_dir():
+    """
+    This function is called when selecting a new route, Its task is to add new folders to the list of folders and save
+    the paths in the database
+    :return: Update the list of folders
+    """
     deiconiry = filedialog.askdirectory()
     if re.fullmatch(r'.:\/', deiconiry):
-        messagebox.showwarning(title="WARNING", message="You are not allowed to select a drive, you must select a folder")
+        messagebox.showwarning(title="WARNING",
+                               message="You are not allowed to select a drive, you must select a folder")
     else:
         try:
             paths = eval(database.get_data()[0])
-            if deiconiry in paths:
-                pass
-            else:
+            if deiconiry not in paths:
                 for i in list_folders(deiconiry):
-                    if i in paths:
-                        pass
-                    else:
+                    if i not in paths:
                         paths.append(i)
         except:
             paths = [deiconiry]
@@ -70,6 +90,10 @@ def path_dir():
 
 
 def list_folders(path):
+    """
+    :param path: Folder path
+    :return: The path of the folders inside the given path
+    """
     a = []
     b = [x[0] for x in os.walk(path)]
     for i in b:
@@ -80,6 +104,9 @@ def list_folders(path):
 
 
 def path_upload():
+    """
+    Saves the upload folder path to the database.
+    """
     CUL_window.destroy()
     deiconiry = filedialog.askdirectory()
     database.write_data(deiconiry, "upload")
@@ -87,6 +114,9 @@ def path_upload():
 
 
 def CUL():
+    """
+    Upload folder redirect window
+    """
     global CUL_window
     CUL_window = Toplevel(root)
     CUL_window.geometry("500x70")
@@ -96,15 +126,17 @@ def CUL():
     Button(CUL_window, text="Close", font=('arial', 10, 'bold'), command=CUL_window.destroy).place(x=435, y=36)
     selec_path = Button(CUL_window, text="Select a folder", font=('arial', 10, 'bold'), command=path_upload)
     selec_path.place(x=332, y=36)
-    tmp = open("temp.ico", "wb+")
-    tmp.write(base64.b64decode(icon))
-    tmp.close()
-    CUL_window.iconbitmap("temp.ico")
-    os.remove("temp.ico")
+    icon_window(CUL_window)
 
 
-def shutdownslep():
+def shutdown_sleep():
+    """
+    Window related to changing the shutdown password and system sleep mode
+    """
     def chack_password():
+        """
+         Function to check the password and confirm the password and save it in the database
+        """
         password = password_box.get()
         password_v = password_v_box.get()
         if password == password_v and password is not None:
@@ -128,21 +160,23 @@ def shutdownslep():
     Button(set_window, text="Close", font=('arial', 10, 'bold'), command=set_window.destroy).place(x=265, y=120)
     selec_path = Button(set_window, text="set password", font=('arial', 10, 'bold'), command=chack_password)
     selec_path.place(x=175, y=120)
-    tmp = open("temp.ico", "wb+")
-    tmp.write(base64.b64decode(icon))
-    tmp.close()
-    set_window.iconbitmap("temp.ico")
-    os.remove("temp.ico")
+    icon_window(set_window)
 
 
 def del_itms():
+    """
+    Delete a folder path from the folder list
+    """
     try:
         list_box.delete(0, 'end')
     except :
         pass
 
 
-def del_path(event):
+def del_path(*args):
+    """
+    Function to delete the selected path from the database and the list of folders
+    """
     cs = list_box.curselection()[0]
     paths = eval(database.get_data()[0])
     del paths[cs]
@@ -151,6 +185,9 @@ def del_path(event):
 
 
 def load_data():
+    """
+    Function to get the path of folders from the database and add them to the list
+    """
     try:
         del_itms()
         paths = eval(database.get_data()[0])
@@ -161,12 +198,18 @@ def load_data():
 
 
 def threading_start():
+    """
+    Function to execute the flask program in the form of threading
+    """
     global run_app
     run_app = Thread(target=run)
     run_app.start()
 
 
 def threading_stop():
+    """
+    Function to stop the flask program as threading
+    """
     address_run.place_forget()
     port = port_box.get()
     open_new(f"http://{ip}:{port}/shutdown")
@@ -180,6 +223,9 @@ def threading_stop():
 
 
 def run():
+    """
+    Disable different sections of the main window and run the flask program
+    """
     global address_run
     port = port_box.get()
     button_run["state"] = "disabled"
@@ -199,10 +245,17 @@ def run():
 
 
 def write_port(port):
+    """
+    :param port: Flask program execution port
+    :return: Save the port to the database
+    """
     return database.write_data(port, "port")
 
 
 def port():
+    """
+    Get the port stored in the database and display it in the main window
+    """
     try:
         data = database.get_data()[1]
         if data is None:
@@ -220,10 +273,10 @@ if connected_network:
     root.resizable(False, False)
 
     menubar = Menu(root)
-    #file menu
+    # file menu
     filemenu = Menu(menubar, tearoff=0)
     filemenu.add_command(label="Change upload location", command=CUL)
-    filemenu.add_command(label="Shut down and Sleep PC", command=shutdownslep)
+    filemenu.add_command(label="Shut down and Sleep PC", command=shutdown_sleep)
     menubar.add_cascade(label="File", menu=filemenu)
     # help menu
     helpmenu = Menu(menubar, tearoff=0)
@@ -238,24 +291,21 @@ if connected_network:
     port_box = Entry(root, font=('arial', 15, 'bold'), )
     port()
     port_box.place(x=260, y=21, width=100)
-    title_list = Label(root, text="List of folders (Double click to delete the item)", font=('arial', 10, 'bold')).place(x=40, y=65)
+    title_list = Label(root, text="List of folders (Double click to delete the item)", font=('arial', 10, 'bold'))
+    title_list.place(x=40, y=65)
     button_Selection = Button(root, text="Select a folder", font=('arial', 10, 'bold'), command=path_dir)
     button_Selection.place(x=360, y=60)
     list_box = Listbox(root)
     load_data()
     list_box.bind('<Double-Button>', del_path)
-    list_box.place(x=40, y=100, width=425, height= 150)
+    list_box.place(x=40, y=100, width=425, height=150)
     button_run = Button(root, text="Run", font=('arial', 10, 'bold'), command=threading_start)
     button_run.place(x=430, y=260)
     button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=threading_stop)
     button_stop["state"] = "disabled"
     button_stop.place(x=390, y=260)
     Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
-    tmp = open("temp.ico", "wb+")
-    tmp.write(base64.b64decode(icon))
-    tmp.close()
-    root.iconbitmap("temp.ico")
-    os.remove("temp.ico")
+    icon_window(root)
     root.config(menu=menubar)
     root.mainloop()
 else:
