@@ -1,32 +1,53 @@
-from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 import os
 import re
 from sqllite import Database
 from hashlib import md5
+from threading import Thread
+from time import sleep
+
+from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
+
 
 app = Flask(__name__)
 
 
-def list_file(format, path):
-    fils = []
-    for i in format:
+def list_file(format_file, path):
+    """
+    :param format_file: The desired file format, for example mp4
+    :param path: The desired folder path
+    :return: Returns a list of files related to the imported format
+    """
+    files = []
+    for i in format_file:
         for name in os.listdir(path):
             if re.match(rf'.*\.{i}', name):
-                fils.append(os.path.join(path, name))
-    return fils
+                files.append(os.path.join(path, name))
+    return files
 
 
 def list_folders(path):
+    """
+    :param path: The desired folder path
+    :return: Returns a list of all the folders in the path
+    """
     return [x[0] for x in os.walk(path)]
 
 
 def list_dir():
+    """
+    :return: Returns the list of folders stored in the database
+    """
     database = Database()
     dirc = eval(database.get_data()[0])
     return dirc
 
 
 def check_dir(path):
+    """
+    Check if the file is available through the page
+    :param path: The requested file path on the page
+    :return: Returns true if the file path is in the database, otherwise false
+    """
     dircs = list_dir()
     status = False
     if '.' in path:
@@ -38,12 +59,24 @@ def check_dir(path):
     return status
 
 
+def shutdown_sleep_thread(value):
+    """
+    :param value: Sleep or Shutdown
+    :return: Delayed shutdown or sleep mode after 3 seconds
+    """
+    sleep(3)
+    if value == "Sleep":
+        os.system("rundll32.exe powrprof.dll, SetSuspendState Sleep 2")
+    elif value == "Shutdown":
+        os.system("shutdown /s /t 2")
+
+
 @app.route('/')
 def home_page():
     return render_template("home.html", title="Home")
 
 
-@app.route('/system_PC', methods=['POST'])
+@app.route('/system_control', methods=['POST'])
 def check_password_system_page():
     data = request.form['password']
     database = Database()
@@ -52,14 +85,12 @@ def check_password_system_page():
     if data is not None:
         data = md5(data.encode()).hexdigest()
         if data == password:
-            try:
-                btn = request.form['Sleep']
-                os.system("rundll32.exe powrprof.dll, SetSuspendState Sleep 2")
-                alert = 'Sleep PC'
-            except:
-                btn = request.form['Shutdown']
-                os.system("shutdown /s /t 2")
-                alert = 'Shutdown PC'
+            if 'Sleep' in request.form:
+                Thread(target=shutdown_sleep_thread, args='Sleep').start()
+                alert = 'The Sleep was successful'
+            elif 'Shutdown' in request.form:
+                Thread(target=shutdown_sleep_thread, args='Shutdown').start()
+                alert = 'The shutdown was successful'
         else:
             alert = 'Password incorrect'
     elif data is None:
@@ -67,7 +98,7 @@ def check_password_system_page():
     return render_template("systemcontroll.html", title="System control", alert=alert)
 
 
-@app.route('/system_PC', methods=['GET'])
+@app.route('/system_control', methods=['GET'])
 def system_page():
     return render_template("systemcontroll.html", title="System Control")
 
