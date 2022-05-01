@@ -4,6 +4,7 @@ from sqllite import Database
 from hashlib import md5
 from threading import Thread
 from time import sleep
+from filename import pathfile
 
 from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
@@ -169,12 +170,11 @@ def upload_file():
         database = Database()
         path = database.get_data()[3]
         try:
-            f.save(f'{path}/{f.filename}')
+            f.save(pathfile(path, f.filename))
         except:
             os.makedirs(f"{path}")
-            f.save(f'{path}/{f.filename}')
+            f.save(pathfile(path, f.filename))
         res = make_response(jsonify({"message": "File uploaded"}), 200)
 
         return res
     return render_template('upload.html', title="Upload")
-
