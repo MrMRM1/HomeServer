@@ -6,7 +6,6 @@ from threading import Thread
 from webbrowser import open_new
 from urllib.request import urlopen, Request
 from json import loads
-import base64
 import os
 import re
 from hashlib import md5
