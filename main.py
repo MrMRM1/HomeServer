@@ -16,20 +16,6 @@ v = 5
 database = Database()
 connected_network = False
 
-try:
-    s = socket(AF_INET, SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip = s.getsockname()[0]
-    connected_network = True
-except OSError:
-    root = Tk()
-    root.withdraw()
-    root.title("Home Server")
-    root.geometry("0x0")
-    root.resizable(False, False)
-    messagebox.showerror(title="ERROR", message="You are not connected to any networks")
-    root.deiconify()
-
 
 def icon_window(window):
     """
@@ -260,6 +246,22 @@ def port():
             port_box.insert(END, data)
     except:
         port_box.insert(END, 80)
+
+
+try:
+    s = socket(AF_INET, SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    connected_network = True
+except OSError:
+    root = Tk()
+    root.withdraw()
+    root.title("Home Server")
+    root.geometry("0x0")
+    root.resizable(False, False)
+    icon_window(root)
+    messagebox.showerror(title="ERROR", message="You are not connected to any networks")
+    root.deiconify()
 
 
 if connected_network:
