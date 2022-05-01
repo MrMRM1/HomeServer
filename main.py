@@ -5,16 +5,17 @@ from sqllite import Database
 from threading import Thread
 from webbrowser import open_new
 from urllib.request import urlopen, Request
+from urllib.error import URLError
 from json import loads
 import os
 import re
 from hashlib import md5
 
-from requests import get
 
 v = 5
 database = Database()
 connected_network = False
+ip = ''
 
 
 def icon_window(window):
@@ -43,7 +44,7 @@ def check_update():
             ask_update = messagebox.askquestion(title="New version available", message=message)
             if ask_update == 'yes':
                 open_new(data['link'])
-    except:
+    except URLError:
         messagebox.showerror(title="ERROR", message="No connection to the server")
 
 
@@ -53,19 +54,19 @@ def path_dir():
     the paths in the database
     :return: Update the list of folders
     """
-    deiconiry = filedialog.askdirectory()
-    if re.fullmatch(r'.:\/', deiconiry):
+    directory = filedialog.askdirectory()
+    if re.fullmatch(r'.:/', directory):
         messagebox.showwarning(title="WARNING",
                                message="You are not allowed to select a drive, you must select a folder")
     else:
         try:
             paths = eval(database.get_data()[0])
-            if deiconiry not in paths:
-                for i in list_folders(deiconiry):
+            if directory not in paths:
+                for i in list_folders(directory):
                     if i not in paths:
                         paths.append(i)
         except:
-            paths = [deiconiry]
+            paths = [directory]
         database.write_data(paths, "paths")
         load_data()
 
@@ -91,10 +92,10 @@ def path_upload():
     CUL_window.destroy()
     deiconiry = filedialog.askdirectory()
     database.write_data(deiconiry, "upload")
-    CUL()
+    cul()
 
 
-def CUL():
+def cul():
     """
     Upload folder redirect window
     """
@@ -194,7 +195,7 @@ def threading_stop():
     """
     address_run.place_forget()
     port_app = port_box.get()
-    get(f"http://{ip}:{port_app}/shutdown")
+    urlopen(f"http://{ip}:{port_app}/shutdown")
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
     port_box["state"] = "normal"
@@ -223,7 +224,7 @@ def run():
         address_run.bind("<Button-1>", lambda e: open_new(f"http://{ip}:{port_app}"))
     address_run.place(x=175, y=265)
     from app import app
-    app.run(host=ip, port=port_app, debug=False)
+    app.run(host=ip, port=int(port_app), debug=False)
 
 
 def write_port(port_app):
@@ -244,8 +245,8 @@ def port():
             raise NameError('None data')
         else:
             port_box.insert(END, data)
-    except:
-        port_box.insert(END, 80)
+    except NameError:
+        port_box.insert(END, '80')
 
 
 try:
@@ -273,7 +274,7 @@ if connected_network:
     menubar = Menu(root)
     # file menu
     filemenu = Menu(menubar, tearoff=0)
-    filemenu.add_command(label="Change upload location", command=CUL)
+    filemenu.add_command(label="Change upload location", command=cul)
     filemenu.add_command(label="Shut down and Sleep PC", command=shutdown_sleep)
     menubar.add_cascade(label="File", menu=filemenu)
     # help menu
@@ -305,4 +306,3 @@ if connected_network:
     icon_window(root)
     root.config(menu=menubar)
     root.mainloop()
-
