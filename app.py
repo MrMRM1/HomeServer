@@ -158,7 +158,7 @@ def shutdown():
 
 @app.route('/upload', methods=['GET'])
 def uploads_file():
-    return render_template('upload.html', title="Send")
+    return render_template('send.html', title="Send")
 
 
 @app.route('/upload', methods=['POST'])
@@ -175,4 +175,4 @@ def upload_file():
         res = make_response(jsonify({"message": "File uploaded"}), 200)
 
         return res
-    return render_template('upload.html', title="Upload")
+    return render_template('send.html', title="Send")
