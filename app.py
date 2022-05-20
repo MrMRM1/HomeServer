@@ -8,7 +8,6 @@ from filename import pathfile
 
 from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
-
 app = Flask(__name__)
 
 
@@ -106,43 +105,42 @@ def system_page():
 
 @app.route('/<path:link>')
 def controls(link):
-    check_path = re.search(r".:\/", link)
+    temp_link = link.split('/')
+    path = '/'.join(temp_link[1:])
     if link in ['video', 'pdf', 'audio', 'all_file']:
-        typs = link
-        return render_template("list_folders.html", title="List Folders", items=list_dir(), typs=typs)
-    elif check_path and check_dir(link[check_path.span()[0]:]):
-        if link[:5] == 'video':
-            return render_template("list_videos.html", title=link[6:], items=list_file(['mkv', 'mp4'], link[6:]),
+        return render_template("list_folders.html", title="List Folders", items=list_dir(), typs=link)
+    elif check_dir(path):
+        if temp_link[0] == 'video':
+            return render_template("list_videos.html", title=path, items=list_file(['mkv', 'mp4'], path),
                                    typs="show_video")
-        elif link[:5] == 'audio':
-            return render_template("list_audios.html", title=link[6:], items=list_file(['mp3'], link[6:]),
+        elif temp_link[0] == 'audio':
+            return render_template("list_audios.html", title=path, items=list_file(['mp3'], path),
                                    typs="show_audio")
-        elif link[:3] == 'pdf':
-            return render_template("list_folders.html", title=link[4:], items=list_file(['pdf'], link[4:]),
+        elif temp_link[0] == 'pdf':
+            return render_template("list_folders.html", title=path, items=list_file(['pdf'], path),
                                    typs="show_pdf")
-        elif link[:8] == 'all_file':
-            return render_template("list_folders.html", title=link[9:], items=list_file(['*'], link[9:]),
+        elif temp_link[0] == 'all_file':
+            return render_template("list_folders.html", title=path, items=list_file(['*'], path),
                                    typs="dl_file")
-        elif link[:10] == 'show_video':
-            return render_template('video.html', title=link.split('/')[-1], link=link[11:])
-        elif link[:10] == 'show_audio':
-            return render_template('list_audios.html', title=link.split('/')[-1], link=link[11:])
-        elif link[:8] == 'show_pdf':
-            return render_template('viewer.html', title=link.split('/')[-1], link=link[9:])
+        elif temp_link[0] == 'show_video':
+            return render_template('video.html', title=path.split('/')[-1], link=path)
+        elif temp_link[0] == 'show_audio':
+            return render_template('list_audios.html', title=path.split('/')[-1], link=path)
+        elif temp_link[0] == 'show_pdf':
+            return render_template('viewer.html', title=path.split('/')[-1], link=path)
     else:
         return redirect('/', code=302)
 
 
 @app.route('/file/<path:filename>')
 def download_file(filename):
-    check_path = re.search(r".:\/", filename)
-    if check_path and check_dir(filename[check_path.span()[0]:]):
+    if check_dir(filename):
         rt = filename.split('/')
         name = rt[-1]
         del rt[-1]
         return send_from_directory('/'.join(rt), name)
     else:
-        redirect('/', code=302)
+        return redirect('/', code=302)
 
 
 def shutdown_server():
@@ -160,7 +158,7 @@ def shutdown():
 
 @app.route('/upload', methods=['GET'])
 def uploads_file():
-    return render_template('upload.html', title="Upload")
+    return render_template('upload.html', title="Send")
 
 
 @app.route('/upload', methods=['POST'])
