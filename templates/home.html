@@ -3,6 +3,12 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
+    <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+        <div class="col-10 col-md-8 btn-primary ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+            <p class="mt-auto mb-auto fs-3">Home Server</p>
+            <img src="{{ url_for('static', filename='icon/icon.ico')}}" class="col-1 p-md-2 p-xl-4">
+        </div>
+    </div>
     <div class="home_page d-flex justify-content-center ">
 
         <div class="home_box col-8 mt-2">
