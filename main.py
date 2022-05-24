@@ -251,7 +251,10 @@ def port():
         else:
             port_box.insert(END, data)
     except NameError:
-        port_box.insert(END, '80')
+        if os.name == 'nt':
+            port_box.insert(END, '80')
+        else:
+            port_box.insert(END, '8888')
 
 
 try:
