@@ -222,11 +222,11 @@ def run():
     list_box["state"] = "disabled"
     button_stop["state"] = "normal"
     if port_app == '80':
-        address_run = Label(root, text=f"{ip}", font=('arial', 10, 'bold'), fg="blue")
-        address_run.bind("<Button-1>", lambda e: open_new(f"http://{ip}"))
+        address_app = str(ip)
     else:
-        address_run = Label(root, text=f"{ip}:{port_app}", font=('arial', 10, 'bold'), fg="blue")
-        address_run.bind("<Button-1>", lambda e: open_new(f"http://{ip}:{port_app}"))
+        address_app = f"{ip}:{port_app}"
+    address_run = Label(root, text=address_app, font=('arial', 10, 'bold'), fg="blue")
+    address_run.bind("<Button-1>", lambda e: open_new(f"http://{address_app}"))
     address_run.place(x=175, y=265)
     from app import app
     app.run(host=ip, port=int(port_app), debug=False)
