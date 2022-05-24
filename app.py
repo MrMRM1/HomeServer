@@ -134,6 +134,8 @@ def controls(link):
 
 @app.route('/file/<path:filename>')
 def download_file(filename):
+    if os.name != 'nt':
+        filename = '/' + filename
     if check_dir(filename):
         rt = filename.split('/')
         name = rt[-1]
