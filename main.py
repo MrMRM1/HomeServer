@@ -104,7 +104,12 @@ def cul():
     CUL_window.geometry("500x70")
     CUL_window.resizable(False, False)
     path_uploads = database.get_data()[3]
-    Label(CUL_window, text="Upload location: " + path_uploads, font=('arial', 10, 'bold')).place(x=10, y=10)
+    if path_uploads == './upload/':
+        path_uploads = os.path.join(os.path.dirname(__file__), "upload")
+    Label(CUL_window, text="Upload location: ", font=('arial', 10, 'bold')).place(x=10, y=10)
+    path_upload_location = Label(CUL_window, text=path_uploads, font=('arial', 10, 'bold'), fg="blue")
+    path_upload_location.bind("<Button-1>", lambda e: os.startfile(path_uploads))
+    path_upload_location.place(x=120, y=10)
     Button(CUL_window, text="Close", font=('arial', 10, 'bold'), command=CUL_window.destroy).place(x=435, y=36)
     selec_path = Button(CUL_window, text="Select a folder", font=('arial', 10, 'bold'), command=path_upload)
     selec_path.place(x=332, y=36)
