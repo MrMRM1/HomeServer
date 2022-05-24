@@ -82,7 +82,7 @@ def check_password_system_page():
     database = Database()
     password = database.get_data()[4]
     alert = None
-    if data is not None:
+    if data != '':
         data = md5(data.encode()).hexdigest()
         if data == password:
             if 'Sleep' in request.form:
@@ -93,7 +93,7 @@ def check_password_system_page():
                 alert = 'The shutdown was successful'
         else:
             alert = 'Password incorrect'
-    elif data is None:
+    elif data == '':
         alert = 'Fill in the password field'
     return render_template("systemcontroll.html", title="System control", alert=alert)
 
