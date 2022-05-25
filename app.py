@@ -86,10 +86,12 @@ def check_password_system_page():
         data = md5(data.encode()).hexdigest()
         if data == password:
             if 'Sleep' in request.form:
-                Thread(target=shutdown_sleep_thread, args='Sleep').start()
+                sleep_thread = Thread(target=shutdown_sleep_thread, args=('Sleep',))
+                sleep_thread.start()
                 alert = 'The Sleep was successful'
             elif 'Shutdown' in request.form:
-                Thread(target=shutdown_sleep_thread, args='Shutdown').start()
+                shutdown_thread = Thread(target=shutdown_sleep_thread, args=('Shutdown',))
+                shutdown_thread.start()
                 alert = 'The shutdown was successful'
         else:
             alert = 'Password incorrect'
