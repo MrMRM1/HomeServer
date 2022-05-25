@@ -10,7 +10,9 @@ from json import loads
 import os
 import re
 from hashlib import md5
+from app import app
 
+from gevent.pywsgi import WSGIServer
 
 v = 5
 database = Database()
@@ -192,6 +194,11 @@ def threading_start():
     global run_app
     run_app = Thread(target=run)
     run_app.start()
+    button_run["state"] = "disabled"
+    button_Selection["state"] = "disabled"
+    port_box["state"] = "disabled"
+    list_box["state"] = "disabled"
+    button_stop["state"] = "normal"
 
 
 def threading_stop():
@@ -200,7 +207,7 @@ def threading_stop():
     """
     address_run.place_forget()
     port_app = port_box.get()
-    urlopen(f"http://{ip}:{port_app}/shutdown")
+    http_server.stop(timeout=2)
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
     port_box["state"] = "normal"
@@ -215,12 +222,8 @@ def run():
     Disable different sections of the main window and run the flask program
     """
     global address_run
+    global http_server
     port_app = port_box.get()
-    button_run["state"] = "disabled"
-    button_Selection["state"] = "disabled"
-    port_box["state"] = "disabled"
-    list_box["state"] = "disabled"
-    button_stop["state"] = "normal"
     if port_app == '80':
         address_app = str(ip)
     else:
@@ -228,8 +231,8 @@ def run():
     address_run = Label(root, text=address_app, font=('arial', 10, 'bold'), fg="blue")
     address_run.bind("<Button-1>", lambda e: open_new(f"http://{address_app}"))
     address_run.place(x=175, y=265)
-    from app import app
-    app.run(host=ip, port=int(port_app), debug=False)
+    http_server = WSGIServer((ip, int(port_app)), app)
+    http_server.serve_forever()
 
 
 def write_port(port_app):
