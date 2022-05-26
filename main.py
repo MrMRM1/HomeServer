@@ -10,9 +10,13 @@ from json import loads
 import os
 import re
 from hashlib import md5
+import platform
 from app import app
 
 from gevent.pywsgi import WSGIServer
+
+if platform.system() != 'Windows':
+    import subprocess
 
 v = 5
 database = Database()
@@ -97,6 +101,37 @@ def path_upload():
     cul()
 
 
+def open_path(path: str):
+    """
+    a cross-platform file opening
+    :param path: file path
+    :return: file path opening
+    """
+
+    def showerror():
+        """
+        :return:  Show error This folder does not exist.
+        """
+        messagebox.showerror(title="File Not Found", message="This folder does not exist.")
+
+    match platform.system():
+        case 'Windows':
+            try:
+                os.startfile(path)
+            except FileNotFoundError:
+                showerror()
+        case 'Darwin':
+            try:
+                subprocess.Popen(['open', path])
+            except FileNotFoundError:
+                showerror()
+        case _:
+            try:
+                subprocess.Popen(['xdg-open', path])
+            except FileNotFoundError:
+                showerror()
+
+
 def cul():
     """
     Upload folder redirect window
@@ -110,7 +145,7 @@ def cul():
         path_uploads = os.path.join(os.path.dirname(__file__), "upload")
     Label(CUL_window, text="Upload location: ", font=('arial', 10, 'bold')).place(x=10, y=10)
     path_upload_location = Label(CUL_window, text=path_uploads, font=('arial', 10, 'bold'), fg="blue")
-    path_upload_location.bind("<Button-1>", lambda e: os.startfile(path_uploads))
+    path_upload_location.bind("<Button-1>", lambda event, e=path_uploads: open_path(e))
     path_upload_location.place(x=120, y=10)
     Button(CUL_window, text="Close", font=('arial', 10, 'bold'), command=CUL_window.destroy).place(x=435, y=36)
     selec_path = Button(CUL_window, text="Select a folder", font=('arial', 10, 'bold'), command=path_upload)
@@ -274,7 +309,6 @@ except OSError:
     icon_window(root)
     messagebox.showerror(title="ERROR", message="You are not connected to any networks")
     root.deiconify()
-
 
 if connected_network:
     root = Tk()
