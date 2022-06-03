@@ -3,7 +3,7 @@ Stream, receive, send files, etc. on the local network without the need to insta
 
 ![HomeServer](https://user-images.githubusercontent.com/61387127/170466947-0c738240-9964-436f-83f8-73b5e0dac2f8.jpeg)
 
-View and listen to files directly from your PC without the need to copy or transfer files to other Divas without filling up the Divas memory.
+View and listen to files directly from your PC without the need to copy or transfer files to other Device without filling up the Device Storage.
 
 ## Installation
 Download the latest version of [Releases](https://github.com/MrMRM1/HomeServer/releases)
