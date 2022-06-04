@@ -5,6 +5,7 @@ from hashlib import md5
 from threading import Thread
 from time import sleep
 from filename import pathfile
+import platform
 
 from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
@@ -66,9 +67,18 @@ def shutdown_sleep_thread(value):
     """
     sleep(3)
     if value == "Sleep":
-        os.system("rundll32.exe powrprof.dll, SetSuspendState Sleep 2")
+        match platform.system():
+            case 'Windows':
+                os.system("rundll32.exe powrprof.dll, SetSuspendState Sleep 2")
+            case 'Darwin':
+                os.system("pmset sleepnow")
+            case _:
+                os.system("systemctl suspend")
     elif value == "Shutdown":
-        os.system("shutdown /s /t 2")
+        if platform.system() == 'Windows':
+            os.system("shutdown /s /t 2")
+        else:
+            os.system("shutdown -h now")
 
 
 @app.route('/')
