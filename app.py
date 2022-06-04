@@ -157,19 +157,6 @@ def download_file(filename):
         return redirect('/', code=302)
 
 
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-
-
-@app.route('/shutdown', methods=['GET'])
-def shutdown():
-    shutdown_server()
-    return 'The program was stopped.'
-
-
 @app.route('/upload', methods=['GET'])
 def uploads_file():
     return render_template('send.html', title="Send")
