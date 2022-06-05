@@ -119,7 +119,7 @@ def system_page():
 def controls(link):
     temp_link = link.split('/')
     path = '/'.join(temp_link[1:])
-    if link in ['video', 'pdf', 'audio', 'all_file']:
+    if link in ['video', 'pdf', 'audio', 'all_file', 'picture']:
         return render_template("list_folders.html", title="List Folders", items=list_dir(), typs=link)
     elif check_dir(path):
         if temp_link[0] == 'video':
@@ -131,6 +131,11 @@ def controls(link):
         elif temp_link[0] == 'pdf':
             return render_template("list_folders.html", title=path, items=list_file(['pdf'], path),
                                    typs="show_pdf")
+        elif temp_link[0] == 'picture':
+            return render_template("picture.html", title=path,
+                                   items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg',
+                                                    'pjp', 'png', 'png'],
+                                                   path), typs="show_picture")
         elif temp_link[0] == 'all_file':
             return render_template("list_folders.html", title=path, items=list_file(['*'], path),
                                    typs="dl_file")
