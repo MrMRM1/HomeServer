@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% set items_length = items|length + 1 %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+
+<style>
+        .flex-column {
+            max-width: 200px;
+        }
+        #img{
+            display: none;
+        }
+</style>
+{% endblock %}
+{% block body %}
+<div class="flex-row justify-content-center ">
+    <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+        <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+            <p class="mt-auto mb-auto fs-4">Picture list</p>
+            <img src="{{ url_for('static', filename='icon/picture.png')}}" class="col-1 p-md-2 p-xl-4">
+        </div>
+    </div>
+
+      <div v-viewer="options" class="container-fluid">
+
+        <div class="d-flex flex-row flex-wrap justify-content-center">
+
+            {% for i in range(0, items_length, 2) %}
+                {% if (i + 1) != items_length %}
+                    <div class="d-flex flex-column">
+                          <img loading="lazy" src="/file/{{ items[i]|replace(" ", "%20") }}" width="765" height="574" id="img" class="img-fluid mt-2">
+                        {% if ((i + 4) // items_length) != 1 %}
+                          <img loading="lazy" src="/file/{{ items[i + 1]|replace(" ", "%20") }}" width="765" height="574" id="img"  class="img-fluid mt-2">
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+      </div>
+</div>
+<div class="home_box col-8 mt-2 ms-auto me-auto">
+ <div class="d-md-flex ms-auto me-auto justify-content-md-around">
+    <a href="#" id="load" class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between">Load More</a>
+ </div>
+</div>
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+  <script>
+    $(function() {
+      $(".img-fluid").slice(0, 6).show();
+      $("#load").click(function(e) {
+        e.preventDefault();
+        $(".img-fluid:hidden").slice(0, 6).show();
+        if ($(".img-fluid:hidden").length == 0) {
+          alert("No more image");
+        }
+      });
+    });
+  </script>
+
+{% endblock %}
