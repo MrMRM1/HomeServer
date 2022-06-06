@@ -8,6 +8,8 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon/icon.ico')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    {% block head %}
+    {% endblock %}
 </head>
 <body class="bg-white">
 {% block body %}
