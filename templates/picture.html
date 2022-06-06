@@ -24,7 +24,7 @@
 								<img loading="lazy" src="/file/{{ items[i]|replace(" ", "%20") }}" id="img" class="img-fluid m-1 img-thumbnail">
 							</a>
 						</div>
-						{% if ((i + 4) // items_length) != 1 %}
+						{% if ((i + 2) // items_length) != 1 %}
 						<div class="magnific-img">
 							<a class="image-popup-vertical-fit" href="/file/{{ items[i + 1]|replace(" ", "%20") }}" >
 								<img loading="lazy" src="/file/{{ items[i + 1]|replace(" ", "%20") }}" id="img" class="img-fluid m-1 img-thumbnail">
