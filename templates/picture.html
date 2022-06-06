@@ -2,15 +2,7 @@
 {% set items_length = items|length + 1 %}
 {% block title %}{{ title }}{% endblock %}
 {% block head %}
-
-<style>
-        .flex-column {
-            max-width: 200px;
-        }
-        #img{
-            display: none;
-        }
-</style>
+	<link rel="stylesheet" href="{{ url_for('static', filename='picture/css/style.css')}}">
 {% endblock %}
 {% block body %}
 <div class="flex-row justify-content-center ">
@@ -21,41 +13,39 @@
         </div>
     </div>
 
-      <div v-viewer="options" class="container-fluid">
+	<section class="img-gallery-magnific">
+		<div class="d-flex flex-row flex-wrap justify-content-center">
 
-        <div class="d-flex flex-row flex-wrap justify-content-center">
+			{% for i in range(0, items_length, 2) %}
+				{% if (i + 1) != items_length %}
+					<div class="d-flex flex-column">
+						<div class="magnific-img">
+							<a class="image-popup-vertical-fit" href="/file/{{ items[i]|replace(" ", "%20") }}" >
+								<img loading="lazy" src="/file/{{ items[i]|replace(" ", "%20") }}" id="img" class="img-fluid m-1 img-thumbnail">
+							</a>
+						</div>
+						{% if ((i + 4) // items_length) != 1 %}
+						<div class="magnific-img">
+							<a class="image-popup-vertical-fit" href="/file/{{ items[i + 1]|replace(" ", "%20") }}" >
+								<img loading="lazy" src="/file/{{ items[i + 1]|replace(" ", "%20") }}" id="img" class="img-fluid m-1 img-thumbnail">
+							</a>
+						</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			{% endfor %}
 
-            {% for i in range(0, items_length, 2) %}
-                {% if (i + 1) != items_length %}
-                    <div class="d-flex flex-column">
-                          <img loading="lazy" src="/file/{{ items[i]|replace(" ", "%20") }}" width="765" height="574" id="img" class="img-fluid mt-2">
-                        {% if ((i + 4) // items_length) != 1 %}
-                          <img loading="lazy" src="/file/{{ items[i + 1]|replace(" ", "%20") }}" width="765" height="574" id="img"  class="img-fluid mt-2">
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-
-        </div>
-      </div>
+		</div>
+	</section>
+	<div class="clear"></div>
 </div>
 <div class="home_box col-8 mt-2 ms-auto me-auto">
- <div class="d-md-flex ms-auto me-auto justify-content-md-around">
-    <a href="#" id="load" class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between">Load More</a>
- </div>
+	<div class="d-md-flex ms-auto me-auto justify-content-md-around">
+		<a href="#" id="load" class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between">Load More</a>
+	</div>
 </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
-  <script>
-    $(function() {
-      $(".img-fluid").slice(0, 6).show();
-      $("#load").click(function(e) {
-        e.preventDefault();
-        $(".img-fluid:hidden").slice(0, 6).show();
-        if ($(".img-fluid:hidden").length == 0) {
-          alert("No more image");
-        }
-      });
-    });
-  </script>
-
+    <script src="{{ url_for('static', filename='picture/js/script.js')}}"></script>
+    <script src="{{ url_for('static', filename='picture/js/jquery.magnific-popup.min.js')}}"></script>
+  
 {% endblock %}
