@@ -131,7 +131,14 @@ function upload(url, files_number) {
 
     }
 
-    reset();
+    if (number_files != number_file_uploaded){
+    file_input_label.innerText = number_files_upload();
+    upload_multiple(input_url);
+    }
+    else{
+      reset();
+    }
+
 
   });
 
@@ -210,34 +217,28 @@ function reset() {
 
   // Reset the input placeholder
 
+  // Clear the input
+  input.value = null;
 
-  if (number_files != number_file_uploaded){
-    file_input_label.innerText = number_files_upload();
-    upload_multiple(input_url);
-  }
-  else {
-    // Clear the input
-    input.value = null;
+  // Hide the cancel button
+  cancel_btn.classList.add("d-none");
 
-    // Hide the cancel button
-    cancel_btn.classList.add("d-none");
+  // Reset the input element
+  input.disabled = false;
 
-    // Reset the input element
-    input.disabled = false;
+  // Show the upload button
+  upload_btn.classList.remove("d-none");
 
-    // Show the upload button
-    upload_btn.classList.remove("d-none");
+  // Hide the loading button
+  loading_btn.classList.add("d-none");
 
-    // Hide the loading button
-    loading_btn.classList.add("d-none");
+  // Hide the progress bar
+  progress_wrapper.classList.add("d-none");
+  number_file_uploaded = 0;
+  number_files = 0;
+  input_url = "";
+  file_input_label.innerText = "0";
+  file_input_size.innerText = "";
 
-    // Hide the progress bar
-    progress_wrapper.classList.add("d-none");
-    number_file_uploaded = 0;
-    number_files = 0;
-    input_url = "";
-    file_input_label.innerText = "0";
-    file_input_size.innerText = "";
 
-  }
 }
