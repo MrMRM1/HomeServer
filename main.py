@@ -9,7 +9,7 @@ from urllib.error import URLError
 from json import loads
 import os
 import re
-from hashlib import md5
+from hashlib import sha256
 import platform
 from app import app
 
@@ -165,7 +165,7 @@ def shutdown_sleep():
         password = password_box.get()
         password_v = password_v_box.get()
         if password == password_v and password is not None:
-            password = md5(password.encode())
+            password = sha256(password.encode())
             database.write_data(password.hexdigest(), "password")
             messagebox.showinfo(title="successful", message="Password set successfully")
             set_window.destroy()

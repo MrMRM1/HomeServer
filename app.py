@@ -1,7 +1,7 @@
 import os
 import re
 from sqllite import Database
-from hashlib import md5
+from hashlib import sha256
 from threading import Thread
 from time import sleep
 from filename import pathfile
@@ -93,7 +93,7 @@ def check_password_system_page():
     password = database.get_data()[4]
     alert = None
     if data != '':
-        data = md5(data.encode()).hexdigest()
+        data = sha256(data.encode()).hexdigest()
         if data == password:
             if 'Sleep' in request.form:
                 sleep_thread = Thread(target=shutdown_sleep_thread, args=('Sleep',))
