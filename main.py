@@ -295,6 +295,12 @@ def port():
             port_box.insert(END, '8888')
 
 
+def delete_window():
+    if messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
+        if button_run["state"] == "disabled" :
+            threading_stop()
+        root.destroy()
+
 try:
     s = socket(AF_INET, SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -315,7 +321,7 @@ if connected_network:
     root.title("Home Server")
     root.geometry("500x350")
     root.resizable(False, False)
-
+    root.protocol("WM_DELETE_WINDOW", delete_window)
     menubar = Menu(root)
     # file menu
     filemenu = Menu(menubar, tearoff=0)
