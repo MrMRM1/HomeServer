@@ -2,14 +2,13 @@ import os
 from libraries.sqllite import Database
 from hashlib import sha256
 from threading import Thread
-from time import sleep
 from libraries.filename import pathfile
-import platform
 from video import video
 from audio import audio
 from pdf import pdf
 from picture import picture
 from libraries.paths import check_dir, list_dir, list_file, edit_path_windows_other
+from libraries.system_control import shutdown_sleep_thread
 
 from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
@@ -20,27 +19,6 @@ app.register_blueprint(video)
 app.register_blueprint(audio)
 app.register_blueprint(pdf)
 app.register_blueprint(picture)
-
-
-def shutdown_sleep_thread(value):
-    """
-    :param value: Sleep or Shutdown
-    :return: Delayed shutdown or sleep mode after 3 seconds
-    """
-    sleep(3)
-    if value == "Sleep":
-        match platform.system():
-            case 'Windows':
-                os.system("rundll32.exe powrprof.dll, SetSuspendState Sleep 2")
-            case 'Darwin':
-                os.system("pmset sleepnow")
-            case _:
-                os.system("systemctl suspend")
-    elif value == "Shutdown":
-        if platform.system() == 'Windows':
-            os.system("shutdown /s /t 2")
-        else:
-            os.system("shutdown -h now")
 
 
 @app.route('/')
