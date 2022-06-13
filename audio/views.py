@@ -10,7 +10,7 @@ def audio_page():
 
 
 @audio.route('/audio/<path:link>')
-def controls(link):
+def list_audios(link):
     if check_dir(link):
         return render_template("list_audios.html", title=link, items=list_file(['mp3'], link), typs="show_audio")
     else:
