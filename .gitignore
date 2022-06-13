@@ -10,7 +10,7 @@ __pycache__/
 .Python
 .idea/
 build/
-!static/pdf/build/
+!pdf/static/build/
 develop-eggs/
 dist/
 downloads/
