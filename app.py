@@ -9,7 +9,7 @@ from video import video
 from audio import audio
 from pdf import pdf
 from picture import picture
-from libraries.paths import check_dir, list_dir, list_file
+from libraries.paths import check_dir, list_dir, list_file, edit_path_windows_other
 
 from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
@@ -89,8 +89,7 @@ def controls(link):
 
 @app.route('/file/<path:filename>')
 def download_file(filename):
-    if os.name != 'nt':
-        filename = '/' + filename
+    filename = edit_path_windows_other(filename)
     if check_dir(filename):
         rt = filename.split('/')
         name = rt[-1]
