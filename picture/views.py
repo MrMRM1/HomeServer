@@ -1,7 +1,7 @@
 from . import picture
-from libraries.paths import list_dir, list_file
+from libraries.paths import list_dir, list_file, check_dir
 
-from flask import render_template
+from flask import render_template, redirect
 
 
 @picture.route('/picture')
@@ -11,11 +11,9 @@ def picture_page():
 
 @picture.route('/picture/<path:link>')
 def controls(link):
-    return render_template("picture.html", title=link,
-                            items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg',
-                                            'pjp', 'png', 'png'], link), typs="show_picture")
-
-
-@picture.route('/show_picture/<path:link>')
-def show_picture(link):
-    return render_template('video.html', title=link.split('/')[-1], link=link)
+    if check_dir(link):
+        return render_template("picture.html", title=link,
+                               items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp',
+                                                'png', 'png'], link), typs="show_picture")
+    else:
+        return redirect('/picture')
