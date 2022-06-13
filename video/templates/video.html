@@ -31,6 +31,12 @@
                 document.getElementById('myAlert').innerHTML = '';
             }, 6000);
     }
+    let video_obj = document.createElement('video').canPlayType("video/{{ title.split('.')[-1] }}");
+    if (video_obj == ""){
+        setTimeout(function(){
+                alert('The browser does not support this video format. Use Media Player for better performance.');
+            }, 500);
+    }
 
     let urlVideo = document.getElementsByTagName('video')[0].src;
     let toCopy  = document.getElementById('to-copy');
