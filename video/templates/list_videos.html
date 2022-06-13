@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% set color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info'] %}
+{% set items_length = items|length + 1 %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+    <div class="flex-row justify-content-center ">
+        <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+            <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+                <p class="mt-auto mb-auto fs-4">Video list</p>
+                <img src="{{ url_for('static', filename='icon/video.png')}}" class="col-1 p-md-2 p-xl-4">
+            </div>
+        </div>
+
+        <div>
+        {% for i in range(0, items_length, 4) %}
+            {% if (i + 1) != items_length %}
+                <div class="col-11 col-md-8 mt-2 ms-auto me-auto d-md-flex justify-content-md-around ">
+                    <a class="btn {{ color[i % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i]|replace(" ", "%20") }}>
+                        <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}" onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i]|replace(" ", "%20") }}" ></video>
+                        <h1 class="text-break text-center"> {{ items[i].split('\\')[-1] }} </h1>
+                    </a>
+                    {% if ((i + 2) // items_length) != 1 %}
+                        <a class="btn {{ color[(i + 1) % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i + 1]|replace(" ", "%20") }}>
+                            <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}"  onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i]|replace(" ", "%20") }}"  ></video>
+                            <h1 class="text-break text-center"> {{ items[i + 1].split('\\')[-1] }} </h1>
+                        </a>
+                        {% if ((i + 3) // items_length) != 1 %}
+                            <a class="btn {{ color[(i + 2) % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i + 2]|replace(" ", "%20") }}>
+                                <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}" onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i]|replace(" ", "%20") }}" ></video>
+                                <h1 class="text-break text-center"> {{ items[i + 2].split('\\')[-1] }} </h1>
+                            </a>
+                            {% if ((i + 4) // items_length) != 1 %}
+                                <a class="btn {{ color[(i + 3) % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i + 3]|replace(" ", "%20") }}>
+                                    <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}"  onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i]|replace(" ", "%20") }}"></video>
+                                    <h1 class="text-break text-center"> {{ items[i + 3].split('\\')[-1] }}  </h1>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+            {% endif %}
+
+        {% endfor %}
+        </div>
+    </div>
+
+
+
+
+    <script>
+        let videos = document.getElementsByTagName('Video');
+
+        function fplay(e){
+            e.currentTime=20;
+            e.play();
+        }
+        function fpause(e){
+            e.currentTime=10;
+            e.pause();
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% set items_length = items|length + 1 %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="{{ url_for('picture.static', filename='css/style.css')}}">
+{% endblock %}
+{% block body %}
+<div class="flex-row justify-content-center ">
+    <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+        <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+            <p class="mt-auto mb-auto fs-4">Picture list</p>
+            <img src="{{ url_for('static', filename='icon/picture.png')}}" class="col-1 p-md-2 p-xl-4">
+        </div>
+    </div>
+
+	<section class="img-gallery-magnific">
+		<div class="d-flex flex-row flex-wrap justify-content-center">
+
+			{% for i in range(0, items_length, 2) %}
+				{% if (i + 1) != items_length %}
+					<div class="d-flex flex-column">
+						<div class="magnific-img">
+							<a class="image-popup-vertical-fit" href="/file/{{ items[i]|replace(" ", "%20") }}" >
+								<img loading="lazy" src="/file/{{ items[i]|replace(" ", "%20") }}" id="img" class="img-fluid m-1 img-thumbnail">
+							</a>
+						</div>
+						{% if ((i + 2) // items_length) != 1 %}
+						<div class="magnific-img">
+							<a class="image-popup-vertical-fit" href="/file/{{ items[i + 1]|replace(" ", "%20") }}" >
+								<img loading="lazy" src="/file/{{ items[i + 1]|replace(" ", "%20") }}" id="img" class="img-fluid m-1 img-thumbnail">
+							</a>
+						</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			{% endfor %}
+
+		</div>
+	</section>
+	<div class="clear"></div>
+</div>
+<div class="home_box col-8 mt-2 ms-auto me-auto">
+	<div class="d-md-flex ms-auto me-auto justify-content-md-around">
+		<a href="#" id="load" class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between">Load More</a>
+	</div>
+</div>
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script src="{{ url_for('picture.static', filename='js/script.js')}}"></script>
+    <script src="{{ url_for('picture.static', filename='js/jquery.magnific-popup.min.js')}}"></script>
+  
+{% endblock %}

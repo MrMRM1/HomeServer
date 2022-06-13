@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
 from socket import socket, AF_INET, SOCK_DGRAM
-from sqllite import Database
+from libraries.sqllite import Database
 from threading import Thread
 from webbrowser import open_new
 from urllib.request import urlopen, Request
@@ -297,9 +297,10 @@ def port():
 
 def delete_window():
     if messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
-        if button_run["state"] == "disabled" :
+        if button_run["state"] == "disabled":
             threading_stop()
         root.destroy()
+
 
 try:
     s = socket(AF_INET, SOCK_DGRAM)

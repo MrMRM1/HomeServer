@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% set color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info'] %}
+{% set items_length = items|length + 1 %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+
+    <div class="flex-row justify-content-center ">
+
+        <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
+            <div class="col-10 col-md-8 btn-primary ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
+                <p class="mt-auto mb-auto fs-3">Audio list</p>
+                <img src="{{ url_for('static', filename='icon/audio.png')}}" class="col-1 p-md-2 p-xl-4">
+            </div>
+        </div>
+
+        {% if items_length != 1  %}
+            {% for i in range(0, items_length, 2) %}
+                <div class="col-8 mt-2 ms-auto me-auto">
+                    <div class="d-xl-flex ms-auto me-auto justify-content-xl-around">
+                    {% if (i + 1) != items_length %}
+                        <div class="{{ color[i % 5] }} m-2 p-3 rounded-3 col-xl-6" onclick="play_audio({{ i }})">
+                            <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src="/file/{{ items[i]|replace(" ", "%20") }}"></audio>
+                            <h1 class="text-break text-center">{{ items[i].split('\\')[-1] }}</h1>
+                        </div>
+                    {% endif %}
+                        {% if ((i + 2) // items_length) != 1 %}
+                            <div class="{{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-xl-6" onclick="play_audio({{ i + 1 }})">
+                                <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src="/file/{{ items[i + 1]|replace(" ", "%20") }}"></audio>
+                                <h1 class="text-break text-center">{{ items[i + 1].split('\\')[-1] }}</h1>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+
+
+
+
+        </div>
+        <div class="audio-player-fake"></div>
+        <div class="audip-player col-12 bg-primary p-2 p-xl-0 fixed-bottom">
+            <div class="col-11 col-md-12 ms-auto me-auto mb-0 mt-xl-0 mb-xl-0">
+                <div class="col-md-8 ms-auto mt-md-2 me-auto d-flex justify-content-around mb-1">
+                    <div>
+                        <input type="button" class="btn-dark" value="Back" onclick="back_audio()"/>
+                        <input type="button" class="btn-dark" value="Next" onclick="next_audio()"/>
+                        <input type="button" class="btn-dark" value="Auto Next On" onclick="auto_next()" id="btn_auto_next"/>
+                    </div>
+                    <div class="marquee">
+                        <div>
+                          <span id="nameaudio" class="text-white"></span>
+                        </div>
+                      </div>
+                </div>
+                <audio  id="player" class="ms-auto me-auto col-12 col-md-6 ms-md-auto me-md-auto d-md-flex" preload="none" src="" controls></audio>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="{{ url_for('audio.static', filename='js/audio-list-player.js')}}"></script>
+
+
+{% endblock %}

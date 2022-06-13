@@ -1,63 +1,25 @@
 import os
-import re
-from sqllite import Database
+from libraries.sqllite import Database
 from hashlib import sha256
 from threading import Thread
 from time import sleep
-from filename import pathfile
+from libraries.filename import pathfile
 import platform
+from video import video
+from audio import audio
+from pdf import pdf
+from picture import picture
+from libraries.paths import check_dir, list_dir, list_file
 
 from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
 app = Flask(__name__)
+app.secret_key = "add your secret key"
 
-
-def list_file(format_file, path):
-    """
-    :param format_file: The desired file format, for example mp4
-    :param path: The desired folder path
-    :return: Returns a list of files related to the imported format
-    """
-    files = []
-    for i in format_file:
-        for name in os.listdir(path):
-            if re.match(rf'.*\.{i}', name):
-                files.append(os.path.join(path, name))
-    return files
-
-
-def list_folders(path):
-    """
-    :param path: The desired folder path
-    :return: Returns a list of all the folders in the path
-    """
-    return [x[0] for x in os.walk(path)]
-
-
-def list_dir():
-    """
-    :return: Returns the list of folders stored in the database
-    """
-    database = Database()
-    dirc = eval(database.get_data()[0])
-    return dirc
-
-
-def check_dir(path):
-    """
-    Check if the file is available through the page
-    :param path: The requested file path on the page
-    :return: Returns true if the file path is in the database, otherwise false
-    """
-    dircs = list_dir()
-    status = False
-    if '.' in path:
-        path = path.split('/')
-        del path[-1]
-        path = "/".join(path)
-    if path in dircs:
-        status = True
-    return status
+app.register_blueprint(video)
+app.register_blueprint(audio)
+app.register_blueprint(pdf)
+app.register_blueprint(picture)
 
 
 def shutdown_sleep_thread(value):
@@ -115,38 +77,14 @@ def system_page():
     return render_template("systemcontroll.html", title="System Control")
 
 
-@app.route('/<path:link>')
+@app.route('/all_file')
+def all_file_page():
+    return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='all_file')
+
+
+@app.route('/all_file/<path:link>')
 def controls(link):
-    temp_link = link.split('/')
-    path = '/'.join(temp_link[1:])
-    if link in ['video', 'pdf', 'audio', 'all_file', 'picture']:
-        return render_template("list_folders.html", title="List Folders", items=list_dir(), typs=link)
-    elif check_dir(path):
-        if temp_link[0] == 'video':
-            return render_template("list_videos.html", title=path, items=list_file(['mkv', 'mp4'], path),
-                                   typs="show_video")
-        elif temp_link[0] == 'audio':
-            return render_template("list_audios.html", title=path, items=list_file(['mp3'], path),
-                                   typs="show_audio")
-        elif temp_link[0] == 'pdf':
-            return render_template("list_folders.html", title=path, items=list_file(['pdf'], path),
-                                   typs="show_pdf")
-        elif temp_link[0] == 'picture':
-            return render_template("picture.html", title=path,
-                                   items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg',
-                                                    'pjp', 'png', 'png'],
-                                                   path), typs="show_picture")
-        elif temp_link[0] == 'all_file':
-            return render_template("list_folders.html", title=path, items=list_file(['*'], path),
-                                   typs="dl_file")
-        elif temp_link[0] == 'show_video':
-            return render_template('video.html', title=path.split('/')[-1], link=path)
-        elif temp_link[0] == 'show_audio':
-            return render_template('list_audios.html', title=path.split('/')[-1], link=path)
-        elif temp_link[0] == 'show_pdf':
-            return render_template('viewer.html', title=path.split('/')[-1], link=path)
-    else:
-        return redirect('/', code=302)
+    return render_template("list_folders.html", title=link, items=list_file(['*'], link), typs="dl_file")
 
 
 @app.route('/file/<path:filename>')

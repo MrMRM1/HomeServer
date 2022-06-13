@@ -1,0 +1,5 @@
+from flask import Blueprint
+
+audio = Blueprint('audio', __name__, template_folder='templates', static_folder='static', static_url_path='/audio_static')
+
+from . import views
