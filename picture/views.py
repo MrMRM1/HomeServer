@@ -5,12 +5,12 @@ from flask import render_template, redirect
 
 
 @picture.route('/picture')
-def picture_page():
+def list_folders():
     return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='picture')
 
 
 @picture.route('/picture/<path:link>')
-def controls(link):
+def picture_page(link):
     if check_dir(link):
         return render_template("picture.html", title=link,
                                items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp',
