@@ -10,7 +10,7 @@ def video_page():
 
 
 @video.route('/video/<path:link>')
-def controls(link):
+def list_videos(link):
     if check_dir(link):
         return render_template("list_videos.html", title=link, items=list_file(['mkv', 'mp4'], link), typs="show_video")
     else:
