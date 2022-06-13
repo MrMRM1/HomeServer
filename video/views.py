@@ -12,7 +12,10 @@ def video_page():
 @video.route('/video/<path:link>')
 def list_videos(link):
     if check_dir(link):
-        return render_template("list_videos.html", title=link, items=list_file(['mkv', 'mp4'], link), typs="show_video")
+        return render_template("list_videos.html", title=link,
+                               items=list_file(['avi', 'mpg', 'mpe', 'mpeg', 'asf', 'wmv', 'mov', 'qt', 'rm', 'mp4',
+                                                'flv', 'm4v', 'webm', 'ogv', 'ogg', 'mkv', 'ts', 'tsv'], link),
+                               typs="show_video")
     else:
         return redirect('/video')
 
