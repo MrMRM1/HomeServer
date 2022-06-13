@@ -5,12 +5,12 @@ from flask import render_template, redirect
 
 
 @pdf.route('/pdf')
-def video_page():
+def list_folders():
     return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='pdf')
 
 
 @pdf.route('/pdf/<path:link>')
-def controls(link):
+def list_pdf(link):
     if check_dir(link):
         return render_template("list_folders.html", title=link, items=list_file(['pdf'], link), typs="show_pdf")
     else:
