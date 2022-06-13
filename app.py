@@ -84,7 +84,10 @@ def all_file_page():
 
 @app.route('/all_file/<path:link>')
 def controls(link):
-    return render_template("list_folders.html", title=link, items=list_file(['*'], link), typs="dl_file")
+    if check_dir(link):
+        return render_template("list_folders.html", title=link, items=list_file(['*'], link), typs="dl_file")
+    else:
+        return redirect('/all_file')
 
 
 @app.route('/file/<path:filename>')
