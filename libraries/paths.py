@@ -3,6 +3,16 @@ import os
 import re
 
 
+def edit_path_windows_other(path: str) -> str:
+    """
+    :param path:  Directory path
+    :return: If it is Windows, it remains unchanged, in other systems / it is added to the first path
+    """
+    if os.name != 'nt':
+        path = '/' + path
+    return path
+
+
 def list_file(format_file, path):
     """
     :param format_file: The desired file format, for example mp4
@@ -10,6 +20,7 @@ def list_file(format_file, path):
     :return: Returns a list of files related to the imported format
     """
     files = []
+    path = edit_path_windows_other(path)
     for i in format_file:
         for name in os.listdir(path):
             if re.match(rf'.*\.{i}', name):
