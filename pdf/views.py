@@ -1,7 +1,7 @@
 from . import pdf
-from libraries.paths import list_dir, list_file
+from libraries.paths import list_dir, list_file, check_dir
 
-from flask import render_template
+from flask import render_template, redirect
 
 
 @pdf.route('/pdf')
@@ -11,9 +11,15 @@ def video_page():
 
 @pdf.route('/pdf/<path:link>')
 def controls(link):
-    return render_template("list_folders.html", title=link, items=list_file(['pdf'], link), typs="show_pdf")
+    if check_dir(link):
+        return render_template("list_folders.html", title=link, items=list_file(['pdf'], link), typs="show_pdf")
+    else:
+        return redirect('/pdf')
 
 
 @pdf.route('/show_pdf/<path:link>')
-def show_video(link):
-    return render_template('viewer.html', title=link.split('/')[-1], link=link)
+def show_pdf(link):
+    if check_dir(link):
+        return render_template('viewer.html', title=link.split('/')[-1], link=link)
+    else:
+        return redirect('/pdf')
