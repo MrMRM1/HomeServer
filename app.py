@@ -100,3 +100,8 @@ def upload_file():
 
         return res
     return render_template('send.html', title="Send")
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html'), 404
