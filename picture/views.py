@@ -1,5 +1,5 @@
 from . import picture
-from libraries.paths import list_dir, list_file, check_dir
+from scripts.paths import list_dir, list_file, check_dir
 
 from flask import render_template, redirect
 

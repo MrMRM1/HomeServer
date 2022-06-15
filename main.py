@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
 from socket import socket, AF_INET, SOCK_DGRAM
-from libraries.sqllite import Database
+from scripts.sqllite import Database
 from threading import Thread
 from webbrowser import open_new
 from urllib.request import urlopen, Request

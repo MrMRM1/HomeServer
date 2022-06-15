@@ -1,4 +1,4 @@
-from libraries.sqllite import Database
+from scripts.sqllite import Database
 import os
 import re
 
