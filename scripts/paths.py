@@ -52,6 +52,7 @@ def check_dir(path):
     :return: Returns true if the file path is in the database, otherwise false
     """
     dircs = list_dir()
+    path = edit_path_windows_other(path)
     status = False
     if '.' in path:
         path = path.split('/')
