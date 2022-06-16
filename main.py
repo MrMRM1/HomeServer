@@ -141,8 +141,6 @@ def cul():
     CUL_window.geometry("500x70")
     CUL_window.resizable(False, False)
     path_uploads = database.get_data()[3]
-    if path_uploads == './upload/':
-        path_uploads = os.path.join(os.path.dirname(__file__), "upload")
     Label(CUL_window, text="Upload location: ", font=('arial', 10, 'bold')).place(x=10, y=10)
     path_upload_location = Label(CUL_window, text=path_uploads, font=('arial', 10, 'bold'), fg="blue")
     path_upload_location.bind("<Button-1>", lambda event, e=path_uploads: open_path(e))
