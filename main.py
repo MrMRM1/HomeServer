@@ -9,14 +9,11 @@ from urllib.error import URLError
 from json import loads
 import os
 import re
-from hashlib import sha256
-import platform
 from app import app
+from scripts.setting_windows import Setting
 
 from gevent.pywsgi import WSGIServer
 
-if platform.system() != 'Windows':
-    import subprocess
 
 v = 5
 database = Database()
@@ -89,101 +86,6 @@ def list_folders(path):
         i = '/'.join(i)
         a.append(i)
     return a
-
-
-def path_upload():
-    """
-    Saves the upload folder path to the database.
-    """
-    CUL_window.destroy()
-    deiconiry = filedialog.askdirectory()
-    database.write_data(deiconiry, "upload")
-    cul()
-
-
-def open_path(path: str):
-    """
-    a cross-platform file opening
-    :param path: file path
-    :return: file path opening
-    """
-
-    def showerror():
-        """
-        :return:  Show error This folder does not exist.
-        """
-        messagebox.showerror(title="File Not Found", message="This folder does not exist.")
-
-    match platform.system():
-        case 'Windows':
-            try:
-                os.startfile(path)
-            except FileNotFoundError:
-                showerror()
-        case 'Darwin':
-            try:
-                subprocess.Popen(['open', path])
-            except FileNotFoundError:
-                showerror()
-        case _:
-            try:
-                subprocess.Popen(['xdg-open', path])
-            except FileNotFoundError:
-                showerror()
-
-
-def cul():
-    """
-    Upload folder redirect window
-    """
-    global CUL_window
-    CUL_window = Toplevel(root)
-    CUL_window.geometry("500x70")
-    CUL_window.resizable(False, False)
-    path_uploads = database.get_data()[3]
-    Label(CUL_window, text="Upload location: ", font=('arial', 10, 'bold')).place(x=10, y=10)
-    path_upload_location = Label(CUL_window, text=path_uploads, font=('arial', 10, 'bold'), fg="blue")
-    path_upload_location.bind("<Button-1>", lambda event, e=path_uploads: open_path(e))
-    path_upload_location.place(x=120, y=10)
-    Button(CUL_window, text="Close", font=('arial', 10, 'bold'), command=CUL_window.destroy).place(x=435, y=36)
-    selec_path = Button(CUL_window, text="Select a folder", font=('arial', 10, 'bold'), command=path_upload)
-    selec_path.place(x=332, y=36)
-    icon_window(CUL_window)
-
-
-def shutdown_sleep():
-    """
-    Window related to changing the shutdown password and system sleep mode
-    """
-
-    def chack_password():
-        """
-         Function to check the password and confirm the password and save it in the database
-        """
-        password = password_box.get()
-        password_v = password_v_box.get()
-        if password == password_v and password is not None:
-            password = sha256(password.encode())
-            database.write_data(password.hexdigest(), "password")
-            messagebox.showinfo(title="successful", message="Password set successfully")
-            set_window.destroy()
-        else:
-            messagebox.showerror(title="ERROR", message="enter valid password")
-
-    set_window = Toplevel(root)
-    set_window.geometry("330x170")
-    set_window.title("set password")
-    set_window.resizable(False, False)
-    Label(set_window, text="Enter password: ", font=('arial', 10, 'bold')).place(x=10, y=10)
-    Label(set_window, text="Repeat password for verification: ", font=('arial', 10, 'bold')).place(x=10, y=60)
-    password_box = Entry(set_window, font=('arial', 10, 'bold'), show="*")
-    password_box.place(x=10, y=35, width=300)
-    password_v_box = Entry(set_window, font=('arial', 10, 'bold'), show="*")
-    password_v_box.place(x=10, y=85, width=300)
-    Button(set_window, text="Close", font=('arial', 10, 'bold'), command=set_window.destroy).place(x=265, y=120)
-    selec_path = Button(set_window, text="set password", font=('arial', 10, 'bold'), command=chack_password)
-    selec_path.place(x=175, y=120)
-    icon_window(set_window)
 
 
 def del_itms():
@@ -300,59 +202,65 @@ def delete_window():
         root.destroy()
 
 
-try:
-    s = socket(AF_INET, SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip = s.getsockname()[0]
-    connected_network = True
-except OSError:
-    root = Tk()
-    root.withdraw()
-    root.title("Home Server")
-    root.geometry("0x0")
-    root.resizable(False, False)
-    icon_window(root)
-    messagebox.showerror(title="ERROR", message="You are not connected to any networks")
-    root.deiconify()
+def open_setting():
+    Setting(root, icon_window, database)
 
-if connected_network:
-    root = Tk()
-    root.title("Home Server")
-    root.geometry("500x350")
-    root.resizable(False, False)
-    root.protocol("WM_DELETE_WINDOW", delete_window)
-    menubar = Menu(root)
-    # file menu
-    filemenu = Menu(menubar, tearoff=0)
-    filemenu.add_command(label="Change upload location", command=cul)
-    filemenu.add_command(label="Shut down and Sleep PC", command=shutdown_sleep)
-    menubar.add_cascade(label="File", menu=filemenu)
-    # help menu
-    helpmenu = Menu(menubar, tearoff=0)
-    helpmenu.add_command(label="About developer", command=lambda: open_new('http://MrMRM.ir'))
-    helpmenu.add_command(label="Github", command=lambda: open_new('https://github.com/MrMRM1/HomeServer'))
-    helpmenu.add_command(label="Donate", command=lambda: open_new('http://MrMRM.ir/donate'))
-    helpmenu.add_separator()
-    helpmenu.add_command(label="Check Update", command=check_update)
-    menubar.add_cascade(label="Help", menu=helpmenu)
-    Label(root, text=ip + ":", font=('arial', 15, 'bold')).place(x=100, y=20)
-    port_box = Entry(root, font=('arial', 15, 'bold'), )
-    port()
-    port_box.place(x=260, y=21, width=100)
-    title_list = Label(root, text="List of folders (Double click to delete the item)", font=('arial', 10, 'bold'))
-    title_list.place(x=40, y=65)
-    button_Selection = Button(root, text="Select a folder", font=('arial', 10, 'bold'), command=path_dir)
-    button_Selection.place(x=360, y=60)
-    list_box = Listbox(root)
-    load_data()
-    list_box.bind('<Double-Button>', del_path)
-    list_box.place(x=40, y=100, width=425, height=150)
-    button_run = Button(root, text="Run", font=('arial', 10, 'bold'), command=threading_start)
-    button_run.place(x=430, y=260)
-    button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=threading_stop)
-    button_stop["state"] = "disabled"
-    button_stop.place(x=390, y=260)
-    Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
-    icon_window(root)
-    root.config(menu=menubar)
-    root.mainloop()
+
+if __name__ == '__main__':
+    try:
+        s = socket(AF_INET, SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        connected_network = True
+    except OSError:
+        root = Tk()
+        root.withdraw()
+        root.title("Home Server")
+        root.geometry("0x0")
+        root.resizable(False, False)
+        icon_window(root)
+        messagebox.showerror(title="ERROR", message="You are not connected to any networks")
+        root.deiconify()
+
+    if connected_network:
+        root = Tk()
+        root.title("Home Server")
+        root.geometry("500x350")
+        root.resizable(False, False)
+        root.protocol("WM_DELETE_WINDOW", delete_window)
+        menubar = Menu(root)
+        # file menu
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Setting", command=open_setting)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=delete_window)
+        menubar.add_cascade(label="File", menu=filemenu)
+        # help menu
+        helpmenu = Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="About developer", command=lambda: open_new('http://MrMRM.ir'))
+        helpmenu.add_command(label="Github", command=lambda: open_new('https://github.com/MrMRM1/HomeServer'))
+        helpmenu.add_command(label="Donate", command=lambda: open_new('http://MrMRM.ir/donate'))
+        helpmenu.add_separator()
+        helpmenu.add_command(label="Check Update", command=check_update)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+        Label(root, text=ip + ":", font=('arial', 15, 'bold')).place(x=100, y=20)
+        port_box = Entry(root, font=('arial', 15, 'bold'), )
+        port()
+        port_box.place(x=260, y=21, width=100)
+        title_list = Label(root, text="List of folders (Double click to delete the item)", font=('arial', 10, 'bold'))
+        title_list.place(x=40, y=65)
+        button_Selection = Button(root, text="Select a folder", font=('arial', 10, 'bold'), command=path_dir)
+        button_Selection.place(x=360, y=60)
+        list_box = Listbox(root)
+        load_data()
+        list_box.bind('<Double-Button>', del_path)
+        list_box.place(x=40, y=100, width=425, height=150)
+        button_run = Button(root, text="Run", font=('arial', 10, 'bold'), command=threading_start)
+        button_run.place(x=430, y=260)
+        button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=threading_stop)
+        button_stop["state"] = "disabled"
+        button_stop.place(x=390, y=260)
+        Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
+        icon_window(root)
+        root.config(menu=menubar)
+        root.mainloop()
