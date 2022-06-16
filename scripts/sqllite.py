@@ -1,4 +1,8 @@
 import sqlite3
+from pathlib import Path
+from os.path import join as join_path
+
+path_received = join_path(Path.home().__str__(), 'Downloads', 'HomeServerReceived')
 
 
 class Database:
@@ -8,7 +12,7 @@ class Database:
         try:
             self.my_db.execute(f"SELECT * from data_user")
         except:
-            self.my_db.execute('CREATE TABLE data_user (paths LONGTEXT NULL, port INT NULL, data_id DEFAULT 1 ,upload DEFAULT "./upload/", password TEXT NULL)')
+            self.my_db.execute(f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT NULL, data_id DEFAULT 1 ,upload DEFAULT "{path_received}", password TEXT NULL)')
             sql = f'INSERT INTO data_user (data_id) VALUES (1)'
             self.my_db.execute(sql)
             self.data.commit()
