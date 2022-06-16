@@ -203,7 +203,10 @@ def delete_window():
 
 
 def open_setting():
-    Setting(root, icon_window, database)
+    if button_run["state"] == "normal":
+        Setting(root, icon_window, database)
+    else:
+        messagebox.showerror("Error", message="You can not change the settings while running the program. Stop the program first, then try again.")
 
 
 if __name__ == '__main__':
