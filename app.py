@@ -70,8 +70,8 @@ def controls(link):
 
 @app.route('/file/<path:filename>')
 def download_file(filename):
-    filename = edit_path_windows_other(filename)
     if check_dir(filename):
+        filename = edit_path_windows_other(filename)
         rt = filename.split('/')
         name = rt[-1]
         del rt[-1]
