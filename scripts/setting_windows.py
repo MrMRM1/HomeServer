@@ -73,8 +73,6 @@ class Setting:
         """
         global path_upload
         path_uploads = self.database.get_data()[3]
-        if path_uploads == './upload/':
-            path_uploads = os.path.join(os.path.dirname(__file__), "upload")
         Label(self.tab_received, text="Path of received files: ", font=('arial', 10, 'bold')).place(x=10, y=10)
         path_upload = Label(self.tab_received, text=path_uploads, font=('arial', 10, 'bold'), fg="blue")
         path_upload.bind("<Button-1>", lambda event, e=path_uploads: open_path(e))
