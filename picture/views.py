@@ -1,7 +1,7 @@
 from . import picture
-from scripts.paths import list_dir, list_file, check_dir
+from scripts.paths import list_dir, list_file, check_dir_flask
 
-from flask import render_template, redirect
+from flask import render_template
 
 
 @picture.route('/picture')
@@ -10,10 +10,8 @@ def list_folders():
 
 
 @picture.route('/picture/<path:link>')
+@check_dir_flask
 def picture_page(link):
-    if check_dir(link):
-        return render_template("picture.html", title=link,
-                               items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp',
-                                                'png', 'png'], link), typs="show_picture")
-    else:
-        return redirect('/picture')
+    return render_template("picture.html", title=link,
+                           items=list_file(['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp',
+                                            'png', 'png'], link), typs="show_picture")

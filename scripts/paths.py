@@ -68,7 +68,8 @@ def _check(path):
 
 
 def check_dir(function):
-    """Decorate If access to the directory is allowed, the function is executed.
+    """
+    Decorator If access to the directory is allowed, the function is executed.
     """
     def check(path):
         if _check(path):
@@ -78,7 +79,7 @@ def check_dir(function):
 
 def check_dir_flask(function):
     """
-    Decorate If access to the directory is allowed, the function is executed; otherwise, it redirects to the path_redirect
+    Decorator If access to the directory is allowed, the function is executed; otherwise, it redirects to the path_redirect
     """
     def check(link):
         if _check(link):
