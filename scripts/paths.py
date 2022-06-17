@@ -86,3 +86,13 @@ def check_dir_flask(function):
             return redirect('/')
     check.__name__ = function.__name__
     return check
+
+
+def check_dir_ftp(function):
+    """
+    Decorator If access to the directory is allowed, the function is executed.
+    """
+    def check(self, path: str):
+        if _check(path.replace('\\', '/')):
+            return function(self, path)
+    return check
