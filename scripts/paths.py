@@ -2,6 +2,8 @@ from scripts.sqllite import Database
 import os
 import re
 
+from flask import redirect
+
 
 def edit_path_windows_other(path: str) -> str:
     """
@@ -45,11 +47,11 @@ def list_dir():
     return dirc
 
 
-def check_dir(path):
+def _check(path):
     """
-    Check if the file is available through the page
-    :param path: The requested file path on the page
-    :return: Returns true if the file path is in the database, otherwise false
+   Check if the file is available through the page
+   :param path: The requested file path on the page
+   :return: Returns true if the file path is in the database, otherwise false
     """
     dircs = list_dir()
     path = edit_path_windows_other(path)
@@ -63,3 +65,24 @@ def check_dir(path):
     if path in dircs:
         status = True
     return status
+
+
+def check_dir(function):
+    """Decorate If access to the directory is allowed, the function is executed.
+    """
+    def check(path):
+        if _check(path):
+            return function(path)
+    return check
+
+
+def check_dir_flask(function):
+    """
+    Decorate If access to the directory is allowed, the function is executed; otherwise, it redirects to the path_redirect
+    """
+    def check(link):
+        if _check(link):
+            return function(link)
+        else:
+            return redirect('/')
+    return check
