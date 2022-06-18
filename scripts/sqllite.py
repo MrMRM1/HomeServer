@@ -8,7 +8,7 @@ path_received = join_path(Path.home().__str__(), 'Downloads', 'HomeServerReceive
 
 class Database:
     def __init__(self):
-        self.data = sqlite3.connect('data.db')
+        self.data = sqlite3.connect('data.db', check_same_thread=False)
         self.my_db = self.data.cursor()
         try:
             self.my_db.execute(f"SELECT * from data_user")
