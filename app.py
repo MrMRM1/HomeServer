@@ -66,7 +66,7 @@ def controls(link):
     return render_template("list_folders.html", title=link, items=list_file(['*'], link), typs="dl_file")
 
 
-@app.route('/file/<path:filename>')
+@app.route('/file/<path:link>')
 @check_dir_flask
 def download_file(filename):
     filename = edit_path_windows_other(filename)
