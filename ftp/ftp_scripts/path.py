@@ -18,3 +18,18 @@ def listdir(self, root):
                         list_dir_allowed.append(i)
                         break
     return list_dir_allowed
+
+
+def get_root():
+    allowlist = list_dir()
+    roots = []
+
+    def appdend_root(index=1):
+        for i in allowlist:
+            root = '/'.join(i.split('/')[:index]) + '/'
+            if root not in roots:
+                roots.append(root)
+        return roots
+    appdend_root()
+    appdend_root(2)
+    return roots
