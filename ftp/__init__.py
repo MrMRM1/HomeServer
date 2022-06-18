@@ -2,42 +2,27 @@ import os
 from scripts.paths import check_dir_ftp, list_dir
 
 from pyftpdlib.authorizers import DummyAuthorizer
-from pyftpdlib.handlers import FTPHandler, BufferedIteratorProducer, _strerror
+from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-from pyftpdlib.filesystems import FilesystemError
+from pyftpdlib.filesystems import AbstractedFS
 
 
-def ftp_MLSD(self, path):
-    if not self.fs.isdir(path):
-        self.respond("501 No such directory.")
-        return
-    try:
-        a = list_dir()
-        listings = self.run_as_current_user(self.fs.listdir, path)
-        listing = []
-
-        for i in listings:
-            pa = os.path.join(path, i).replace('\\', '/')
-            for j in a:
-                if pa in j:
-                    listing.append(i)
-                if os.path.isfile(pa):
-                    pa = pa.split('/')
-                    del pa[-1]
-                    pa = "/".join(pa)
-                if pa == j:
-                        listing.append(i)
-        listing = set(listing)
-    except (OSError, FilesystemError) as err:
-        why = _strerror(err)
-        self.respond('550 %s.' % why)
-    else:
-        perms = self.authorizer.get_perms(self.username)
-        iterator = self.fs.format_mlsx(path, listing, perms,
-                                       self._current_facts)
-        producer = BufferedIteratorProducer(iterator)
-        self.push_dtp_data(producer, isproducer=True, cmd="MLSD")
-        return path
+def listdir(self, root):
+    allowed = list_dir()
+    list_dir_allowed = []
+    list_dir_root = os.listdir(root)
+    for i in list_dir_root:
+        path = os.path.join(root, i).replace('\\', '/')
+        for j in allowed:
+            if path in j:
+                list_dir_allowed.append(i)
+                break
+            else:
+                if os.path.isfile(path):
+                    if root.replace('\\', '/') == j:
+                        list_dir_allowed.append(i)
+                        break
+    return list_dir_allowed
 
 
 # Instantiate a dummy authorizer for managing 'virtual' users
@@ -45,17 +30,22 @@ authorizer = DummyAuthorizer()
 
 # Define a new user having full r/w permissions and a read-only
 # anonymous user
-authorizer.add_user('user', '12345', 'I:\\', perm='elradfmwMT')
+authorizer.add_user('user', '12345', 'I:\\', perm='elr')
 authorizer.add_anonymous(os.getcwd())
+
 
 # Instantiate FTP handler class
 handler = FTPHandler
 handler.authorizer = authorizer
+abstracted_fs = AbstractedFS
+abstracted_fs.listdir = listdir
 
+
+handler.abstracted_fs = abstracted_fs
 
 # handler.ftp_LIST = ftp_LIST.__get__(handler, FTPHandler)
 # handler.ftp_NLST = ftp_NLST.__get__(handler, FTPHandler)
-handler.ftp_MLSD= ftp_MLSD
+# handler.ftp_MLSD= ftp_MLSD
 
 # Define a customized banner (string returned when client connects)
 handler.banner = "pyftpdlib based ftpd ready."
