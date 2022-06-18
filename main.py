@@ -11,6 +11,7 @@ import re
 from app import app
 from scripts.setting_windows import Setting
 from scripts.network import port_flask, get_ip
+from ftp import ftp_server
 
 from gevent.pywsgi import WSGIServer
 
@@ -127,8 +128,11 @@ def threading_start():
     Function to execute the flask program in the form of threading
     """
     global run_app
+    global ftp_app
     run_app = Thread(target=run)
     run_app.start()
+    ftp_app = Thread(target=run_ftp)
+    ftp_app.start()
     button_run["state"] = "disabled"
     button_Selection["state"] = "disabled"
     port_box["state"] = "disabled"
@@ -141,8 +145,12 @@ def threading_stop():
     Function to stop the flask program as threading
     """
     address_run.place_forget()
+    address_run_ftp.place_forget()
     port_app = port_box.get()
     http_server.stop(timeout=2)
+    if database.get_data()[6] == 1:
+        ftp_server_control.stop()
+        ftp_app.join()
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
     port_box["state"] = "normal"
@@ -168,6 +176,22 @@ def run():
     address_run.place(x=175, y=265)
     http_server = WSGIServer((ip, int(port_app)), app)
     http_server.serve_forever()
+
+
+def run_ftp():
+    global address_run_ftp
+    global ftp_server_control
+    data = database.get_data()
+    if data[6] == 0:
+        address_run_ftp = 'disable'
+        address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
+        address_run_ftp.place(x=125, y=285)
+    else:
+        address_run_ftp = f'Host: {ip} \t Port: {data[5]}  Login anonymously'
+        address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
+        address_run_ftp.place(x=125, y=285)
+        ftp_server_control = ftp_server(data, ip, os.path.realpath(data[7]))
+        ftp_server_control.serve_forever(handle_exit=False)
 
 
 def write_port(port_app):
@@ -259,6 +283,7 @@ if __name__ == '__main__':
         button_stop["state"] = "disabled"
         button_stop.place(x=390, y=260)
         Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
+        Label(root, text=f"FTP Server :", font=('arial', 10, 'bold')).place(x=40, y=285)
         icon_window(root)
         root.config(menu=menubar)
         root.mainloop()
