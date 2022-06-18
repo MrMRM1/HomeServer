@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
-from socket import socket, AF_INET, SOCK_DGRAM
 from scripts.sqllite import Database
 from threading import Thread
 from webbrowser import open_new
@@ -11,7 +10,7 @@ import os
 import re
 from app import app
 from scripts.setting_windows import Setting
-from scripts.network import port_flask
+from scripts.network import port_flask, get_ip
 
 from gevent.pywsgi import WSGIServer
 
@@ -209,9 +208,7 @@ def open_setting():
 
 if __name__ == '__main__':
     try:
-        s = socket(AF_INET, SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
+        ip = get_ip()
         connected_network = True
     except OSError:
         root = Tk()
