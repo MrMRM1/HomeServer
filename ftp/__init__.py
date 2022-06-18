@@ -1,4 +1,4 @@
-from ftp.scripts.path import listdir
+from ftp.ftp_scripts.path import listdir
 
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
