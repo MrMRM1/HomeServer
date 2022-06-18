@@ -6,31 +6,31 @@ from pyftpdlib.servers import FTPServer
 from pyftpdlib.filesystems import AbstractedFS
 
 
-# Instantiate a dummy authorizer for managing 'virtual' users
-authorizer = DummyAuthorizer()
+def ftp_server(data, ip, root, perm='elr'):
+    # Instantiate a dummy authorizer for managing 'virtual' users
+    authorizer = DummyAuthorizer()
 
-authorizer.add_anonymous('.', perm='elr')
+    authorizer.add_anonymous(root, perm=perm)
 
-# Instantiate FTP handler class
-handler = FTPHandler
-handler.authorizer = authorizer
+    # Instantiate FTP handler class
+    handler = FTPHandler
+    handler.authorizer = authorizer
 
-# Instantiate AbstractedFS class
-abstracted_fs = AbstractedFS
-abstracted_fs.listdir = listdir
+    # Instantiate AbstractedFS class
+    abstracted_fs = AbstractedFS
+    abstracted_fs.listdir = listdir
 
-handler.abstracted_fs = abstracted_fs
+    handler.abstracted_fs = abstracted_fs
 
-# Define a customized banner (string returned when client connects)
-handler.banner = "pyftpdlib based ftpd ready."
+    # Define a customized banner (string returned when client connects)
+    handler.banner = "pyftpdlib based ftpd ready."
 
-# Instantiate FTP server class and listen on 0.0.0.0:2121
-address = ('', 2121)
-server = FTPServer(address, handler)
+    # Instantiate FTP server class
+    address = (ip, data[5])
+    server = FTPServer(address, handler)
 
-# set a limit for connections
-server.max_cons = 256
-server.max_cons_per_ip = 6
+    # set a limit for connections
+    server.max_cons = 256
+    server.max_cons_per_ip = 6
 
-# start ftp server
-server.serve_forever(handle_exit=False)
+    return server
