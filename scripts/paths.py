@@ -84,4 +84,5 @@ def check_dir_flask(function):
             return function(link)
         else:
             return redirect('/')
+    check.__name__ = function.__name__
     return check
