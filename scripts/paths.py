@@ -56,9 +56,7 @@ def _check(path):
     dircs = list_dir()
     path = edit_path_windows_other(path)
     status = False
-    if path in dircs:
-        return True
-    if '.' in path:
+    if os.path.isfile(path):
         path = path.split('/')
         del path[-1]
         path = "/".join(path)
