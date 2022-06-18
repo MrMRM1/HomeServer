@@ -11,6 +11,7 @@ import os
 import re
 from app import app
 from scripts.setting_windows import Setting
+from scripts.network import port_flask
 
 from gevent.pywsgi import WSGIServer
 
@@ -189,10 +190,7 @@ def port():
         else:
             port_box.insert(END, data)
     except NameError:
-        if os.name == 'nt':
-            port_box.insert(END, '80')
-        else:
-            port_box.insert(END, '8888')
+        port_box.insert(END, port_flask())
 
 
 def delete_window():
