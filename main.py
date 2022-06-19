@@ -187,7 +187,7 @@ def run_ftp():
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
         address_run_ftp.place(x=125, y=285)
     else:
-        address_run_ftp = f'Host: {ip} \t Port: {data[5]}  Login anonymously'
+        address_run_ftp = f'Host: {ip}  Port: {data[5]}  Login anonymously'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
         address_run_ftp.place(x=125, y=285)
         ftp_server_control = ftp_server(data, ip, os.path.realpath(data[7]))
