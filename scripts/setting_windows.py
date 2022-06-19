@@ -1,7 +1,8 @@
 import os
 import platform
 from hashlib import sha256
-from tkinter import filedialog, messagebox, Label, Button, Entry, ttk, Toplevel
+from tkinter import filedialog, messagebox, Label, Button, Entry, ttk, Toplevel, Checkbutton, IntVar, StringVar
+from ftp.ftp_scripts.path import get_root
 
 if platform.system() != 'Windows':
     import subprocess
@@ -51,11 +52,14 @@ class Setting:
 
         self.tab_received = ttk.Frame(tab_control)
         self.tab_control_system_pas = ttk.Frame(tab_control)
+        self.tab_ftp_server = ttk.Frame(tab_control)
 
         tab_control.add(self.tab_received, text="Received files")
         self._window_received()
         tab_control.add(self.tab_control_system_pas, text="Control system password")
         self._shutdown_sleep()
+        tab_control.add(self.tab_ftp_server, text="FTP Server")
+        self._ftp_server()
         tab_control.pack(expand=1, fill="both")
 
     def _redirect_received(self):
@@ -109,3 +113,55 @@ class Setting:
         password_v_box.place(x=10, y=85, width=300)
         Button(self.tab_control_system_pas, text="Set password", font=('arial', 10, 'bold'),
                command=chack_password).place(x=215, y=130)
+
+    def _ftp_server(self):
+        def click_change_ftp_server():
+            if self.server_enable.get() == 0:
+                combobox_ftp['state'] = "disabled"
+                self.port_box_ftp['state'] = "disabled"
+            else:
+                combobox_ftp['state'] = "readonly"
+                self.port_box_ftp['state'] = "normal"
+        data = self.database.get_data()
+
+        self.server_enable = IntVar(self.tab_ftp_server)
+        self.server_enable.set(int(data[6]))
+        Checkbutton(self.tab_ftp_server, text="FTP Server Enable", command=click_change_ftp_server,
+                    font=('arial', 10, 'bold'), variable=self.server_enable).place(x=10, y=10)
+
+        Label(self.tab_ftp_server, text="FTP Server Port :", font=('arial', 10, 'bold'), ).place(x=270, y=15)
+
+        self.port_box_ftp = Entry(self.tab_ftp_server, font=('arial', 15, 'bold'))
+        self.port_box_ftp.insert('end', str(data[5]))
+        self.port_box_ftp.place(x=390, y=15, width=100)
+
+        Label(self.tab_ftp_server, text="FTP Server access path: ", font=('arial', 10, 'bold'), ).place(x=10, y=60)
+
+        self.textvariable_ftp_path = StringVar()
+        combobox_ftp = ttk.Combobox(self.tab_ftp_server, values=get_root(), width=20,
+                                    textvariable=self.textvariable_ftp_path, state='readonly', )
+        combobox_ftp.place(x=170, y=60)
+        combobox_ftp.current()
+
+        Button(self.tab_ftp_server, text="Save", font=('arial', 10, 'bold'),
+               command=self._save_settings_ftp).place(relx=0.5, rely=0.5, anchor="center")
+        click_change_ftp_server()
+
+    def _save_settings_ftp(self):
+        ftp_root = self.textvariable_ftp_path.get()
+        port = self.port_box_ftp.get()
+        server_enable = self.server_enable.get()
+        if server_enable == 1:
+            if ftp_root == '':
+                messagebox.showerror('Error', 'Select the access path of the ftp server')
+            else:
+                if port == '':
+                    messagebox.showerror('Error', 'Enter the port value.')
+                else:
+                    self.database.write_data('1', 'ftp_server')
+                    self.database.write_data(port, 'port_ftp')
+                    self.database.write_data(ftp_root, 'ftp_root')
+                    messagebox.showinfo('successful', 'Changes saved')
+        else:
+            self.database.write_data('0', 'ftp_server')
+            messagebox.showinfo('successful', 'Changes saved')
