@@ -185,11 +185,11 @@ def run_ftp():
     if data[6] == 0:
         address_run_ftp = 'disable'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
-        address_run_ftp.place(x=125, y=285)
+        address_run_ftp.place(x=125, y=290)
     else:
         address_run_ftp = f'Host: {ip}  Port: {data[5]}  Login anonymously'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
-        address_run_ftp.place(x=125, y=285)
+        address_run_ftp.place(x=125, y=290)
         ftp_server_control = ftp_server(data, ip, os.path.realpath(data[7]))
         ftp_server_control.serve_forever(handle_exit=False)
 
@@ -283,7 +283,7 @@ if __name__ == '__main__':
         button_stop["state"] = "disabled"
         button_stop.place(x=390, y=260)
         Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
-        Label(root, text=f"FTP Server :", font=('arial', 10, 'bold')).place(x=40, y=285)
+        Label(root, text=f"FTP Server :", font=('arial', 10, 'bold')).place(x=40, y=290)
         icon_window(root)
         root.config(menu=menubar)
         root.mainloop()
