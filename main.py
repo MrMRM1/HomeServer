@@ -182,7 +182,7 @@ def run_ftp():
     global address_run_ftp
     global ftp_server_control
     data = database.get_data()
-    if data[6] == 0:
+    if data[6] == '0':
         address_run_ftp = 'disable'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
         address_run_ftp.place(x=125, y=290)
