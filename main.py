@@ -148,8 +148,8 @@ def threading_stop():
     address_run_ftp.place_forget()
     port_app = port_box.get()
     http_server.stop(timeout=2)
-    if database.get_data()[6] == 1:
-        ftp_server_control.stop()
+    if database.get_data()[6] == '1':
+        ftp_server_control.close_all()
         ftp_app.join()
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
