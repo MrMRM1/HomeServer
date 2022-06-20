@@ -66,6 +66,7 @@ class Setting:
         if deiconiry != '':
             self.database.write_data(deiconiry, "upload")
             path_upload['text'] = deiconiry
+            path_upload.bind("<Button-1>", lambda event, e=deiconiry: open_path(e))
 
     def _window_received(self):
         """
