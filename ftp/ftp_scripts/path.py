@@ -33,3 +33,27 @@ def get_root():
     appdend_root()
     appdend_root(2)
     return roots
+
+
+def allowed_dir(root):
+    allowed_list = list_dir()
+    list_dir_root = os.listdir(root)
+    for i in list_dir_root:
+        path = os.path.join(root, i).replace('\\', '/')
+        for j in allowed_list:
+            if path in j:
+                return True
+            else:
+                if os.path.isfile(path):
+                    if root.replace('\\', '/') == j:
+                        return True
+
+    return False
+
+
+def chdir(self, path):
+    if allowed_dir(path):
+        os.chdir(path)
+        self.cwd = self.fs2ftp(path)
+    else:
+        raise OSError(1, 'Operation not permitted')
