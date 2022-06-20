@@ -24,7 +24,7 @@ def ftp_server(data, ip, root, perm='elr'):
     handler.abstracted_fs = abstracted_fs
 
     # Define a customized banner (string returned when client connects)
-    handler.banner = "pyftpdlib based ftpd ready."
+    handler.banner = "Welcome to HomeServer FTP "
 
     # Instantiate FTP server class
     address = (ip, data[5])
