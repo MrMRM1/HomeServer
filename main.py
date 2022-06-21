@@ -63,14 +63,14 @@ def path_dir():
                                message="You are not allowed to select a drive, you must select a folder")
     else:
         try:
-            paths = eval(database.get_data()[0])
+            paths = database.get_data()[0].split(',')
             if directory not in paths:
                 for i in list_folders(directory):
                     if i not in paths:
                         paths.append(i)
         except:
             paths = [directory]
-        database.write_data(paths, "paths")
+        database.write_data(','.join(paths), "paths")
         load_data()
 
 
@@ -103,7 +103,7 @@ def del_path(*args):
     Function to delete the selected path from the database and the list of folders
     """
     cs = list_box.curselection()[0]
-    paths = eval(database.get_data()[0])
+    paths = database.get_data()[0].split(',')
     del paths[cs]
     database.write_data(paths, "paths")
     load_data()
@@ -115,7 +115,7 @@ def load_data():
     """
     try:
         del_itms()
-        paths = eval(database.get_data()[0])
+        paths = database.get_data()[0].split(',')
         for i in paths[::-1]:
             list_box.insert(0, i)
     except:

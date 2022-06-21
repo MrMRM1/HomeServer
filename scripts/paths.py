@@ -43,7 +43,7 @@ def list_dir():
     :return: Returns the list of folders stored in the database
     """
     database = Database()
-    dirc = eval(database.get_data()[0])
+    dirc = database.get_data()[0].split(',')
     return dirc
 
 
