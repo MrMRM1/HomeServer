@@ -39,13 +39,13 @@ def get_root():
 def allowed_dir(root):
     allowed_list = list_dir()
     root = root.replace('\\', '/')
-    for j in allowed_list:
-        if root in j:
+    if os.path.isfile(root):
+        if '/'.join(root.split('/')[:-1]) in allowed_list:
             return True
-        else:
-            if os.path.isfile(root):
-                if '/'.join(root.split('/')[:-1]) == j:
-                    return True
+    else:
+        for j in allowed_list:
+            if root in j:
+                return True
     return False
 
 
