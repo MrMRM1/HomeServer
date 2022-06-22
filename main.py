@@ -105,7 +105,7 @@ def del_path(*args):
     cs = list_box.curselection()[0]
     paths = database.get_data()[0].split(',')
     del paths[cs]
-    database.write_data(paths, "paths")
+    database.write_data(','.join(paths), "paths")
     load_data()
 
 
