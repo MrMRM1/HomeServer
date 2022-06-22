@@ -1,4 +1,4 @@
-from ftp.ftp_scripts.path import listdir, chdir
+from ftp.ftp_scripts.path import listdir, chdir, mkdir
 
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
@@ -20,6 +20,7 @@ def ftp_server(data, ip, root, perm='elr'):
     abstracted_fs = AbstractedFS
     abstracted_fs.listdir = listdir
     abstracted_fs.chdir = chdir
+    abstracted_fs.mkdir = mkdir
 
     handler.abstracted_fs = abstracted_fs
 
