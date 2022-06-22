@@ -38,20 +38,14 @@ def get_root():
 
 def allowed_dir(root):
     allowed_list = list_dir()
-    list_dir_root = os.listdir(root)
-    if list_dir_root:
-        for i in list_dir_root:
-            path = os.path.join(root, i).replace('\\', '/')
-            for j in allowed_list:
-                if path in j:
-                    return True
-                else:
-                    if os.path.isfile(path):
-                        if root.replace('\\', '/') == j:
-                            return True
-    else:
-        if root.replace('\\', '/') in allowed_list:
+    root = root.replace('\\', '/')
+    for j in allowed_list:
+        if root in j:
             return True
+        else:
+            if os.path.isfile(root):
+                if '/'.join(root.split('/')[:-1]) == j:
+                    return True
     return False
 
 
