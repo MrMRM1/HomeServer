@@ -158,6 +158,7 @@ def threading_stop():
     button_stop["state"] = "disabled"
     run_app.join()
     write_port(port_app)
+    load_data()
 
 
 def run():
