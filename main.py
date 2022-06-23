@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
+from _tkinter import TclError
 from scripts.sqllite import Database
 from threading import Thread
 from webbrowser import open_new
@@ -26,7 +27,10 @@ def icon_window(window):
     :param window: Display window
     :return: Set the icon for the desired window
     """
-    window.iconbitmap(os.path.join(os.path.dirname(__file__), "static/icon/icon.ico"))
+    try:
+        window.iconbitmap(os.path.join(os.path.dirname(__file__), "static/icon/icon.ico"))
+    except TclError:
+        pass
 
 
 def check_update():
