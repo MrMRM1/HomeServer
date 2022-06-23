@@ -40,7 +40,7 @@ def allowed_dir(root):
     allowed_list = list_dir()
     root = root.replace('\\', '/')
     if os.path.isfile(root):
-        if '/'.join(root.split('/')[:-1]) in allowed_list:
+        if os.path.dirname(root) in allowed_list:
             return True
     else:
         for j in allowed_list:
@@ -60,12 +60,12 @@ def chdir(self, path):
 def mkdir(self, path):
     """Create the specified directory."""
     allowed_list = list_dir()
-    path_split = path.replace('\\', '/').split('/')
-    if '/'.join(path_split[:-1]) in allowed_list:
+    path = path.replace('\\', '/')
+    if os.path.dirname(path) in allowed_list:
         database = Database()
         os.mkdir(path)
         list_path = database.get_data()[0].split(',')
-        list_path.append('/'.join(path_split))
+        list_path.append(path)
         database.write_data(','.join(list_path), 'paths')
     else:
         raise OSError(1, 'Operation not permitted')
@@ -73,7 +73,7 @@ def mkdir(self, path):
 
 def open_fs(self, filename, mode):
     allowed_list = list_dir()
-    if '/'.join(filename.replace('\\', '/').split('/')[:-1]) in allowed_list:
+    if os.path.dirname(filename.replace('\\', '/')) in allowed_list:
         return open(filename, mode)
     else:
         raise OSError(1, 'Operation not permitted')
