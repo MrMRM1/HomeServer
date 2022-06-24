@@ -146,7 +146,10 @@ class Setting:
         combobox_ftp = ttk.Combobox(self.tab_ftp_server, values=root, width=20,
                                     textvariable=self.textvariable_ftp_path, state='readonly', )
         combobox_ftp.place(x=170, y=60)
-        combobox_ftp.current(root.index(data[7]))
+        try:
+            combobox_ftp.current(root.index(data[7]))
+        except ValueError:
+            combobox_ftp.current()
 
         self.create_directory = IntVar(self.tab_ftp_server)
         self.create_directory.set(int(data[8]))
