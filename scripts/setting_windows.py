@@ -148,15 +148,15 @@ class Setting:
         combobox_ftp.current()
 
         self.create_directory = IntVar(self.tab_ftp_server)
-        self.create_directory.set(0)
+        self.create_directory.set(int(data[8]))
         cb_create_directory = Checkbutton(self.tab_ftp_server, text="Create directory", command=click_change_ftp_server,
                                           font=('arial', 10, 'bold'), variable=self.create_directory)
         cb_create_directory.place(x=10, y=90)
 
         self.store_file = IntVar(self.tab_ftp_server)
-        self.store_file.set(0)
+        self.store_file.set(int(data[9]))
         cb_store_file = Checkbutton(self.tab_ftp_server, text="Store a file to the server", command=click_change_ftp_server,
-                                          font=('arial', 10, 'bold'), variable=self.store_file)
+                                    font=('arial', 10, 'bold'), variable=self.store_file)
         cb_store_file.place(x=10, y=115)
 
         Button(self.tab_ftp_server, text="Save", font=('arial', 10, 'bold'),
@@ -177,6 +177,8 @@ class Setting:
                     self.database.write_data('1', 'ftp_server')
                     self.database.write_data(port, 'port_ftp')
                     self.database.write_data(ftp_root, 'ftp_root')
+                    self.database.write_data(str(self.create_directory.get()), 'ftp_create_directory')
+                    self.database.write_data(str(self.store_file.get()), 'ftp_store_file')
                     messagebox.showinfo('successful', 'Changes saved')
         else:
             self.database.write_data('0', 'ftp_server')
