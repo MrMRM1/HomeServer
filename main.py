@@ -191,7 +191,12 @@ def run_ftp():
         address_run_ftp = f'Host: {ip}  Port: {data[5]}  Login anonymously'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
         address_run_ftp.place(x=125, y=290)
-        ftp_server_control = ftp_server(data, ip, os.path.realpath(data[7]))
+        perm = 'elr'
+        if data[8] == '1':
+            perm += 'm'
+        if data[9] == '1':
+            perm += 'w'
+        ftp_server_control = ftp_server(data, ip, os.path.realpath(data[7]), perm)
         ftp_server_control.serve_forever(handle_exit=False)
 
 
