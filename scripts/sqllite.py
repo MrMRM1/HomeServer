@@ -13,7 +13,7 @@ class Database:
         try:
             self.my_db.execute(f"SELECT * from data_user")
         except:
-            self.my_db.execute(f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT 1 ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL)')
+            self.my_db.execute(f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT 1 ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0")')
             sql = f'INSERT INTO data_user (data_id) VALUES (1)'
             self.my_db.execute(sql)
             self.data.commit()
