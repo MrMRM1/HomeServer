@@ -119,9 +119,13 @@ class Setting:
             if self.server_enable.get() == 0:
                 combobox_ftp['state'] = "disabled"
                 self.port_box_ftp['state'] = "disabled"
+                cb_create_directory['state'] = 'disabled'
+                cb_store_file['state'] = 'disabled'
             else:
                 combobox_ftp['state'] = "readonly"
                 self.port_box_ftp['state'] = "normal"
+                cb_create_directory['state'] = 'normal'
+                cb_store_file['state'] = 'normal'
         data = self.database.get_data()
 
         self.server_enable = IntVar(self.tab_ftp_server)
@@ -143,8 +147,20 @@ class Setting:
         combobox_ftp.place(x=170, y=60)
         combobox_ftp.current()
 
+        self.create_directory = IntVar(self.tab_ftp_server)
+        self.create_directory.set(0)
+        cb_create_directory = Checkbutton(self.tab_ftp_server, text="Create directory", command=click_change_ftp_server,
+                                          font=('arial', 10, 'bold'), variable=self.create_directory)
+        cb_create_directory.place(x=10, y=90)
+
+        self.store_file = IntVar(self.tab_ftp_server)
+        self.store_file.set(0)
+        cb_store_file = Checkbutton(self.tab_ftp_server, text="Store a file to the server", command=click_change_ftp_server,
+                                          font=('arial', 10, 'bold'), variable=self.store_file)
+        cb_store_file.place(x=10, y=115)
+
         Button(self.tab_ftp_server, text="Save", font=('arial', 10, 'bold'),
-               command=self._save_settings_ftp).place(relx=0.5, rely=0.5, anchor="center")
+               command=self._save_settings_ftp).place(relx=0.5, rely=0.6, anchor="center")
         click_change_ftp_server()
 
     def _save_settings_ftp(self):
