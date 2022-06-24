@@ -1,7 +1,7 @@
 # Home Server
-Stream, receive, send files, etc. on the local network without the need to install additional software on other devices, everything only with the browser.
+A FTP Server and Stream, receive, send files, etc. on the local network without the need to install additional software on other devices, everything only with the browser.
 
-![HomeServer](https://user-images.githubusercontent.com/61387127/170466947-0c738240-9964-436f-83f8-73b5e0dac2f8.jpeg)
+![Home Page](https://user-images.githubusercontent.com/61387127/175530043-ae9e02c6-aef6-4520-8c11-bc974b61024f.jpeg)
 
 View and listen to files directly from your PC without the need to copy or transfer files to other device without filling up the device storage.
 
