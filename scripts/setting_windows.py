@@ -142,10 +142,11 @@ class Setting:
         Label(self.tab_ftp_server, text="FTP Server access path: ", font=('arial', 10, 'bold'), ).place(x=10, y=60)
 
         self.textvariable_ftp_path = StringVar()
-        combobox_ftp = ttk.Combobox(self.tab_ftp_server, values=get_root(), width=20,
+        root = get_root()
+        combobox_ftp = ttk.Combobox(self.tab_ftp_server, values=root, width=20,
                                     textvariable=self.textvariable_ftp_path, state='readonly', )
         combobox_ftp.place(x=170, y=60)
-        combobox_ftp.current()
+        combobox_ftp.current(root.index(data[7]))
 
         self.create_directory = IntVar(self.tab_ftp_server)
         self.create_directory.set(int(data[8]))
