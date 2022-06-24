@@ -1,3 +1,4 @@
+import os
 from ftp.ftp_scripts.filesystems import listdir, chdir, mkdir, open_fs
 
 from pyftpdlib.authorizers import DummyAuthorizer
@@ -6,11 +7,20 @@ from pyftpdlib.servers import FTPServer
 from pyftpdlib.filesystems import AbstractedFS
 
 
-def ftp_server(data, ip, root, perm='elr'):
+def ftp_server(data, ip):
+    """
+    :param data:  database.get_data()
+    :param ip:  IP system on the local network ( get_ip() )
+    :return: Instantiate FTP server class
+    """
     # Instantiate a dummy authorizer for managing 'virtual' users
     authorizer = DummyAuthorizer()
-
-    authorizer.add_anonymous(root, perm=perm)
+    perm = 'elr'
+    if data[8] == '1':
+        perm += 'm'
+    if data[9] == '1':
+        perm += 'w'
+    authorizer.add_anonymous(os.path.realpath(data[7]), perm=perm)
 
     # Instantiate FTP handler class
     handler = FTPHandler

@@ -115,7 +115,13 @@ class Setting:
                command=chack_password).place(x=215, y=130)
 
     def _ftp_server(self):
+        """
+         Ftp Server tab settings
+        """
         def click_change_ftp_server():
+            """
+            Enables or disables settings based on Checkbutton server_enable
+            """
             if self.server_enable.get() == 0:
                 combobox_ftp['state'] = "disabled"
                 self.port_box_ftp['state'] = "disabled"
@@ -168,6 +174,9 @@ class Setting:
         click_change_ftp_server()
 
     def _save_settings_ftp(self):
+        """
+        Save ftp server settings to database
+        """
         ftp_root = self.textvariable_ftp_path.get()
         port = self.port_box_ftp.get()
         server_enable = self.server_enable.get()
