@@ -53,6 +53,7 @@ class Setting:
         self.tab_received = ttk.Frame(tab_control)
         self.tab_control_system_pas = ttk.Frame(tab_control)
         self.tab_ftp_server = ttk.Frame(tab_control)
+        self.tab_more = ttk.Frame(tab_control)
 
         tab_control.add(self.tab_received, text="Received files")
         self._window_received()
@@ -60,6 +61,8 @@ class Setting:
         self._shutdown_sleep()
         tab_control.add(self.tab_ftp_server, text="FTP Server")
         self._ftp_server()
+        tab_control.add(self.tab_more, text="More")
+        self.more()
         tab_control.pack(expand=1, fill="both")
 
     def _redirect_received(self):
@@ -118,6 +121,7 @@ class Setting:
         """
          Ftp Server tab settings
         """
+
         def click_change_ftp_server():
             """
             Enables or disables settings based on Checkbutton server_enable
@@ -132,6 +136,7 @@ class Setting:
                 self.port_box_ftp['state'] = "normal"
                 cb_create_directory['state'] = 'normal'
                 cb_store_file['state'] = 'normal'
+
         data = self.database.get_data()
 
         self.server_enable = IntVar(self.tab_ftp_server)
@@ -165,7 +170,8 @@ class Setting:
 
         self.store_file = IntVar(self.tab_ftp_server)
         self.store_file.set(int(data[9]))
-        cb_store_file = Checkbutton(self.tab_ftp_server, text="Store a file to the server", command=click_change_ftp_server,
+        cb_store_file = Checkbutton(self.tab_ftp_server, text="Store a file to the server",
+                                    command=click_change_ftp_server,
                                     font=('arial', 10, 'bold'), variable=self.store_file)
         cb_store_file.place(x=10, y=115)
 
@@ -196,3 +202,20 @@ class Setting:
         else:
             self.database.write_data('0', 'ftp_server')
             messagebox.showinfo('successful', 'Changes saved')
+
+    def more(self):
+        data = self.database.get_data()
+        self.run_background = IntVar(self.tab_more)
+        self.run_background.set(int(data[10]))
+        Checkbutton(self.tab_more, text="Enable run in the background", font=('arial', 10, 'bold'),
+                    variable=self.run_background).place(x=10, y=10)
+
+        Button(self.tab_more, text="Save", font=('arial', 10, 'bold'),
+               command=self._save_settings_more).place(relx=0.5, rely=0.6, anchor="center")
+
+    def _save_settings_more(self):
+        self.database.write_data(str(self.run_background.get()), 'run_background')
+        messagebox.showinfo('successful', 'Changes saved')
+
+
+
