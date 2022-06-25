@@ -43,7 +43,10 @@ def list_dir():
     :return: Returns the list of folders stored in the database
     """
     database = Database()
-    dirc = database.get_data()[0].split(',')
+    try:
+        dirc = database.get_data()[0].split(',')
+    except AttributeError:
+        dirc = []
     return dirc
 
 
