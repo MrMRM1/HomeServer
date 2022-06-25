@@ -1,7 +1,7 @@
+from flask import render_template
+
 from . import pdf
 from scripts.paths import list_dir, list_file, check_dir_flask
-
-from flask import render_template
 
 
 @pdf.route('/pdf')

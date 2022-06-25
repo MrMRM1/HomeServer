@@ -1,10 +1,11 @@
 import os
-from ftp.ftp_scripts.filesystems import listdir, chdir, mkdir, open_fs
 
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 from pyftpdlib.filesystems import AbstractedFS
+
+from ftp.ftp_scripts.filesystems import listdir, chdir, mkdir, open_fs
 
 
 def ftp_server(data, ip):

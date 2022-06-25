@@ -1,6 +1,7 @@
 import sqlite3
 from pathlib import Path
 from os.path import join as join_path
+
 from scripts.network import port_flask
 
 path_received = join_path(Path.home().__str__(), 'Downloads', 'HomeServerReceived')

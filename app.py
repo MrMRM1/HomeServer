@@ -1,7 +1,10 @@
 import os
-from scripts.sqllite import Database
 from hashlib import sha256
 from threading import Thread
+
+from flask import Flask, render_template, send_from_directory, request, make_response, jsonify
+
+from scripts.sqllite import Database
 from scripts.filename import pathfile
 from video import video
 from audio import audio
@@ -9,8 +12,6 @@ from pdf import pdf
 from picture import picture
 from scripts.paths import check_dir_flask, list_dir, list_file, edit_path_windows_other
 from scripts.system_control import shutdown_sleep_thread
-
-from flask import Flask, render_template, send_from_directory, request, redirect, make_response, jsonify
 
 app = Flask(__name__)
 app.secret_key = "add your secret key"

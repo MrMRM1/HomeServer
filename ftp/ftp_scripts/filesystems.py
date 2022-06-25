@@ -1,4 +1,5 @@
 import os
+
 from scripts.paths import list_dir
 from scripts.sqllite import Database
 

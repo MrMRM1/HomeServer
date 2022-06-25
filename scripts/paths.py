@@ -1,8 +1,9 @@
-from scripts.sqllite import Database
 import os
 import re
 
 from flask import redirect
+
+from scripts.sqllite import Database
 
 
 def edit_path_windows_other(path: str) -> str:

@@ -1,21 +1,21 @@
-from tkinter import *
-from tkinter import filedialog, messagebox
-from _tkinter import TclError
-from scripts.sqllite import Database
-from threading import Thread
-from webbrowser import open_new
-from urllib.request import urlopen, Request
-from urllib.error import URLError
-from json import loads
 import os
 import re
-from app import app
-from scripts.setting_windows import Setting
-from scripts.network import port_flask, get_ip
-from ftp import ftp_server
+from _tkinter import TclError
+from json import loads
+from threading import Thread
+from tkinter import *
+from tkinter import filedialog, messagebox
+from urllib.error import URLError
+from urllib.request import urlopen, Request
+from webbrowser import open_new
 
 from gevent.pywsgi import WSGIServer
 
+from app import app
+from ftp import ftp_server
+from scripts.network import port_flask, get_ip
+from scripts.setting_windows import Setting
+from scripts.sqllite import Database
 
 v = 5
 database = Database()
