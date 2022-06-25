@@ -222,10 +222,11 @@ def port():
 
 
 def delete_window():
-    if messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
-        if button_run["state"] == "disabled":
-            threading_stop()
-        root.destroy()
+    if database.get_data()[10] == "0":
+        if messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
+            if button_run["state"] == "disabled":
+                threading_stop()
+    root.destroy()
 
 
 def open_setting():
