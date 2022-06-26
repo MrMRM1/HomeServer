@@ -16,6 +16,7 @@ from ftp import ftp_server
 from scripts.network import port_flask, get_ip
 from scripts.setting_windows import Setting
 from scripts.sqllite import Database
+from scripts.already_running import SingleInstance
 
 v = 5
 database = Database()
@@ -233,22 +234,29 @@ def open_setting():
     if button_run["state"] == "normal":
         Setting(root, icon_window, database)
     else:
-        messagebox.showerror("Error", message="You can not change the settings while running the program. Stop the program first, then try again.")
+        messagebox.showerror("Error",
+                             message="You can not change the settings while running the program. Stop the program first, then try again.")
 
 
 if __name__ == '__main__':
     try:
+        # This feature works in the output file (.exe, ...)
+        a_running = SingleInstance()
+        if a_running:
+            for i in a_running:
+                ask = messagebox.askyesno(title='HomeServer is Already running',
+                                          message="A version of the program is running, do you want to stop it?")
+                if ask == 'yes':
+                    a_running.kill_process(i)
+                else:
+                    exit()
+    except:
+        pass
+    try:
         ip = get_ip()
         connected_network = True
     except OSError:
-        root = Tk()
-        root.withdraw()
-        root.title("Home Server")
-        root.geometry("0x0")
-        root.resizable(False, False)
-        icon_window(root)
-        messagebox.showerror(title="ERROR", message="You are not connected to any networks")
-        root.deiconify()
+        messagebox.showerror(title="HomeServer ERROR", message="You are not connected to any networks")
 
     if connected_network:
         root = Tk()
