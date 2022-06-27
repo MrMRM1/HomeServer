@@ -243,21 +243,19 @@ if __name__ == '__main__':
         # This feature works in the output file (.exe, ...)
         a_running = SingleInstance()
         if a_running:
-            for i in a_running:
-                ask = messagebox.askyesno(title='HomeServer is Already running',
-                                          message="A version of the program is running, do you want to stop it?")
-                if ask == 'yes':
+            ask = messagebox.askyesno(title='HomeServer is Already running',
+                                      message="A version of the program is running, do you want to stop it?")
+            if ask:
+                for i in a_running:
                     a_running.kill_process(i)
-                else:
-                    exit()
-    except:
-        pass
-    try:
+            else:
+                raise NameError
         ip = get_ip()
         connected_network = True
     except OSError:
         messagebox.showerror(title="HomeServer ERROR", message="You are not connected to any networks")
-
+    except NameError:
+        pass
     if connected_network:
         root = Tk()
         root.title("Home Server")
