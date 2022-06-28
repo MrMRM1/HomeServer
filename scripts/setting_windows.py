@@ -43,6 +43,7 @@ def open_path(path: str):
 class Setting:
     def __init__(self, root, icon_window, database):
         self.database = database
+        self.data = self.database.get_data()
         setting = Toplevel(root)
         setting.title("Setting")
         setting.geometry("600x300")
@@ -81,7 +82,7 @@ class Setting:
         settings of received files
         """
         global path_upload
-        path_uploads = self.database.get_data()[3]
+        path_uploads = self.data[3]
         Label(self.tab_received, text="Path of received files: ", font=('arial', 10, 'bold')).place(x=10, y=10)
         path_upload = Label(self.tab_received, text=path_uploads, font=('arial', 10, 'bold'), fg="blue")
         path_upload.bind("<Button-1>", lambda event, e=path_uploads: open_path(e))
@@ -138,17 +139,15 @@ class Setting:
                 cb_create_directory['state'] = 'normal'
                 cb_store_file['state'] = 'normal'
 
-        data = self.database.get_data()
-
         self.server_enable = IntVar(self.tab_ftp_server)
-        self.server_enable.set(int(data[6]))
+        self.server_enable.set(int(self.data[6]))
         Checkbutton(self.tab_ftp_server, text="FTP Server Enable", command=click_change_ftp_server,
                     font=('arial', 10, 'bold'), variable=self.server_enable).place(x=10, y=10)
 
         Label(self.tab_ftp_server, text="FTP Server Port :", font=('arial', 10, 'bold'), ).place(x=270, y=15)
 
         self.port_box_ftp = Entry(self.tab_ftp_server, font=('arial', 15, 'bold'))
-        self.port_box_ftp.insert('end', str(data[5]))
+        self.port_box_ftp.insert('end', str(self.data[5]))
         self.port_box_ftp.place(x=390, y=15, width=100)
 
         Label(self.tab_ftp_server, text="FTP Server access path: ", font=('arial', 10, 'bold'), ).place(x=10, y=60)
@@ -159,18 +158,18 @@ class Setting:
                                     textvariable=self.textvariable_ftp_path, state='readonly', )
         combobox_ftp.place(x=170, y=60)
         try:
-            combobox_ftp.current(root.index(data[7]))
+            combobox_ftp.current(root.index(self.data[7]))
         except ValueError:
             combobox_ftp.current()
 
         self.create_directory = IntVar(self.tab_ftp_server)
-        self.create_directory.set(int(data[8]))
+        self.create_directory.set(int(self.data[8]))
         cb_create_directory = Checkbutton(self.tab_ftp_server, text="Create directory", command=click_change_ftp_server,
                                           font=('arial', 10, 'bold'), variable=self.create_directory)
         cb_create_directory.place(x=10, y=90)
 
         self.store_file = IntVar(self.tab_ftp_server)
-        self.store_file.set(int(data[9]))
+        self.store_file.set(int(self.data[9]))
         cb_store_file = Checkbutton(self.tab_ftp_server, text="Store a file to the server",
                                     command=click_change_ftp_server,
                                     font=('arial', 10, 'bold'), variable=self.store_file)
@@ -205,9 +204,8 @@ class Setting:
             messagebox.showinfo('successful', 'Changes saved')
 
     def more(self):
-        data = self.database.get_data()
         self.run_background = IntVar(self.tab_more)
-        self.run_background.set(int(data[10]))
+        self.run_background.set(int(self.data[10]))
         Checkbutton(self.tab_more, text="Enable run in the background", font=('arial', 10, 'bold'),
                     variable=self.run_background).place(x=10, y=10)
 
