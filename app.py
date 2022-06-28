@@ -77,12 +77,12 @@ def download_file(filename):
     return send_from_directory('/'.join(rt), name)
 
 
-@app.route('/upload', methods=['GET'])
+@app.route('/send', methods=['GET'])
 def uploads_file():
     return render_template('send.html', title="Send")
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/send', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
