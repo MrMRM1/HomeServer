@@ -155,7 +155,7 @@ def threading_stop():
     http_server.stop(timeout=2)
     if database.get_data()[6] == '1':
         ftp_server_control.close_all()
-        ftp_app.join()
+        ftp_app.join(1)
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
     port_box["state"] = "normal"
