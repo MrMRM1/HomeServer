@@ -18,7 +18,7 @@ from scripts.setting_windows import Setting
 from scripts.sqllite import Database
 from scripts.already_running import SingleInstance
 
-v = 5
+v = 6
 database = Database()
 connected_network = False
 ip = ''
