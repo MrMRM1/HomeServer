@@ -6,7 +6,7 @@ from scripts.paths import list_dir, list_file, check_dir_flask
 
 @audio.route('/audio')
 def audio_page():
-    return render_template("list_folders.html", title="List Folders", items=list_dir(), typs="audio")
+    return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs="audio")
 
 
 @audio.route('/audio/<path:link>')

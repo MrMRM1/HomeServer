@@ -58,13 +58,13 @@ def system_page():
 
 @app.route('/all_file')
 def all_file_page():
-    return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='all_file')
+    return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='all_file')
 
 
 @app.route('/all_file/<path:link>')
 @check_dir_flask
 def controls(link):
-    return render_template("list_folders.html", title=link, items=list_file(['*'], link), typs="dl_file")
+    return render_template("list_folders.html", title=link, items=','.join(list_file(['*'], link)), typs="dl_file")
 
 
 @app.route('/file/<path:link>')

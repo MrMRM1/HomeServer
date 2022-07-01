@@ -6,7 +6,7 @@ from scripts.paths import list_dir, list_file, check_dir_flask
 
 @picture.route('/picture')
 def list_folders():
-    return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='picture')
+    return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='picture')
 
 
 @picture.route('/picture/<path:link>')

@@ -6,7 +6,7 @@ from flask import render_template
 
 @video.route('/video')
 def video_page():
-    return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='video')
+    return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='video')
 
 
 @video.route('/video/<path:link>')

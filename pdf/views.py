@@ -6,7 +6,7 @@ from scripts.paths import list_dir, list_file, check_dir_flask
 
 @pdf.route('/pdf')
 def list_folders():
-    return render_template("list_folders.html", title="List Folders", items=list_dir(), typs='pdf')
+    return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='pdf')
 
 
 @pdf.route('/pdf/<path:link>')
