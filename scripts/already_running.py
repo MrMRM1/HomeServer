@@ -31,7 +31,12 @@ def linux_get_process():
     for i in pop.stdout:
         data = i.decode().rstrip().split(' ')
         if os.path.splitext(os.path.basename(data[-1]))[0] == app_name:
-            ids.append(data[2])
+            for j in data:
+                try:
+                    ids.append(str(int(j)))
+                    break
+                except:
+                    pass
     return ids
 
 
