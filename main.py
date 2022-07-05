@@ -151,7 +151,6 @@ def threading_stop():
     """
     address_run.place_forget()
     address_run_ftp.place_forget()
-    port_app = port_box.get()
     http_server.stop(timeout=2)
     if database.get_data()[6] == '1':
         ftp_server_control.close_all()
@@ -162,7 +161,6 @@ def threading_stop():
     list_box["state"] = "normal"
     button_stop["state"] = "disabled"
     run_app.join()
-    write_port(port_app)
     load_data()
 
 
@@ -180,6 +178,7 @@ def run():
     address_run = Label(root, text=address_app, font=('arial', 10, 'bold'), fg="blue")
     address_run.bind("<Button-1>", lambda e: open_new(f"http://{address_app}"))
     address_run.place(x=175, y=265)
+    database.write_data(port_app, "port")
     http_server = WSGIServer((ip, int(port_app)), app)
     http_server.serve_forever()
 
@@ -198,14 +197,6 @@ def run_ftp():
         address_run_ftp.place(x=125, y=290)
         ftp_server_control = ftp_server(data, ip)
         ftp_server_control.serve_forever(handle_exit=False)
-
-
-def write_port(port_app):
-    """
-    :param port_app: Flask program execution port
-    Save the port to the database
-    """
-    database.write_data(port_app, "port")
 
 
 def port():
