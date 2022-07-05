@@ -51,10 +51,8 @@ def get_process():
     match platform.system():
         case 'Windows':
             data = windows_get_process()
-        case 'Linux':
-            data = linux_get_process()
         case _:
-            pass
+            data = linux_get_process()
     return data
 
 
@@ -95,9 +93,7 @@ class SingleInstance(object):
         match platform.system():
             case 'Windows':
                 data = windows_kill_process(id_process)
-            case 'Linux':
-                data = linux_kill_process(id_process)
             case _:
-                pass
+                data = linux_kill_process(id_process)
         self.update()
         return data
