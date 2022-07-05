@@ -40,6 +40,20 @@ def open_path(path: str):
                 showerror()
 
 
+def check_port(port):
+    def show_error():
+        messagebox.showerror('Error enter a valid value', 'The port value must be a number')
+    try:
+        port_number = str(int(port))
+        if len(port) == len(port_number) and port != '':
+            return port_number
+        else:
+            show_error()
+    except:
+        show_error()
+    return ''
+
+
 class Setting:
     def __init__(self, root, icon_window, database):
         self.database = database
@@ -184,15 +198,13 @@ class Setting:
         Save ftp server settings to database
         """
         ftp_root = self.textvariable_ftp_path.get()
-        port = self.port_box_ftp.get()
+        port = check_port(self.port_box_ftp.get())
         server_enable = self.server_enable.get()
         if server_enable == 1:
             if ftp_root == '':
                 messagebox.showerror('Error', 'Select the access path of the ftp server')
             else:
-                if port == '':
-                    messagebox.showerror('Error', 'Enter the port value.')
-                else:
+                if port != '':
                     self.database.write_data('1', 'ftp_server')
                     self.database.write_data(port, 'port_ftp')
                     self.database.write_data(ftp_root, 'ftp_root')
