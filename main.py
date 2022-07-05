@@ -14,7 +14,7 @@ from gevent.pywsgi import WSGIServer
 from app import app
 from ftp import ftp_server
 from scripts.network import port_flask, get_ip
-from scripts.setting_windows import Setting
+from scripts.setting_windows import Setting, check_port
 from scripts.sqllite import Database
 from scripts.already_running import SingleInstance
 
@@ -134,15 +134,17 @@ def threading_start():
     """
     global run_app
     global ftp_app
-    run_app = Thread(target=run)
-    run_app.start()
-    ftp_app = Thread(target=run_ftp)
-    ftp_app.start()
-    button_run["state"] = "disabled"
-    button_Selection["state"] = "disabled"
-    port_box["state"] = "disabled"
-    list_box["state"] = "disabled"
-    button_stop["state"] = "normal"
+    port_app = check_port(port_box.get())
+    if port_app != '':
+        run_app = Thread(target=run, args=(port_app,))
+        run_app.start()
+        ftp_app = Thread(target=run_ftp)
+        ftp_app.start()
+        button_run["state"] = "disabled"
+        button_Selection["state"] = "disabled"
+        port_box["state"] = "disabled"
+        list_box["state"] = "disabled"
+        button_stop["state"] = "normal"
 
 
 def threading_stop():
@@ -164,13 +166,12 @@ def threading_stop():
     load_data()
 
 
-def run():
+def run(port_app):
     """
     Disable different sections of the main window and run the flask program
     """
     global address_run
     global http_server
-    port_app = port_box.get()
     if port_app == '80':
         address_app = str(ip)
     else:
