@@ -135,7 +135,6 @@ else {
 }
 window.onhashchange = function() {
     const path = decodeURI(window.location.hash.replace('#', ''));
-     console.log(root, path, root===path)
     if (root !== path){
         location_dir = path.split('/').length;
         root = path
