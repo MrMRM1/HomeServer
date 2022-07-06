@@ -88,6 +88,7 @@ function show_name(elmt){
 
 
 function creator(dirs){
+    updateHistory(root)
     function text_make (i, download='', href=''){
         return '<a class="btn ' + color[i % 5] + ' m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" '+ href +' onclick=click_btn("'+ replace_me(show_name(dirs[i])," ", "%20")+'") ' + download +' ><h1 class="mt-auto mb-auto text-break">' + show_name(dirs[i]) + '</h1></a>'
     }
@@ -132,4 +133,18 @@ if (typs !== 'dl_file'){
 else {
     creator(datas)
 }
+window.onhashchange = function() {
+    const path = decodeURI(window.location.hash.replace('#', ''));
+     console.log(root, path, root===path)
+    if (root !== path){
+        location_dir = path.split('/').length;
+        root = path
+        dirs = cwd(datas, location_dir)
+        creator(dirs)
+    }
+
+}
+function updateHistory(curr) {
+    window.location.hash = curr;
+ }
 
