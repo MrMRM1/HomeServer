@@ -76,7 +76,7 @@ def path_dir():
                         paths.append(i)
         except:
             paths = [directory]
-        database.write_data(','.join(paths), "paths")
+        write_paths(paths)
         load_data()
 
 
@@ -104,6 +104,12 @@ def del_itms():
         pass
 
 
+def write_paths(paths):
+    if '' in paths:
+        paths.remove('')
+    database.write_data(','.join(paths), "paths")
+
+
 def del_path(*args):
     """
     Function to delete the selected path from the database and the list of folders
@@ -111,7 +117,7 @@ def del_path(*args):
     cs = list_box.curselection()[0]
     paths = database.get_data()[0].split(',')
     del paths[cs]
-    database.write_data(','.join(paths), "paths")
+    write_paths(paths)
     load_data()
 
 
