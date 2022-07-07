@@ -96,7 +96,7 @@ def list_folders(path):
 
 def del_itms():
     """
-    Delete a folder path from the folder list
+    :return: Delete a folder path from the folder list
     """
     try:
         list_box.delete(0, 'end')
@@ -105,6 +105,10 @@ def del_itms():
 
 
 def write_paths(paths):
+    """
+    :param paths: The path to be stored in the database
+    :return: Delete the empty path and save the path in the database
+    """
     if '' in paths:
         paths.remove('')
     database.write_data(','.join(paths), "paths")
@@ -112,7 +116,7 @@ def write_paths(paths):
 
 def del_path(*args):
     """
-    Function to delete the selected path from the database and the list of folders
+    :return: Function to delete the selected path from the database and the list of folders
     """
     cs = list_box.curselection()[0]
     paths = database.get_data()[0].split(',')
@@ -123,7 +127,7 @@ def del_path(*args):
 
 def load_data():
     """
-    Function to get the path of folders from the database and add them to the list
+    :return: Function to get the path of folders from the database and add them to the list
     """
     try:
         del_itms()
@@ -136,7 +140,7 @@ def load_data():
 
 def threading_start():
     """
-    Function to execute the flask program in the form of threading
+    :return: Function to execute the flask program in the form of threading
     """
     global run_app
     global ftp_app
@@ -155,7 +159,7 @@ def threading_start():
 
 def threading_stop():
     """
-    Function to stop the flask program as threading
+    :return: Function to stop the flask program as threading
     """
     address_run.place_forget()
     address_run_ftp.place_forget()
@@ -174,7 +178,8 @@ def threading_stop():
 
 def run(port_app):
     """
-    Disable different sections of the main window and run the flask program
+    :param port_app: Port for the program to run
+    :return: Disable different sections of the main window and run the flask program
     """
     global address_run
     global http_server
@@ -191,6 +196,9 @@ def run(port_app):
 
 
 def run_ftp():
+    """
+    :return: According to the settings of the ftp server, it turns on
+    """
     global address_run_ftp
     global ftp_server_control
     data = database.get_data()
@@ -208,7 +216,7 @@ def run_ftp():
 
 def port():
     """
-    Get the port stored in the database and display it in the main window
+    :return: Get the port stored in the database and display it in the main window
     """
     try:
         data = database.get_data()[1]
@@ -221,6 +229,9 @@ def port():
 
 
 def delete_window():
+    """
+    :return: Stops or hides the program according to the settings
+    """
     if database.get_data()[10] == "0":
         if messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
             if button_run["state"] == "disabled":
@@ -229,6 +240,9 @@ def delete_window():
 
 
 def open_setting():
+    """
+    :return: Open the settings window
+    """
     if button_run["state"] == "normal":
         Setting(root, icon_window, database)
     else:
