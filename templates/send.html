@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock %}
-{% block body %}
 
-    <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
-        <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
-            <p class="mt-auto mb-auto fs-4">Send</p>
-            <img src="{{ url_for('static', filename='icon/upload.png')}}" class="col-1 p-md-2 p-xl-4"/>
-        </div>
-    </div>
+{% block text_title %}Send{% endblock %}
+{% block icon_title %}{{ url_for('static', filename='icon/upload.png')}}{% endblock %}
+
+{% block body %}
 
         <div class="col-10 m-auto  justify-content-center bg-black"></div>
 

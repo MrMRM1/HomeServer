@@ -2,16 +2,13 @@
 {% set color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info'] %}
 {% set items_length = items|length + 1 %}
 {% block title %}{{ title }}{% endblock %}
+
+{% block text_title %}Audio list{% endblock %}
+{% block icon_title %}{{ url_for('static', filename='icon/audio.png')}}{% endblock %}
+
 {% block body %}
 
     <div class="flex-row justify-content-center ">
-
-        <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
-            <div class="col-10 col-md-8 btn-primary ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
-                <p class="mt-auto mb-auto fs-3">Audio list</p>
-                <img src="{{ url_for('static', filename='icon/audio.png')}}" class="col-1 p-md-2 p-xl-4">
-            </div>
-        </div>
 
         {% if items_length != 1  %}
             {% for i in range(0, items_length, 2) %}
@@ -35,12 +32,8 @@
             {% endfor %}
         {% endif %}
 
-
-
-
-
-
         </div>
+
         <div class="audio-player-fake"></div>
         <div class="audip-player col-12 bg-primary p-2 p-xl-0 fixed-bottom">
             <div class="col-11 col-md-12 ms-auto me-auto mb-0 mt-xl-0 mb-xl-0">

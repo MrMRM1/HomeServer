@@ -1,30 +1,28 @@
 {% extends 'base.html' %}
 {% set items_length = items|length + 1 %}
 {% block title %}{{ title }}{% endblock %}
+
+{% block text_title %}
+    {% if typs == 'video' %}
+        Video Folders
+    {% elif typs == 'audio' %}
+        Audio Folders
+    {% elif typs == 'pdf' %}
+       PDF Folders
+    {% elif typs == 'picture' %}
+        Picture Folders
+    {% else %}
+        All
+    {% endif %}
+{% endblock %}
+
+{% block icon_title %}{{ url_for('static', filename='icon/folder.png')}}{% endblock %}
+
 {% block body %}
-    <p style="display: none" id="data">{{ items }}</p>
-    <p style="display: none" id="typs">{{ typs }}</p>
     <div id="main" class="flex-row justify-content-center ">
-        <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
-            <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
-                {% if typs == 'video' %}
-                    <p class="mt-auto mb-auto fs-3">Video Folders</p>
-                {% elif typs == 'audio' %}
-                    <p class="mt-auto mb-auto fs-3">Audio Folders</p>
-                {% elif typs == 'pdf' %}
-                    <p class="mt-auto mb-auto fs-3">PDF Folders</p>
-                {% elif typs == 'picture' %}
-                    <p class="mt-auto mb-auto fs-3">Picture Folders</p>
-                {% else %}
-                    <p class="mt-auto mb-auto fs-3">All</p>
-                {% endif %}
-                <img src="{{ url_for('static', filename='icon/folder.png')}}" class="col-1 p-md-2 p-xl-4">
-            </div>
-        </div>
+        <p style="display: none" id="data">{{ items }}</p>
+        <p style="display: none" id="typs">{{ typs }}</p>
         <h1 id="path" class="font-weight-bold col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 text-break"></h1>
-
-
-
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
     <script src="{{ url_for('static', filename='js/list_folders.js')}}"></script>

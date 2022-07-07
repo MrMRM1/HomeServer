@@ -2,15 +2,12 @@
 {% set color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info'] %}
 {% set items_length = items|length + 1 %}
 {% block title %}{{ title }}{% endblock %}
+
+{% block text_title %}Video list{% endblock %}
+{% block icon_title %}{{ url_for('static', filename='icon/video.png')}}{% endblock %}
+
 {% block body %}
     <div class="flex-row justify-content-center ">
-        <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
-            <div class="col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
-                <p class="mt-auto mb-auto fs-4">Video list</p>
-                <img src="{{ url_for('static', filename='icon/video.png')}}" class="col-1 p-md-2 p-xl-4">
-            </div>
-        </div>
-
         <div>
         {% for i in range(0, items_length, 4) %}
             {% if (i + 1) != items_length %}

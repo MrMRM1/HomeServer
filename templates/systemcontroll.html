@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{{ title }}{% endblock %}
-{% block body %}
 
-    <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
-        <div class="col-10 col-md-8 btn-primary ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
-            <p class="mt-auto mb-auto fs-3">System Control</p>
-            <img src="{{ url_for('static', filename='icon/system.png')}}" class="col-1 p-md-2 p-xl-4">
-        </div>
-    </div>
+{% block text_title %}System Control{% endblock %}
+{% block icon_title %}{{ url_for('static', filename='icon/system.png')}}{% endblock %}
+
+{% block body %}
 
     <div class="mt-3 row col-11 ms-auto me-auto col-md-6">
         <form action="/system_control" method="post">
