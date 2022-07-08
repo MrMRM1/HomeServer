@@ -6,6 +6,10 @@ import platform
 
 
 def windows_get_process():
+    """
+    Receiving running programs with the same name as the program and extracting their IDs in windows
+    :return: A list of program IDs
+    """
     app_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
     cmd = 'Powershell "Get-Process | select ProcessName,Id"'
     pop = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
@@ -18,12 +22,20 @@ def windows_get_process():
 
 
 def windows_kill_process(id_process):
+    """
+    :param id_process:  process ID
+    :return: Kills the process with the ID in windows
+    """
     cmd = f'Powershell "Stop-Process -Id {id_process}"'
     pop = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     return pop.stdout
 
 
 def linux_get_process():
+    """
+    Receiving running programs with the same name as the program and extracting their IDs in linux
+    :return: A list of program IDs
+    """
     app_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
     cmd = "ps -x"
     pop = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
@@ -41,12 +53,19 @@ def linux_get_process():
 
 
 def linux_kill_process(id_process):
+    """
+    :param id_process:  process ID
+    :return: Kills the process with the ID in windows
+    """
     cmd = f'kill {id_process}'
     pop = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     return pop.stdout
 
 
 def get_process():
+    """
+    Management of receiving processes in different systems
+    """
     data = None
     match platform.system():
         case 'Windows':
@@ -89,6 +108,10 @@ class SingleInstance(object):
         return len(self.read_file) > 0
 
     def kill_process(self, id_process):
+        """
+        :param id_process: process ID
+        :return: Management of application keying in different systems
+        """
         data = None
         match platform.system():
             case 'Windows':
