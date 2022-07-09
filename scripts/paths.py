@@ -16,7 +16,7 @@ def edit_path_windows_other(path: str) -> str:
     return path
 
 
-def list_file(format_file, path):
+def list_file(format_file: str, path: str) -> list:
     """
     :param format_file: The desired file format, for example mp4
     :param path: The desired folder path
@@ -39,7 +39,7 @@ def list_folders(path):
     return [x[0] for x in os.walk(path)]
 
 
-def list_dir():
+def list_dir() -> str:
     """
     :return: Returns the list of folders stored in the database
     """
@@ -51,7 +51,7 @@ def list_dir():
     return dirc
 
 
-def _check(path):
+def _check(path: str) -> bool:
     """
    Check if the file is available through the page
    :param path: The requested file path on the page
