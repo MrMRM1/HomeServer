@@ -9,7 +9,7 @@ if platform.system() != 'Windows':
     import subprocess
 
 
-def open_path(path: str):
+def open_path(path: str) -> None:
     """
     a cross-platform file opening
     :param path: file path
@@ -40,7 +40,7 @@ def open_path(path: str):
                 showerror()
 
 
-def check_port(port):
+def check_port(port: str) -> str:
     def show_error():
         messagebox.showerror('Error enter a valid value', 'The port value must be a number')
     try:
@@ -49,7 +49,7 @@ def check_port(port):
             return port_number
         else:
             show_error()
-    except:
+    except ValueError:
         show_error()
     return ''
 

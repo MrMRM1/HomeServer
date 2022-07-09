@@ -3,7 +3,7 @@ import platform
 from time import sleep
 
 
-def shutdown_sleep_thread(value):
+def shutdown_sleep_thread(value: str) -> None:
     """
     :param value: Sleep or Shutdown
     :return: Delayed shutdown or sleep mode after 3 seconds
