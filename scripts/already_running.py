@@ -5,7 +5,7 @@ import subprocess
 import platform
 
 
-def windows_get_process():
+def windows_get_process() -> list:
     """
     Receiving running programs with the same name as the program and extracting their IDs in windows
     :return: A list of program IDs
@@ -31,7 +31,7 @@ def windows_kill_process(id_process):
     return pop.stdout
 
 
-def linux_get_process():
+def linux_get_process() -> list:
     """
     Receiving running programs with the same name as the program and extracting their IDs in linux
     :return: A list of program IDs
@@ -62,7 +62,7 @@ def linux_kill_process(id_process):
     return pop.stdout
 
 
-def get_process():
+def get_process() -> list:
     """
     Management of receiving processes in different systems
     """
