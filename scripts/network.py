@@ -2,14 +2,14 @@ import os
 from socket import socket, AF_INET, SOCK_DGRAM
 
 
-def port_flask():
+def port_flask() -> int:
     if os.name == 'nt':
         return 80
     else:
         return 8880
 
 
-def get_ip():
+def get_ip() -> str:
     """
     :return: local ip
     """
