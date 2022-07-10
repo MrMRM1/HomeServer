@@ -4,7 +4,12 @@ from scripts.paths import list_dir
 from scripts.sqllite import Database
 
 
-def listdir(self, root):
+def listdir(self, root: str) -> list:
+    """
+    It takes the root and returns the list of allowed directories
+    :param root:  path root
+    :return: the list of allowed directories
+    """
     allowed = list_dir()
     list_dir_allowed = []
     list_dir_root = os.listdir(root)
