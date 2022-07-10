@@ -27,7 +27,17 @@ def listdir(self, root: str) -> list:
     return list_dir_allowed
 
 
-def get_root():
+def get_root(advance: int = 2) -> list:
+    """
+    It extracts roots from inside the paths as much as it advances
+    :param advance: amount of advance
+    :return: List of roots
+    examole :
+        advance = 2
+        allowlist = ['C:\\user\\Desktop', 'E:\\Download\\Video\\Short', 'E:\\Music']
+
+        return: ['C:\\user', 'E:\\Downloadt', 'E:\\Music', 'C:\\', 'E:\\']
+    """
     allowlist = list_dir()
     roots = []
 
@@ -37,8 +47,8 @@ def get_root():
             if root not in roots:
                 roots.append(root)
         return roots
-    appdend_root()
-    appdend_root(2)
+    for i in range(1, advance + 1):
+        appdend_root(i)
     return roots
 
 
