@@ -36,7 +36,7 @@ def get_root(advance: int = 2) -> list:
         advance = 2
         allowlist = ['C:\\user\\Desktop', 'E:\\Download\\Video\\Short', 'E:\\Music']
 
-        return: ['C:\\user', 'E:\\Downloadt', 'E:\\Music', 'C:\\', 'E:\\']
+        return: ['C:\\user', 'E:\\Download', 'E:\\Music', 'C:\\', 'E:\\']
     """
     allowlist = list_dir()
     roots = []
@@ -52,7 +52,12 @@ def get_root(advance: int = 2) -> list:
     return roots
 
 
-def allowed_dir(root):
+def allowed_dir(root: str) -> bool:
+    """
+    Checks if path access is allowed
+    :param root: path
+    :return: bool
+    """
     allowed_list = list_dir()
     root = root.replace('\\', '/')
     if os.path.isfile(root):
@@ -66,6 +71,9 @@ def allowed_dir(root):
 
 
 def chdir(self, path):
+    """
+    If the access is allowed, the program continues, otherwise it returns an error.
+    """
     if allowed_dir(path):
         os.chdir(path)
         self.cwd = self.fs2ftp(path)
@@ -88,6 +96,9 @@ def mkdir(self, path):
 
 
 def open_fs(self, filename, mode):
+    """
+    If the access is allowed, the program continues, otherwise it returns an error.
+    """
     allowed_list = list_dir()
     if os.path.dirname(filename.replace('\\', '/')) in allowed_list:
         return open(filename, mode)
