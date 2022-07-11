@@ -11,7 +11,7 @@ from webbrowser import open_new
 
 from gevent.pywsgi import WSGIServer
 
-from app import app
+from web_app import app
 from ftp import ftp_server
 from scripts.network import port_flask, get_ip
 from scripts.setting_windows import Setting, check_port
