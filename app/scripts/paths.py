@@ -16,7 +16,7 @@ def edit_path_windows_other(path: str) -> str:
     return path
 
 
-def list_file(format_file: str, path: str) -> list:
+def list_file(format_file: list, path: str) -> list:
     """
     :param format_file: The desired file format, for example mp4
     :param path: The desired folder path
