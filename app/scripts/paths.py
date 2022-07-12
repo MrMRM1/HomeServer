@@ -1,5 +1,4 @@
 import os
-import re
 
 from flask import redirect
 
@@ -26,7 +25,7 @@ def list_file(format_file: list, path: str) -> list:
     path = edit_path_windows_other(path)
     for i in format_file:
         for name in os.listdir(path):
-            if re.match(rf'.*\.{i}', name):
+            if os.path.splitext(name)[1] == f'.{i}':
                 files.append(os.path.join(path, name))
     return files
 
