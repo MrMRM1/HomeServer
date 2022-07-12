@@ -5,7 +5,7 @@ from os import remove
 from re import fullmatch
 from ast import literal_eval
 
-from scripts.network import port_flask
+from .network import port_flask
 
 path_received = join_path(Path.home().__str__(), 'Downloads', 'HomeServerReceived')
 
