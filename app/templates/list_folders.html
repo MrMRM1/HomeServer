@@ -19,9 +19,8 @@
 {% block icon_title %}{{ url_for('static', filename='icon/folder.png')}}{% endblock %}
 
 {% block body %}
+    <div id="data" data-items='{{ items }}' data-typs='{{ typs }}'></div>
     <div id="main" class="flex-row justify-content-center ">
-        <p style="display: none" id="data">{{ items }}</p>
-        <p style="display: none" id="typs">{{ typs }}</p>
         <h1 id="path" class="font-weight-bold col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 text-break"></h1>
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
