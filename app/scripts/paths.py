@@ -33,14 +33,6 @@ def list_file(format_file: list, path: str) -> list:
     return files
 
 
-def list_folders(path):
-    """
-    :param path: The desired folder path
-    :return: Returns a list of all the folders in the path
-    """
-    return [x[0] for x in os.walk(path)]
-
-
 def list_dir() -> str:
     """
     :return: Returns the list of folders stored in the database
