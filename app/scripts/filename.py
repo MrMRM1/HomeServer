@@ -1,3 +1,4 @@
+import os.path
 from os import listdir
 from re import findall
 
@@ -29,13 +30,13 @@ def edit_name(path: str, filename: str) -> str:
     :param filename: File Name
     :return: Adds a number to the end of the filename to make the filename unique.
     """
-    filename = filename.split('.')
-    file_type = filename[-1]
-    name = '.'.join(filename[:-1])
+    filename = os.path.splitext(filename)
+    file_type = filename[1]
+    name = filename[0]
     check_name = findall("\(\d*\)$", name)
     if check_name:
         number = int(check_name[0][1:len(check_name[0])-1])
-        name = renamefile(path, f'{name[:-len(check_name[0])]}({number+1}).{file_type}')
+        name = renamefile(path, f'{name[:-len(check_name[0])]}({number+1}){file_type}')
     else:
-        name = renamefile(path, f'{name}(1).{file_type}')
+        name = renamefile(path, f'{name}(1){file_type}')
     return name
