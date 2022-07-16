@@ -55,9 +55,7 @@ def _check(path: str) -> bool:
     path = edit_path_windows_other(path)
     status = False
     if os.path.isfile(path):
-        path = path.split('/')
-        del path[-1]
-        path = "/".join(path)
+        path = os.path.dirname(path)
     if path in dircs:
         status = True
     return status
