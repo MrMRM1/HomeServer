@@ -1,6 +1,6 @@
 import os
 
-from flask import redirect
+from flask import abort
 
 from .sqllite import Database
 
@@ -69,7 +69,7 @@ def check_dir_flask(function):
         if _check(link):
             return function(link)
         else:
-            return redirect('/')
+            return abort(404)
     check.__name__ = function.__name__
     return check
 
