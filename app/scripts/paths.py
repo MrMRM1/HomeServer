@@ -63,16 +63,6 @@ def _check(path: str) -> bool:
     return status
 
 
-def check_dir(function):
-    """
-    Decorator If access to the directory is allowed, the function is executed.
-    """
-    def check(path):
-        if _check(path):
-            return function(path)
-    return check
-
-
 def check_dir_flask(function):
     """
     Decorator If access to the directory is allowed, the function is executed; otherwise, it redirects to the path_redirect
@@ -85,12 +75,3 @@ def check_dir_flask(function):
     check.__name__ = function.__name__
     return check
 
-
-def check_dir_ftp(function):
-    """
-    Decorator If access to the directory is allowed, the function is executed.
-    """
-    def check(self, path: str):
-        if _check(path.replace('\\', '/')):
-            return function(self, path)
-    return check
