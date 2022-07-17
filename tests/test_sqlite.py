@@ -6,6 +6,8 @@ from app.scripts.network import port_flask
 
 
 def test_init():
+    if 'data.db' in os.listdir(os.path.dirname(__file__)):
+        os.remove('data.db')
     database = Database()
     assert 'data.db' in os.listdir(os.path.dirname(__file__))
 
