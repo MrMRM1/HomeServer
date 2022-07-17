@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import werkzeug.exceptions
+
 from app.scripts.paths import *
 
 
@@ -31,6 +33,9 @@ def test_check_dir_flask():
         return True
 
     path_received = os.path.join(Path.home().__str__(), 'Downloads', 'HomeServer')
-
     assert route_test(path_received) is True
-    assert route_test('/Users/Download') is not True
+    try:
+        route_test('/Users/Download')
+        assert False
+    except werkzeug.exceptions.NotFound:
+        assert True
