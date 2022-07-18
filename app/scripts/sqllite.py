@@ -17,11 +17,11 @@ class Database:
         try:
             self.my_db.execute(f"SELECT * from data_user")
             data = self.my_db.fetchone()
-            if len(data) < 11:
+            if len(data) < 12:
                 self.update_data_user(data)
         except:
             self.my_db.execute(
-                f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT "1" ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", run_background DEFAULT "0")')
+                f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT "1" ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", run_background DEFAULT "0", login_status DEFAULT "0")')
             sql = 'INSERT INTO data_user (data_id) VALUES ("1")'
             self.my_db.execute(sql)
             self.data.commit()
@@ -42,7 +42,7 @@ class Database:
         self.data.close()
         remove('data.db')
         key = ['paths', 'port', 'data_id', 'upload', 'password', 'port_ftp', 'ftp_server', 'ftp_root',
-               'ftp_create_directory', 'ftp_store_file', 'run_background']
+               'ftp_create_directory', 'ftp_store_file', 'run_background', 'login_status']
         self.__init__()
         for i, j in zip(data, key):
             self.write_data(i, j)
