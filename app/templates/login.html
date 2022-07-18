@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Login page{% endblock %}
+
+{% block text_title %}Login{% endblock %}
+
+{% block body %}
+
+        <form style="width: 22rem;" class="m-auto mt-5" action="" method="post">
+          <!-- Username input -->
+          <div class="form-outline mb-4">
+            <input type="text" id="username" name="username_home" class="form-control" />
+            <label class="form-label" for="username">Username</label>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <input type="password" id="password" name="password" class="form-control" />
+            <label class="form-label" for="password">Password</label>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checked" checked />
+                <label class="form-check-label" for="checked"> Remember me </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+        <div class="col d-flex justify-content-center">
+          <button type="submit" name="sing_in" class="btn btn-primary btn-block mb-4 ms-2 me-2">Sign in</button>
+            {% if guest %}
+          <button type="submit" name="guest" class="btn btn-outline-primary btn-block mb-4 ms-2 me-2">Guest</button>
+            {% endif %}
+        </div>
+        </form>
+
+{% endblock %}
