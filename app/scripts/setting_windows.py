@@ -1,5 +1,6 @@
 import os
 import platform
+import re
 from hashlib import sha256
 from tkinter import filedialog, messagebox, Label, Button, Entry, ttk, Toplevel, Checkbutton, IntVar, StringVar
 
@@ -69,6 +70,7 @@ class Setting:
         self.tab_received = ttk.Frame(tab_control)
         self.tab_control_system_pas = ttk.Frame(tab_control)
         self.tab_ftp_server = ttk.Frame(tab_control)
+        self.tab_login_page = ttk.Frame(tab_control)
         self.tab_more = ttk.Frame(tab_control)
 
         tab_control.add(self.tab_received, text="Received files")
@@ -77,6 +79,8 @@ class Setting:
         self._shutdown_sleep()
         tab_control.add(self.tab_ftp_server, text="FTP Server")
         self._ftp_server()
+        tab_control.add(self.tab_login_page, text="Login page")
+        self.login_page()
         tab_control.add(self.tab_more, text="More")
         self.more()
         tab_control.pack(expand=1, fill="both")
@@ -228,5 +232,57 @@ class Setting:
         self.database.write_data(str(self.run_background.get()), 'run_background')
         messagebox.showinfo('successful', 'Changes saved')
 
+    def login_page(self):
+
+        def click_change_login():
+            """
+            Enables or disables settings based on Checkbutton login_status
+            """
+            if self.login_status.get() == 0:
+                username_box['state'] = "disabled"
+                password_box['state'] = "disabled"
+                password_v_box['state'] = 'disabled'
+            else:
+                username_box['state'] = "normal"
+                password_box['state'] = 'normal'
+                password_v_box['state'] = 'normal'
+
+        def _save_login_page():
+            username = username_box.get()
+            password = password_box.get()
+            password_v = password_v_box.get()
+            if self.login_status.get() == 1:
+                if username_box.get() is not None and re.findall(r'^(?=.{6,20}$)[a-zA-Z0-9]+$', username):
+                    if password == password_v and password is not None and re.findall(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", password):
+                        self.database.write_data('1', 'login_status')
+                        self.database.write_data(username, 'admin_username')
+                        self.database.write_data(sha256(password.encode()).hexdigest(), 'admin_password')
+                        messagebox.showinfo('successful', 'Settings saved successfully')
+                    else:
+                        messagebox.showerror('Invalid password', 'Enter a valid Password\nMinimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&)')
+                else:
+                    messagebox.showerror('Invalid username', 'Enter a valid username\nusername is 6-20 characters long\nallowed characters a-z A-Z 0-9')
+            else:
+                self.database.write_data('0', 'login_status')
+
+        self.login_status = IntVar(self.tab_login_page)
+        self.login_status.set(int(self.data[11]))
+        Checkbutton(self.tab_login_page, text="Login page Enable", command=click_change_login,
+                    font=('arial', 10, 'bold'), variable=self.login_status).place(x=10, y=10)
+
+        Label(self.tab_login_page, text="Username: ", font=('arial', 10, 'bold'), ).place(x=10, y=45)
+        Label(self.tab_login_page, text="Password: ", font=('arial', 10, 'bold'), ).place(x=10, y=80)
+        Label(self.tab_login_page, text="Password verification: ", font=('arial', 10, 'bold'), ).place(x=10, y=115)
+
+        username_box = Entry(self.tab_login_page, font=('arial', 10, 'bold'))
+        username_box.place(x=160, y=47, width=300)
+        password_box = Entry(self.tab_login_page, font=('arial', 10, 'bold'), show="*")
+        password_box.place(x=160, y=84, width=300)
+        password_v_box = Entry(self.tab_login_page, font=('arial', 10, 'bold'), show="*")
+        password_v_box.place(x=160, y=118, width=300)
+
+        Button(self.tab_login_page, text="Save", font=('arial', 10, 'bold'),
+               command=_save_login_page).place(relx=0.5, rely=0.7, anchor="center")
+        click_change_login()
 
 
