@@ -22,9 +22,9 @@ class Database:
                 users_data = self.my_db.fetchone()
                 if len(data) < 14 or len(users_data) < 12:
                     self.my_db.execute("SELECT * FROM users")
-                    users_data = self.my_db.fetchone()
+                    users_data = self.my_db.fetchall()
                     self.update_data_user(data, users_data)
-            except sqlite3.OperationalError:
+            except (sqlite3.OperationalError, TypeError):
                 self.update_data_user(data, None)
 
         except:
