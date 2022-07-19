@@ -75,3 +75,9 @@ class Database:
         sql = f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}'
         self.my_db.execute(sql)
         self.data.commit()
+
+    def new_user(self, username, password, paths):
+        self.my_db.execute(f'INSERT INTO users (username, password, paths) VALUES ("{username}", "{password}", "{paths}")')
+        self.data.commit()
+        return self.get_user_data(username)
+
