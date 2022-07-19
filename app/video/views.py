@@ -1,15 +1,18 @@
-from . import video
-from scripts.paths import list_dir, list_file, check_dir_flask
-
 from flask import render_template
+
+from . import video
+from app.scripts.paths import list_dir, list_file, check_dir_flask
+from app.admin.scripts.login import login_required_custom
 
 
 @video.route('/video')
+@login_required_custom
 def video_page():
     return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='video')
 
 
 @video.route('/video/<path:link>')
+@login_required_custom
 @check_dir_flask
 def list_videos(link):
     return render_template("list_videos.html", title=link,
@@ -19,6 +22,7 @@ def list_videos(link):
 
 
 @video.route('/show_video/<path:link>')
+@login_required_custom
 @check_dir_flask
 def show_video(link):
     return render_template('video.html', title=link.split('/')[-1], link=link)
