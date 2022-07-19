@@ -68,7 +68,7 @@ class Database:
                 self.write_users_data(i, j, s[0])
 
     def get_user_data(self, username: str):
-        self.my_db.execute(f'SELECT * from users WHERE username = {username}')
+        self.my_db.execute(f'SELECT * from users WHERE username = "{username}"')
         return self.my_db.fetchone()
 
     def write_users_data(self, data: str, data_type: str, user_id: int):
