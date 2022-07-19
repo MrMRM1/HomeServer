@@ -5,7 +5,7 @@ from threading import Thread
 from flask import Flask, render_template, send_from_directory, request, make_response, jsonify
 from flask_login import LoginManager
 
-from scripts.sqllite import Database
+from scripts.sqllite import Database, database
 from scripts.filename import pathfile
 from video import video
 from audio import audio
@@ -13,6 +13,7 @@ from pdf import pdf
 from picture import picture
 from scripts.paths import check_dir_flask, list_dir, list_file, edit_path_windows_other
 from scripts.system_control import shutdown_sleep_thread
+from admin.scripts.user import User
 
 app = Flask(__name__)
 app.secret_key = "add your secret key"
@@ -29,11 +30,16 @@ login_manager.login_view = 'login'
 
 @app.route('/login', methods=['GET'])
 def login():
-    database = Database()
     guest = False
     if database.get_data()[13] == '1':
         guest = True
     return render_template('login.html', guest=guest)
+
+
+@login_manager.user_loader
+def load_user(username):
+    if database.get_user_data(username) or database.get_data()[12] == username:
+        return User(username)
 
 
 @app.route('/')
