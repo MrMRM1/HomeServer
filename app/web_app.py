@@ -3,6 +3,7 @@ from hashlib import sha256
 from threading import Thread
 
 from flask import Flask, render_template, send_from_directory, request, make_response, jsonify
+from flask_login import LoginManager
 
 from scripts.sqllite import Database
 from scripts.filename import pathfile
@@ -20,6 +21,19 @@ app.register_blueprint(video)
 app.register_blueprint(audio)
 app.register_blueprint(pdf)
 app.register_blueprint(picture)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@app.route('/login', methods=['GET'])
+def login():
+    database = Database()
+    guest = False
+    if database.get_data()[13] == '1':
+        guest = True
+    return render_template('login.html', guest=guest)
 
 
 @app.route('/')
