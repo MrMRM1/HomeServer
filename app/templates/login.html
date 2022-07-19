@@ -38,4 +38,18 @@
         </div>
         </form>
 
+    <div id="myAlert" data-alert="{{ alert }}" class="col-12 col-md-4 fixed-bottom ms-auto me-auto mb-5 text-center"></div>
+
+    <script>
+    let my_alert = document.getElementById('myAlert')
+    if ( my_alert.dataset['alert'] ){
+         document.getElementById('myAlert').innerHTML = '<div class="alert alert-danger">'+ my_alert.dataset['alert'] +'</div>';
+            setTimeout(function(){
+                document.getElementById('myAlert').innerHTML = '';
+            }, 6000);
+    }
+
+
+    </script>
+
 {% endblock %}
