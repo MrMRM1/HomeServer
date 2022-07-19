@@ -20,7 +20,7 @@ class Database:
             try:
                 self.my_db.execute("SELECT * FROM users LIMIT 1")
                 users_data = self.my_db.fetchone()
-                if len(data) < 14 or len(users_data) < 12:
+                if len(data) < 15 or len(users_data) < 12:
                     self.my_db.execute("SELECT * FROM users")
                     users_data = self.my_db.fetchall()
                     self.update_data_user(data, users_data)
@@ -29,7 +29,7 @@ class Database:
 
         except:
             self.my_db.execute(
-                f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT "1" ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", run_background DEFAULT "0", login_status DEFAULT "0", admin_username TEXT NULL, admin_password TEXT NULL)')
+                f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT "1" ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", run_background DEFAULT "0", login_status DEFAULT "0", admin_username TEXT NULL, admin_password TEXT NULL, guest_status DEFAULT "0")')
             self.my_db.execute('INSERT INTO data_user (data_id) VALUES ("1")')
             self.data.commit()
             self.my_db.execute(f'CREATE TABLE users (id INTEGER primary key NOT NULL ,username TEXT NULL UNIQUE, password TEXT NULL, paths LONGTEXT NULL, ftp_status DEFAULT "1", video_status DEFAULT "1", audio_status DEFAULT "1",  pdf_status DEFAULT "1", receive_status DEFAULT "1",  send_status DEFAULT "1",  system_control_status DEFAULT "1",  picture_status DEFAULT "1")')
@@ -52,7 +52,8 @@ class Database:
         self.data.close()
         remove('data.db')
         key = ['paths', 'port', 'data_id', 'upload', 'password', 'port_ftp', 'ftp_server', 'ftp_root',
-               'ftp_create_directory', 'ftp_store_file', 'run_background', 'login_status', 'admin_username', 'admin_password']
+               'ftp_create_directory', 'ftp_store_file', 'run_background', 'login_status', 'admin_username',
+               'admin_password', 'guest_status']
         self.__init__()
         for i, j in zip(data_user, key):
             self.write_data(i, j)
