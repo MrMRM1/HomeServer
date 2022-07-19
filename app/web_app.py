@@ -5,7 +5,7 @@ from threading import Thread
 from flask import Flask, render_template, send_from_directory, request, make_response, jsonify
 from flask_login import LoginManager
 
-from scripts.sqllite import Database, database
+from scripts.sqllite import database
 from scripts.filename import pathfile
 from video import video
 from audio import audio
@@ -80,7 +80,6 @@ def home_page():
 @app.route('/system_control', methods=['POST'])
 def check_password_system_page():
     data = request.form['password']
-    database = Database()
     password = database.get_data()[4]
     alert = None
     if data != '':
@@ -136,7 +135,6 @@ def uploads_file():
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
-        database = Database()
         path = database.get_data()[3]
         try:
             f.save(pathfile(path, f.filename))
