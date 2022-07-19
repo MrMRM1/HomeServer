@@ -14,7 +14,7 @@ from picture import picture
 from scripts.paths import check_dir_flask, list_dir, list_file, edit_path_windows_other
 from scripts.system_control import shutdown_sleep_thread
 from admin.scripts.user import User
-from admin.scripts.login import user_login, error_login
+from admin.scripts.login import user_login, error_login, login_required_custom
 
 app = Flask(__name__)
 app.secret_key = "add your secret key"
@@ -73,11 +73,13 @@ def load_user(username):
 
 
 @app.route('/')
+@login_required_custom
 def home_page():
     return render_template("home.html", title="Home")
 
 
 @app.route('/system_control', methods=['POST'])
+@login_required_custom
 def check_password_system_page():
     data = request.form['password']
     password = database.get_data()[4]
@@ -101,22 +103,26 @@ def check_password_system_page():
 
 
 @app.route('/system_control', methods=['GET'])
+@login_required_custom
 def system_page():
     return render_template("systemcontroll.html", title="System Control")
 
 
 @app.route('/all_file')
+@login_required_custom
 def all_file_page():
     return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='all_file')
 
 
 @app.route('/all_file/<path:link>')
+@login_required_custom
 @check_dir_flask
 def controls(link):
     return render_template("list_folders.html", title=link, items=','.join(list_file(['*'], link)), typs="dl_file")
 
 
 @app.route('/file/<path:link>')
+@login_required_custom
 @check_dir_flask
 def download_file(filename):
     filename = edit_path_windows_other(filename)
@@ -127,11 +133,13 @@ def download_file(filename):
 
 
 @app.route('/send', methods=['GET'])
+@login_required_custom
 def uploads_file():
     return render_template('send.html', title="Send")
 
 
 @app.route('/send', methods=['POST'])
+@login_required_custom
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
