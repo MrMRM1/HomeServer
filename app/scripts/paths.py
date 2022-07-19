@@ -1,6 +1,7 @@
 import os
 
 from flask import abort
+from flask_login import current_user
 
 from .sqllite import Database
 
@@ -33,16 +34,27 @@ def list_file(format_file: list, path: str) -> list:
     return files
 
 
-def list_dir() -> str:
+def list_dir() -> list:
     """
     :return: Returns the list of folders stored in the database
     """
+    def data_to_list(data: str) -> list:
+        return data.split(',')
+
     database = Database()
+    user_data = database.get_data()
+    username = current_user.username
     try:
-        dirc = database.get_data()[0].split(',')
+        if user_data[11] == '1':
+            if username == user_data[12]:
+                dirs = data_to_list(user_data[0])
+            else:
+                dirs = data_to_list(database.get_user_data(username)[3])
+        else:
+            dirs = data_to_list(user_data[0])
     except AttributeError:
-        dirc = []
-    return dirc
+        dirs = []
+    return dirs
 
 
 def _check(path: str) -> bool:
