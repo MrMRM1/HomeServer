@@ -14,6 +14,7 @@ from picture import picture
 from scripts.paths import check_dir_flask, list_dir, list_file, edit_path_windows_other
 from scripts.system_control import shutdown_sleep_thread
 from admin.scripts.user import User
+from admin.scripts.login import user_login, error_login
 
 app = Flask(__name__)
 app.secret_key = "add your secret key"
@@ -34,6 +35,35 @@ def login():
     if database.get_data()[14] == '1':
         guest = True
     return render_template('login.html', guest=guest)
+
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    data = database.get_data()
+    if 'sing_in' in request.form:
+
+        username = request.form['username_home']
+        password = sha256(request.form['password'].encode()).hexdigest()
+
+        if username == '' or password == '':
+            return error_login(data[14])
+
+        # admin user
+        if username == data[12]:
+            if data[13] == password:
+                return user_login(username)
+            else:
+                return error_login(data[14])
+        # Other users
+        else:
+            user_data = database.get_user_data(username)
+            if user_data is not None and password == user_data[2]:
+                return user_login(username)
+            else:
+                return error_login(data[14])
+
+    elif 'guest' in request.form and data[14] == '1':
+        return user_login('guest')
 
 
 @login_manager.user_loader
