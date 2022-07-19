@@ -81,3 +81,5 @@ class Database:
         self.data.commit()
         return self.get_user_data(username)
 
+
+database = Database()
