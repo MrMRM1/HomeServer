@@ -1,3 +1,4 @@
+import re
 from functools import wraps
 
 from flask_login import login_required, login_user
@@ -29,4 +30,7 @@ def error_login(guest_status):
 
 def user_login(username):
     login_user(User(username))
-    return redirect(request.args['next'])
+    url = request.args['next']
+    if re.findall(r'^http', url):
+        url = '/'
+    return redirect(url)
