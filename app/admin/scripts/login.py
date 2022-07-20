@@ -31,6 +31,6 @@ def error_login(guest_status):
 def user_login(username):
     login_user(User(username))
     url = request.args['next']
-    if re.findall(r'^http', url):
+    if re.findall(r'^http', url) or re.findall(r'^//', url):
         url = '/'
     return redirect(url)
