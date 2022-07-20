@@ -1,7 +1,7 @@
 import re
 from functools import wraps
 
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, current_user
 from flask import render_template, redirect, request
 
 from app.scripts.sqllite import database
@@ -9,7 +9,6 @@ from .user import User
 
 
 def login_required_custom(func):
-
     @wraps(func)
     def decorated_view(*args, **kwargs):
         if database.get_data()[11] == '1':
@@ -30,7 +29,10 @@ def error_login(guest_status):
 
 def user_login(username):
     login_user(User(username))
-    url = request.args['next']
-    if re.findall(r'^http', url) or re.findall(r'^//', url):
+    try:
+        url = request.args['next']
+        if re.findall(r'^http', url) or re.findall(r'^//', url):
+            url = '/'
+    except:
         url = '/'
     return redirect(url)
