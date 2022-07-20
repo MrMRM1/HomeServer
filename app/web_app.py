@@ -3,7 +3,7 @@ from hashlib import sha256
 from threading import Thread
 
 from flask import Flask, render_template, send_from_directory, request, make_response, jsonify
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 from scripts.sqllite import database
 from scripts.filename import pathfile
@@ -75,7 +75,16 @@ def load_user(username):
 @app.route('/')
 @login_required_custom
 def home_page():
-    return render_template("home.html", title="Home")
+    data = database.get_data()
+    if data[11] == '1':
+        username = current_user.username
+        if username == data[12]:
+            return render_template("home.html", title="Home", login_status=False)
+        else:
+            user_data = ','.join(database.get_user_data(username)[5:12])
+            return render_template("home.html", title="Home", login_status=True, data=user_data)
+    else:
+        return render_template("home.html", title="Home", login_status=False)
 
 
 @app.route('/system_control', methods=['POST'])
