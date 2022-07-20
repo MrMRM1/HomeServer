@@ -37,9 +37,16 @@ function replace_me(text, a, b){
     return text.join(b)
 }
 
+function check_root(path){
+    for (const i in datas){
+        return datas[i].includes(path);
+    }
+}
+
 function click_btn(elmt){
     let url;
     let dirs = [];
+    let temp_root;
     if (typs !== 'dl_file') {
         if (elmt === 'Open%20the%20folder') {
             url = '/' + typs + '/' + root;
@@ -70,7 +77,6 @@ function click_btn(elmt){
             } else {
                 creator(dirs)
             }
-
 
         }
     }
@@ -110,10 +116,10 @@ function creator(dirs){
 
                 if (typs === 'dl_file'){
 
-                    $('#group' + (i)).append(text_make((i+1), 'download', 'href="/file/'+ replace_me(dirs[(i+1)])+'"'))
+                    $('#group' + (i)).append(text_make((i+1), 'download', 'href="/file/'+ replace_me(dirs[(i+1)])+'"'));
                 }
                 else {
-                    $('#group' + (i)).append(text_make((i+1)))
+                    $('#group' + (i)).append(text_make((i+1)));
                 }
             }
 
@@ -130,15 +136,16 @@ else {
 }
 window.onhashchange = function() {
     const path = decodeURI(window.location.hash.replace('#', ''));
-    if (root !== path){
+    if ((root !== path) && (check_root(path))){
         location_dir = path.split('/').length;
-        root = path
-        dirs = cwd(datas, location_dir)
-        creator(dirs)
+        root = path;
+        dirs = cwd(datas, location_dir);
+        creator(dirs);
     }
 
 }
 function updateHistory(curr) {
     window.location.hash = curr;
+
  }
 
