@@ -5,46 +5,43 @@
 {% block icon_title %}{{ url_for('static', filename='icon/icon.ico')}}{% endblock %}
 
 {% block body %}
-    <div class="home_page d-flex justify-content-center ">
+    <div id="data" data-user="{{ data }}" data-login_status="{{ login_status }}"></div>
+    <div class="d-flex justify-content-center ">
 
-        <div class="home_box col-8 mt-2">
-            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
-                <a class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/video">
-                    <h1 class="mt-auto mb-auto">Video</h1>
-                    <img src="{{ url_for('static', filename='icon/video.png')}}" class="col-2">
-                </a>
-                <a class="btn btn-success m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/audio">
-                    <h1 class="mt-auto mb-auto">Audio</h1>
-                    <img src="{{ url_for('static', filename='icon/audio.png')}}" class="col-2">
-                </a>
-            </div>
-            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
-                <a class="btn btn-danger m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/pdf">
-                    <h1 class="mt-auto mb-auto">PDF</h1>
-                    <img src="{{ url_for('static', filename='icon/pdf.png')}}" class="col-2">
-                </a>
-                <a class="btn btn-warning m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/all_file">
-                    <h1 class="mt-auto mb-auto">Receive</h1>
-                    <img src="{{ url_for('static', filename='icon/download.png')}}" class="col-2">
-                </a>
-            </div>
-            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
-                <a class="btn btn-info m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/send">
-                    <h1 class="mt-auto mb-auto">Send</h1>
-                    <img src="{{ url_for('static', filename='icon/upload.png')}}" class="col-2">
-                </a>
-                <a class="btn btn-primary m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/system_control">
-                    <h1 class="mt-auto mb-auto">System Control</h1>
-                    <img src="{{ url_for('static', filename='icon/system.png')}}" class="col-2">
-                </a>
-            </div>
-            <div class="d-md-flex ms-auto me-auto justify-content-md-around">
-                <a class="btn btn-success m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="/picture">
-                    <h1 class="mt-auto mb-auto">Picture</h1>
-                    <img src="{{ url_for('static', filename='icon/picture.png')}}" class="col-2">
-                </a>
-            </div>
+        <div id="list" class="home_box col-8 mt-2">
+
         </div>
 
     </div>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script>
+        const color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info']
+        const buttons = {'Video': {'icon': 'video.png', 'href': '/video'}, 'Audio': {'icon': 'audio.png', 'href': '/audio'}, 'PDF': {'icon': 'pdf.png', 'href': '/pdf'}, 'Receive': {'icon': 'download.png', 'href': '/all_file'}, 'Send': {'icon': 'upload.png', 'href': '/send'}, 'System Control': {'icon': 'system.png', 'href': '/system_control'}, 'Picture': {'icon': 'picture.png', 'href': '/picture'}}
+        const data = $('#data').data()
+        const data_user = data['user'].split(',')
+        const login_status = data['login_status']
+        const key_buttons = Object.keys(buttons);
+        const len_buttons = key_buttons.length;
+        function creat_button(i, href, text, icon){
+            return '<a class="btn '+ color[i % 5] +' m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="'+ href +'"><h1 class="mt-auto mb-auto">'+ text +'</h1><img src="/static/icon/'+ icon +'" class="col-2"></a>'
+        }
+        var j = 0;
+        var grp = 0;
+        var itm = 0;
+        $('#list').append('<div id="group'+grp+'" class="d-md-flex ms-auto me-auto justify-content-md-around"></div>')
+        for (let i =0; i < len_buttons; i++){
+            if (j == 2){
+                j = 0;
+                grp++
+                $('#list').append('<div id="group'+grp+'" class="d-md-flex ms-auto me-auto justify-content-md-around"></div>')
+            }
+            if (((i !== len_buttons) && (data_user[i] === '1')) || (login_status === 'False')){
+                $('#group'+grp).append(creat_button(itm, buttons[key_buttons[i]]['href'], key_buttons[i], buttons[key_buttons[i]]['icon']));
+                j = j+1;
+                itm++
+            }
+
+        }
+    </script>
 {% endblock %}
