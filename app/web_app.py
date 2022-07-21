@@ -90,31 +90,33 @@ def home_page():
 @app.route('/system_control', methods=['POST'])
 @login_required_custom
 def check_password_system_page():
-    data = request.form['password']
-    password = database.get_data()[4]
-    alert = None
-    if data != '':
-        data = sha256(data.encode()).hexdigest()
-        if data == password:
-            if 'Sleep' in request.form:
-                sleep_thread = Thread(target=shutdown_sleep_thread, args=('Sleep',))
-                sleep_thread.start()
-                alert = 'The Sleep was successful'
-            elif 'Shutdown' in request.form:
-                shutdown_thread = Thread(target=shutdown_sleep_thread, args=('Shutdown',))
-                shutdown_thread.start()
-                alert = 'The shutdown was successful'
-        else:
-            alert = 'Password incorrect'
-    elif data == '':
-        alert = 'Fill in the password field'
-    return render_template("systemcontroll.html", title="System control", alert=alert)
+    if access_status(10):
+        data = request.form['password']
+        password = database.get_data()[4]
+        alert = None
+        if data != '':
+            data = sha256(data.encode()).hexdigest()
+            if data == password:
+                if 'Sleep' in request.form:
+                    sleep_thread = Thread(target=shutdown_sleep_thread, args=('Sleep',))
+                    sleep_thread.start()
+                    alert = 'The Sleep was successful'
+                elif 'Shutdown' in request.form:
+                    shutdown_thread = Thread(target=shutdown_sleep_thread, args=('Shutdown',))
+                    shutdown_thread.start()
+                    alert = 'The shutdown was successful'
+            else:
+                alert = 'Password incorrect'
+        elif data == '':
+            alert = 'Fill in the password field'
+        return render_template("systemcontroll.html", title="System control", alert=alert)
 
 
 @app.route('/system_control', methods=['GET'])
 @login_required_custom
 def system_page():
-    return render_template("systemcontroll.html", title="System Control")
+    if access_status(10):
+        return render_template("systemcontroll.html", title="System Control")
 
 
 @app.route('/all_file')
