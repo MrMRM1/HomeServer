@@ -14,7 +14,7 @@ from picture import picture
 from scripts.paths import check_dir_flask, list_dir, list_file, edit_path_windows_other
 from scripts.system_control import shutdown_sleep_thread
 from admin.scripts.user import User
-from admin.scripts.login import user_login, error_login, login_required_custom
+from admin.scripts.login import user_login, error_login, login_required_custom, access_status
 
 app = Flask(__name__)
 app.secret_key = "add your secret key"
@@ -120,14 +120,16 @@ def system_page():
 @app.route('/all_file')
 @login_required_custom
 def all_file_page():
-    return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='all_file')
+    if access_status(8):
+        return render_template("list_folders.html", title="List Folders", items=','.join(list_dir()), typs='all_file')
 
 
 @app.route('/all_file/<path:link>')
 @login_required_custom
 @check_dir_flask
 def controls(link):
-    return render_template("list_folders.html", title=link, items=','.join(list_file(['*'], link)), typs="dl_file")
+    if access_status(8):
+        return render_template("list_folders.html", title=link, items=','.join(list_file(['*'], link)), typs="dl_file")
 
 
 @app.route('/file/<path:link>')
@@ -144,24 +146,26 @@ def download_file(filename):
 @app.route('/send', methods=['GET'])
 @login_required_custom
 def uploads_file():
-    return render_template('send.html', title="Send")
+    if access_status(9):
+        return render_template('send.html', title="Send")
 
 
 @app.route('/send', methods=['POST'])
 @login_required_custom
 def upload_file():
-    if request.method == 'POST':
-        f = request.files['file']
-        path = database.get_data()[3]
-        try:
-            f.save(pathfile(path, f.filename))
-        except:
-            os.makedirs(f"{path}")
-            f.save(pathfile(path, f.filename))
-        res = make_response(jsonify({"message": "File uploaded"}), 200)
+    if access_status(9):
+        if request.method == 'POST':
+            f = request.files['file']
+            path = database.get_data()[3]
+            try:
+                f.save(pathfile(path, f.filename))
+            except:
+                os.makedirs(f"{path}")
+                f.save(pathfile(path, f.filename))
+            res = make_response(jsonify({"message": "File uploaded"}), 200)
 
-        return res
-    return render_template('send.html', title="Send")
+            return res
+        return render_template('send.html', title="Send")
 
 
 @app.errorhandler(404)
