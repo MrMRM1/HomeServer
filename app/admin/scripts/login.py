@@ -2,7 +2,7 @@ import re
 from functools import wraps
 
 from flask_login import login_required, login_user, current_user
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, abort
 
 from app.scripts.sqllite import database
 from .user import User
@@ -36,3 +36,20 @@ def user_login(username):
     except:
         url = '/'
     return redirect(url)
+
+
+def access_status(location: int) -> bool:
+    data = database.get_data()
+    username = current_user.username
+    if data[11] == '1':
+        if data[12] == username:
+            return True
+        else:
+            user_data = database.get_user_data(username)
+            if user_data[location] == '1':
+                return True
+            else:
+                return abort(404)
+    else:
+        return True
+
