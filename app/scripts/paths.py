@@ -43,9 +43,9 @@ def list_dir() -> list:
 
     database = Database()
     user_data = database.get_data()
-    username = current_user.username
     try:
         if user_data[11] == '1':
+            username = current_user.username
             if username == user_data[12]:
                 dirs = data_to_list(user_data[0])
             else:
