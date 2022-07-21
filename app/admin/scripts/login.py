@@ -1,3 +1,4 @@
+import os.path
 import re
 from functools import wraps
 
@@ -40,8 +41,8 @@ def user_login(username):
 
 def access_status(location: int) -> bool:
     data = database.get_data()
-    username = current_user.username
     if data[11] == '1':
+        username = current_user.username
         if data[12] == username:
             return True
         else:
