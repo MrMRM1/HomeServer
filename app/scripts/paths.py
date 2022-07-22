@@ -1,6 +1,7 @@
 import os
+import time
 
-from flask import abort
+from flask import abort, request
 from flask_login import current_user
 
 from .sqllite import Database
@@ -45,7 +46,13 @@ def list_dir() -> list:
     user_data = database.get_data()
     try:
         if user_data[11] == '1':
-            username = current_user.username
+            try:
+                username = current_user.username
+            except AttributeError:
+                secret_data = database.get_secret_data(request.args['secret'])
+                if time.time() >= secret_data[2]:
+                    return []
+                username = secret_data[3]
             if username == user_data[12]:
                 dirs = data_to_list(user_data[0])
             else:
