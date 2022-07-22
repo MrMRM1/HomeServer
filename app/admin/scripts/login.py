@@ -1,4 +1,3 @@
-import os.path
 import re
 from functools import wraps
 
@@ -13,6 +12,13 @@ def login_required_custom(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         if database.get_data()[11] == '1':
+            try:
+                secret = request.args['secret']
+                secret_data = database.get_secret_data(secret)
+                if secret_data and kwargs['link'] == secret_data[1]:
+                    return func(*args, **kwargs)
+            except KeyError:
+                pass
             return login_required(func)(*args, **kwargs)
         else:
             return func(*args, **kwargs)
