@@ -4,8 +4,10 @@ from os.path import join as join_path
 from os import remove
 from re import fullmatch
 from ast import literal_eval
+import time
 
 from .network import port_flask
+from app.admin.scripts.secret_generator import random_token_url
 
 path_received = join_path(Path.home().__str__(), 'Downloads', 'HomeServerReceived')
 
@@ -86,9 +88,13 @@ class Database:
         self.my_db.execute(f'SELECT * from secrets WHERE secret = "{secret}"')
         return self.my_db.fetchone()
 
-    def new_secret(self, secret, link, time, username):
-        self.my_db.execute(f'INSERT INTO secrets (secret, link, time, username) VALUES ("{secret}", "{link}", "{time}", "{username}")')
+    def new_secret(self, link, username):
+        # 24 hours later
+        end_time = time.time() + 86400
+        secret = random_token_url(16, 32)
+        self.my_db.execute(f'INSERT INTO secrets (secret, link, time, username) VALUES ("{secret}", "{link}", {end_time}, "{username}")')
         self.data.commit()
+        return secret
 
 
 database = Database()
