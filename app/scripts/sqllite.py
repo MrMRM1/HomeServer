@@ -100,5 +100,11 @@ class Database:
         self.my_db.execute(f'SELECT * from secrets WHERE link = "{link}" AND username = "{username}" AND status = "1"')
         return self.my_db.fetchone()
 
+    def disable_secret(self, secret):
+        sql = f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"'
+        self.my_db.execute(sql)
+        self.data.commit()
+
+
 
 database = Database()
