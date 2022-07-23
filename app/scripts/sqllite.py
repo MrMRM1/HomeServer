@@ -91,7 +91,7 @@ class Database:
     def new_secret(self, link, username):
         # 24 hours later
         end_time = time.time() + 86400
-        secret = random_token_url(16, 32)
+        secret = random_token_url(32, 64)
         self.my_db.execute(f'INSERT INTO secrets (secret, link, time, username) VALUES ("{secret}", "{link}", {end_time}, "{username}")')
         self.data.commit()
         return secret
@@ -104,7 +104,6 @@ class Database:
         sql = f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"'
         self.my_db.execute(sql)
         self.data.commit()
-
 
 
 database = Database()
