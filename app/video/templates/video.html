@@ -37,22 +37,36 @@
 
     let urlVideo = document.getElementsByTagName('video')[0].src;
     let toCopy  = document.getElementById('to-copy');
-    toCopy.innerText = urlVideo;
     btnCopy = document.getElementById( 'copy' );
+    const data = {
+        'link': decodeURI(urlVideo)
+    }
     btnCopy.addEventListener( 'click', function(){
         toCopy.hidden = false;
-        toCopy.select();
-        if ( document.execCommand( 'copy' ) ) {
-            btnCopy.classList.add( 'copied' );
-            let temp = setInterval( function(){
-                btnCopy.classList.remove( 'copied' );
-                clearInterval(temp);
-            }, 600 );
+        fetch("/show_video", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+        }).then((response) => {
+            return response.json();
+        }).then((jsonObject) => {
+            if (jsonObject.status == 200){
+                toCopy.innerText = jsonObject.url;
+                toCopy.select();
+                if ( document.execCommand( 'copy' ) ) {
+                    btnCopy.classList.add( 'copied' );
+                    let temp = setInterval( function(){
+                        btnCopy.classList.remove( 'copied' );
+                        clearInterval(temp);
+                    }, 40 );
+                    showAlert('Copied!', 'alert-success');
+                }
+            }
+            else {
+                showAlert('Error copying', 'alert-warning');
+            }
             toCopy.hidden = true;
-            showAlert('Copied!', 'alert-success');
-        } else {
-            showAlert('Error copying', 'alert-warning');
-        }
+        });
 
         return false;
     } );
