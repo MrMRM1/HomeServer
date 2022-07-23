@@ -86,7 +86,12 @@ class Database:
 
     def get_secret_data(self, secret):
         self.my_db.execute(f'SELECT * from secrets WHERE secret = "{secret}" AND status = "1"')
-        return self.my_db.fetchone()
+        data = self.my_db.fetchone()
+        # 24 hours later
+        if data[2] > time.time() + 86400:
+            self.disable_secret(data[0])
+            return False
+        return data
 
     def new_secret(self, link, username):
         # 24 hours later
