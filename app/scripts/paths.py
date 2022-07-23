@@ -64,7 +64,7 @@ def list_dir() -> list:
     return dirs
 
 
-def _check(path: str) -> bool:
+def check_path(path: str) -> bool:
     """
    Check if the file is available through the page
    :param path: The requested file path on the page
@@ -85,7 +85,7 @@ def check_dir_flask(function):
     Decorator If access to the directory is allowed, the function is executed; otherwise, it redirects to the path_redirect
     """
     def check(link):
-        if _check(link):
+        if check_path(link):
             return function(link)
         else:
             return abort(404)
