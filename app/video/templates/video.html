@@ -51,7 +51,7 @@
             return response.json();
         }).then((jsonObject) => {
             if (jsonObject.status == 200){
-                toCopy.innerText = jsonObject.url;
+                toCopy.innerText = encodeURI(jsonObject.url);
                 toCopy.select();
                 if ( document.execCommand( 'copy' ) ) {
                     btnCopy.classList.add( 'copied' );
