@@ -41,14 +41,17 @@ def show_video(link):
 def creat_secret():
     data = json.loads(request.data)
     link = data['link'].partition('file/')[2]
+    username = current_user.username
     if check_path(link):
-        username = current_user.username
         old_secret = database.secret_check(username, link)
-        # 2 hours later
-        if old_secret[2] > time.time() + 79200:
-            secret = old_secret[0]
+        if old_secret is not None:
+            # 2 hours later
+            if old_secret[2] > time.time() + 79200:
+                secret = old_secret[0]
+            else:
+                database.disable_secret(old_secret[0])
+                secret = database.new_secret(link, username)
         else:
-            database.disable_secret(old_secret[0])
             secret = database.new_secret(link, username)
         return jsonify(status=200, url=request.headers['Origin']+'/file/'+link+'?secret='+secret), 200
     else:
