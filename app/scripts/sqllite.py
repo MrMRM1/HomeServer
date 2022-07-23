@@ -85,7 +85,7 @@ class Database:
         return self.get_user_data(username)
 
     def get_secret_data(self, secret):
-        self.my_db.execute(f'SELECT * from secrets WHERE secret = "{secret}"')
+        self.my_db.execute(f'SELECT * from secrets WHERE secret = "{secret}" AND status = "1"')
         return self.my_db.fetchone()
 
     def new_secret(self, link, username):
