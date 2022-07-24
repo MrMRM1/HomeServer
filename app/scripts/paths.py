@@ -35,7 +35,7 @@ def list_file(format_file: list, path: str) -> list:
     return files
 
 
-def list_dir() -> list:
+def list_dir(ftp=False, username=None) -> list:
     """
     :return: Returns the list of folders stored in the database
     """
@@ -45,23 +45,25 @@ def list_dir() -> list:
     database = Database()
     user_data = database.get_data()
     try:
-        if user_data[11] == '1':
-            try:
-                username = current_user.username
-            except AttributeError:
-                secret_data = database.get_secret_data(request.args['secret'])
-                if time.time() >= secret_data[2]:
-                    return []
-                username = secret_data[3]
-            if username == user_data[12]:
-                dirs = data_to_list(user_data[0])
-            else:
-                dirs = data_to_list(database.get_user_data(username)[3])
+        if ftp:
+            return []
         else:
-            dirs = data_to_list(user_data[0])
+            if user_data[11] == '1':
+                try:
+                    username = current_user.username
+                except AttributeError:
+                    secret_data = database.get_secret_data(request.args['secret'])
+                    if time.time() >= secret_data[2]:
+                        return []
+                    username = secret_data[3]
+                if username == user_data[12]:
+                    return data_to_list(user_data[0])
+                else:
+                    return data_to_list(database.get_user_data(username)[3])
+            else:
+                return data_to_list(user_data[0])
     except AttributeError:
-        dirs = []
-    return dirs
+        return []
 
 
 def check_path(path: str) -> bool:
