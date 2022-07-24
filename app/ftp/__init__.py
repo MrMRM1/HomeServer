@@ -5,7 +5,8 @@ from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 from pyftpdlib.filesystems import AbstractedFS
 
-from ftp.ftp_scripts.filesystems import listdir, chdir, mkdir, open_fs
+from app.ftp.ftp_scripts.filesystems import listdir, chdir, mkdir, open_fs
+from app.ftp.ftp_scripts.handlers import run_as_current_user
 
 
 def ftp_server(data, ip):
@@ -35,6 +36,7 @@ def ftp_server(data, ip):
     abstracted_fs.open = open_fs
 
     handler.abstracted_fs = abstracted_fs
+    handler.run_as_current_user = run_as_current_user
 
     # Define a customized banner (string returned when client connects)
     handler.banner = "Welcome to HomeServer FTP "
