@@ -26,6 +26,12 @@ class Database:
                     self.my_db.execute("SELECT * FROM users")
                     users_data = self.my_db.fetchall()
                     self.update_data_user(data, users_data)
+                try:
+                    self.my_db.execute("SELECT * from secrets")
+                    self.my_db.fetchone()
+                except (sqlite3.OperationalError, TypeError):
+                    self.update_data_user(data, users_data)
+
             except (sqlite3.OperationalError, TypeError):
                 self.update_data_user(data, None)
 
