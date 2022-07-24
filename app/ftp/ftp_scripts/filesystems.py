@@ -4,13 +4,14 @@ from app.scripts.paths import list_dir
 from app.scripts.sqllite import Database
 
 
-def listdir(self, root: str) -> list:
+def listdir(self, root: str, username: str) -> list:
     """
     It takes the root and returns the list of allowed directories
+    :param username: username
     :param root:  path root
     :return: the list of allowed directories
     """
-    allowed = list_dir(ftp=True, username='guest')
+    allowed = list_dir(ftp=True, username=username)
     list_dir_allowed = []
     list_dir_root = os.listdir(root)
     for i in list_dir_root:
@@ -27,9 +28,10 @@ def listdir(self, root: str) -> list:
     return list_dir_allowed
 
 
-def get_root(advance: int = 2) -> list:
+def get_root(advance: int = 2, username: str = None) -> list:
     """
     It extracts roots from inside the paths as much as it advances
+    :param username: username
     :param advance: amount of advance
     :return: List of roots
     examole :
@@ -38,7 +40,7 @@ def get_root(advance: int = 2) -> list:
 
         return: ['C:\\user', 'E:\\Download', 'E:\\Music', 'C:\\', 'E:\\']
     """
-    allowlist = list_dir(ftp=True, username='guest')
+    allowlist = list_dir(ftp=True, username=username)
     roots = []
 
     def appdend_root(index=1):
@@ -52,13 +54,14 @@ def get_root(advance: int = 2) -> list:
     return roots
 
 
-def allowed_dir(root: str) -> bool:
+def allowed_dir(root: str, username: str) -> bool:
     """
     Checks if path access is allowed
+    :param username: username
     :param root: path
     :return: bool
     """
-    allowed_list = list_dir(ftp=True, username='guest')
+    allowed_list = list_dir(ftp=True, username=username)
     root = root.replace('\\', '/')
     if os.path.isfile(root):
         if os.path.dirname(root) in allowed_list:
@@ -70,20 +73,20 @@ def allowed_dir(root: str) -> bool:
     return False
 
 
-def chdir(self, path):
+def chdir(self, path, username):
     """
     If the access is allowed, the program continues, otherwise it returns an error.
     """
-    if allowed_dir(path):
+    if allowed_dir(path, username):
         os.chdir(path)
         self.cwd = self.fs2ftp(path)
     else:
         raise OSError(1, 'Operation not permitted')
 
 
-def mkdir(self, path):
+def mkdir(self, path, username):
     """Create the specified directory."""
-    allowed_list = list_dir(ftp=True, username='guest')
+    allowed_list = list_dir(ftp=True, username=username)
     path = path.replace('\\', '/')
     if os.path.dirname(path) in allowed_list:
         database = Database()
@@ -95,11 +98,11 @@ def mkdir(self, path):
         raise OSError(1, 'Operation not permitted')
 
 
-def open_fs(self, filename, mode):
+def open_fs(self, filename, mode, username):
     """
     If the access is allowed, the program continues, otherwise it returns an error.
     """
-    allowed_list = list_dir(ftp=True, username='guest')
+    allowed_list = list_dir(ftp=True, username=username)
     if os.path.dirname(filename.replace('\\', '/')) in allowed_list:
         return open(filename, mode)
     else:
