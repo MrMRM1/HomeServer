@@ -159,7 +159,7 @@ class Setting:
 
         self.server_enable = IntVar(self.tab_ftp_server)
         self.server_enable.set(int(self.data[6]))
-        Checkbutton(self.tab_ftp_server, text="FTP Server Enable", command=click_change_ftp_server,
+        Checkbutton(self.tab_ftp_server, text="FTP Server", command=click_change_ftp_server,
                     font=('arial', 10, 'bold'), variable=self.server_enable).place(x=10, y=10)
 
         Label(self.tab_ftp_server, text="FTP Server Port :", font=('arial', 10, 'bold'), ).place(x=270, y=15)
@@ -222,7 +222,7 @@ class Setting:
     def more(self):
         self.run_background = IntVar(self.tab_more)
         self.run_background.set(int(self.data[10]))
-        Checkbutton(self.tab_more, text="Enable run in the background", font=('arial', 10, 'bold'),
+        Checkbutton(self.tab_more, text="Run in the background", font=('arial', 10, 'bold'),
                     variable=self.run_background).place(x=10, y=10)
 
         Button(self.tab_more, text="Save", font=('arial', 10, 'bold'),
@@ -267,7 +267,7 @@ class Setting:
 
         self.login_status = IntVar(self.tab_login_page)
         self.login_status.set(int(self.data[11]))
-        Checkbutton(self.tab_login_page, text="Login page Enable", command=click_change_login,
+        Checkbutton(self.tab_login_page, text="Login page", command=click_change_login,
                     font=('arial', 10, 'bold'), variable=self.login_status).place(x=10, y=10)
 
         Label(self.tab_login_page, text="Username: ", font=('arial', 10, 'bold'), ).place(x=10, y=45)
