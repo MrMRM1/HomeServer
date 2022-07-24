@@ -171,7 +171,7 @@ class Setting:
         Label(self.tab_ftp_server, text="FTP Server access path: ", font=('arial', 10, 'bold'), ).place(x=10, y=60)
 
         self.textvariable_ftp_path = StringVar()
-        root = get_root()
+        root = get_root(username=self.data[12])
         combobox_ftp = ttk.Combobox(self.tab_ftp_server, values=root, width=20,
                                     textvariable=self.textvariable_ftp_path, state='readonly', )
         combobox_ftp.place(x=170, y=60)
