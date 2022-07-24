@@ -1,7 +1,7 @@
 import os
 
-from scripts.paths import list_dir
-from scripts.sqllite import Database
+from app.scripts.paths import list_dir
+from app.scripts.sqllite import Database
 
 
 def listdir(self, root: str) -> list:
