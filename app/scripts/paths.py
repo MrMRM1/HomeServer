@@ -42,11 +42,17 @@ def list_dir(ftp=False, username=None) -> list:
     def data_to_list(data: str) -> list:
         return data.split(',')
 
+    def get_path_username(user):
+        if user == user_data[12]:
+            return data_to_list(user_data[0])
+        else:
+            return data_to_list(database.get_user_data(user)[3])
+
     database = Database()
     user_data = database.get_data()
     try:
         if ftp:
-            return []
+            return get_path_username(username)
         else:
             if user_data[11] == '1':
                 try:
@@ -56,10 +62,7 @@ def list_dir(ftp=False, username=None) -> list:
                     if time.time() >= secret_data[2]:
                         return []
                     username = secret_data[3]
-                if username == user_data[12]:
-                    return data_to_list(user_data[0])
-                else:
-                    return data_to_list(database.get_user_data(username)[3])
+                return get_path_username(username)
             else:
                 return data_to_list(user_data[0])
     except AttributeError:
