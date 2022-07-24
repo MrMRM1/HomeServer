@@ -10,7 +10,7 @@ def listdir(self, root: str) -> list:
     :param root:  path root
     :return: the list of allowed directories
     """
-    allowed = list_dir()
+    allowed = list_dir(ftp=True, username='guest')
     list_dir_allowed = []
     list_dir_root = os.listdir(root)
     for i in list_dir_root:
@@ -38,7 +38,7 @@ def get_root(advance: int = 2) -> list:
 
         return: ['C:\\user', 'E:\\Download', 'E:\\Music', 'C:\\', 'E:\\']
     """
-    allowlist = list_dir()
+    allowlist = list_dir(ftp=True, username='guest')
     roots = []
 
     def appdend_root(index=1):
@@ -58,7 +58,7 @@ def allowed_dir(root: str) -> bool:
     :param root: path
     :return: bool
     """
-    allowed_list = list_dir()
+    allowed_list = list_dir(ftp=True, username='guest')
     root = root.replace('\\', '/')
     if os.path.isfile(root):
         if os.path.dirname(root) in allowed_list:
@@ -83,7 +83,7 @@ def chdir(self, path):
 
 def mkdir(self, path):
     """Create the specified directory."""
-    allowed_list = list_dir()
+    allowed_list = list_dir(ftp=True, username='guest')
     path = path.replace('\\', '/')
     if os.path.dirname(path) in allowed_list:
         database = Database()
@@ -99,7 +99,7 @@ def open_fs(self, filename, mode):
     """
     If the access is allowed, the program continues, otherwise it returns an error.
     """
-    allowed_list = list_dir()
+    allowed_list = list_dir(ftp=True, username='guest')
     if os.path.dirname(filename.replace('\\', '/')) in allowed_list:
         return open(filename, mode)
     else:
