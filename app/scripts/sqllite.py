@@ -85,12 +85,12 @@ class Database:
         self.my_db.execute(sql)
         self.data.commit()
 
-    def new_user(self, username, password, paths):
+    def new_user(self, username: str, password: str, paths: str):
         self.my_db.execute(f'INSERT INTO users (username, password, paths) VALUES ("{username}", "{password}", "{paths}")')
         self.data.commit()
         return self.get_user_data(username)
 
-    def get_secret_data(self, secret):
+    def get_secret_data(self, secret: str):
         self.my_db.execute(f'SELECT * from secrets WHERE secret = "{secret}" AND status = "1"')
         data = self.my_db.fetchone()
         # 24 hours later
@@ -99,7 +99,7 @@ class Database:
             return False
         return data
 
-    def new_secret(self, link, username):
+    def new_secret(self, username: str, link: str):
         # 24 hours later
         end_time = time.time() + 86400
         secret = random_token_url(32, 64)
@@ -107,11 +107,11 @@ class Database:
         self.data.commit()
         return secret
 
-    def secret_check(self, username, link):
+    def secret_check(self, username: str, link: str):
         self.my_db.execute(f'SELECT * from secrets WHERE link = "{link}" AND username = "{username}" AND status = "1"')
         return self.my_db.fetchone()
 
-    def disable_secret(self, secret):
+    def disable_secret(self, secret: str):
         sql = f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"'
         self.my_db.execute(sql)
         self.data.commit()
