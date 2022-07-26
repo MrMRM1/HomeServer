@@ -1,7 +1,7 @@
 import os
 
 from app.scripts.paths import list_dir
-from app.scripts.sqllite import Database
+from app.scripts.sqllite import database
 
 
 def listdir(self, root: str, username: str) -> list:
@@ -89,7 +89,6 @@ def mkdir(self, path, username):
     allowed_list = list_dir(ftp=True, username=username)
     path = path.replace('\\', '/')
     if os.path.dirname(path) in allowed_list:
-        database = Database()
         os.mkdir(path)
         list_path = database.get_data()[0].split(',')
         list_path.append(path)
