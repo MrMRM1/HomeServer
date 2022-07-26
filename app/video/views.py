@@ -50,9 +50,9 @@ def creat_secret():
                 secret = old_secret[0]
             else:
                 database.disable_secret(old_secret[0])
-                secret = database.new_secret(link, username)
+                secret = database.new_secret(username, link)
         else:
-            secret = database.new_secret(link, username)
+            secret = database.new_secret(username, link)
         return jsonify(status=200, url=request.headers['Origin']+'/file/'+link+'?secret='+secret), 200
     else:
         return jsonify(status=403, text='Access is not allowed'), 200
