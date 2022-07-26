@@ -1,10 +1,10 @@
 import os
 import platform
-import re
 from hashlib import sha256
 from tkinter import filedialog, messagebox, Label, Button, Entry, ttk, Toplevel, Checkbutton, IntVar, StringVar
 
 from app.ftp.ftp_scripts.filesystems import get_root
+from app.admin.scripts.validity_check import username_check, password_check
 
 if platform.system() != 'Windows':
     import subprocess
@@ -252,8 +252,8 @@ class Setting:
             password = password_box.get()
             password_v = password_v_box.get()
             if self.login_status.get() == 1:
-                if username_box.get() is not None and re.findall(r'^(?=.{6,20}$)[a-zA-Z0-9]+$', username):
-                    if password == password_v and password is not None and re.findall(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", password):
+                if username_box.get() is not None and username_check(username):
+                    if password == password_v and password is not None and password_check(password):
                         self.database.write_data('1', 'login_status')
                         self.database.write_data(username, 'admin_username')
                         self.database.write_data(sha256(password.encode()).hexdigest(), 'admin_password')
@@ -284,5 +284,3 @@ class Setting:
         Button(self.tab_login_page, text="Save", font=('arial', 10, 'bold'),
                command=_save_login_page).place(relx=0.5, rely=0.7, anchor="center")
         click_change_login()
-
-
