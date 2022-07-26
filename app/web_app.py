@@ -11,6 +11,7 @@ from video import video
 from audio import audio
 from pdf import pdf
 from picture import picture
+from admin import admin
 from scripts.paths import check_dir_flask, list_dir, list_file, edit_path_windows_other
 from scripts.system_control import shutdown_sleep_thread
 from admin.scripts.user import User
@@ -23,6 +24,7 @@ app.register_blueprint(video)
 app.register_blueprint(audio)
 app.register_blueprint(pdf)
 app.register_blueprint(picture)
+app.register_blueprint(admin)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
