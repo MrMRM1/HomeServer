@@ -4,7 +4,7 @@ import time
 from flask import abort, request
 from flask_login import current_user
 
-from .sqllite import Database
+from .sqllite import database
 
 
 def edit_path_windows_other(path: str) -> str:
@@ -48,7 +48,6 @@ def list_dir(ftp=False, username=None) -> list:
         else:
             return data_to_list(database.get_user_data(user)[3])
 
-    database = Database()
     user_data = database.get_data()
     try:
         if ftp:
