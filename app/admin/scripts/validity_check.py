@@ -1,5 +1,4 @@
 import re
-from json import loads
 from hashlib import sha256
 
 from flask import request, jsonify
@@ -26,7 +25,7 @@ def check_password(password: str) -> bool:
 def check_information(func):
     username_admin = database.get_data()[12]
     if current_user.username == username_admin:
-        data = loads(request.data)
+        data = request.json
         if check_username(data['username']) is False:
             return jsonify(status=11, test='Username is incorrect'), 200
         if data['username'] == username_admin or database.get_user_data(data['username']) is not None:
