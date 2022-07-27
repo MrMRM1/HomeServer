@@ -9,14 +9,14 @@ from app.scripts.sqllite import database
 from app.scripts.paths import check_path
 
 
-def username_check(username: str) -> bool:
+def check_username(username: str) -> bool:
     if re.match(r'^(?=.{6,20}$)[a-zA-Z0-9]+$', username):
         return True
     else:
         return False
 
 
-def password_check(password: str) -> bool:
+def check_password(password: str) -> bool:
     if re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", password):
         return True
     else:
@@ -27,11 +27,11 @@ def check_information(func):
     username_admin = database.get_data()[12]
     if current_user.username == username_admin:
         data = loads(request.data)
-        if username_check(data['username']) is False:
+        if check_username(data['username']) is False:
             return jsonify(status=11, test='Username is incorrect'), 200
         if data['username'] == username_admin or database.get_user_data(data['username']) is not None:
             return jsonify(status=12, test='The username is already available'), 200
-        if password_check(data['password']) is False:
+        if check_password(data['password']) is False:
             return jsonify(status=13, test='Password is incorrect'), 200
         if len(data['services'].keys()) != 8:
             return jsonify(status=14, test='Services are not complete'), 200
