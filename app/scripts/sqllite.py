@@ -17,18 +17,15 @@ class Database:
         self.data = sqlite3.connect('data.db', check_same_thread=False)
         self.my_db = self.data.cursor()
         try:
-            self.my_db.execute(f"SELECT * from data_user")
-            data = self.my_db.fetchone()
+            data = self.fetchone(f"SELECT * from data_user")
             try:
-                self.my_db.execute("SELECT * FROM users LIMIT 1")
-                users_data = self.my_db.fetchone()
+                users_data = self.fetchone("SELECT * FROM users LIMIT 1")
                 if len(data) < 15 or len(users_data) < 12:
                     self.my_db.execute("SELECT * FROM users")
                     users_data = self.my_db.fetchall()
                     self.update_data_user(data, users_data)
                 try:
-                    self.my_db.execute("SELECT * from secrets")
-                    self.my_db.fetchone()
+                    self.fetchone("SELECT * from secrets")
                 except (sqlite3.OperationalError, TypeError):
                     self.update_data_user(data, users_data)
 
@@ -44,14 +41,19 @@ class Database:
             self.my_db.execute(f'CREATE TABLE secrets (secret LONGTEXT NOT NULL UNIQUE , link TEXT NOT NULL, time DATE NOT NULL, username TEXT NOT NULL, status DEFAULT "1")')
             self.data.commit()
 
-    def get_data(self):
-        self.my_db.execute(f'SELECT * from data_user WHERE data_id = "1"')
-        return self.my_db.fetchone()
-
-    def write_data(self, data, data_type):
-        sql = f'UPDATE data_user SET {data_type} = "{data}" WHERE data_id = "1"'
+    def sql_commit(self, sql):
         self.my_db.execute(sql)
         self.data.commit()
+
+    def fetchone(self, sql):
+        self.my_db.execute(sql)
+        return self.my_db.fetchone()
+
+    def get_data(self):
+        return self.fetchone(f'SELECT * from data_user WHERE data_id = "1"')
+
+    def write_data(self, data, data_type):
+        self.sql_commit(f'UPDATE data_user SET {data_type} = "{data}" WHERE data_id = "1"')
 
     def update_data_user(self, data_user, users):
         data_user = list(data_user)
@@ -77,22 +79,18 @@ class Database:
                 self.write_users_data(i, j, s[0])
 
     def get_user_data(self, username: str):
-        self.my_db.execute(f'SELECT * from users WHERE username = "{username}"')
-        return self.my_db.fetchone()
+        return self.fetchone(f'SELECT * from users WHERE username = "{username}"')
 
     def write_users_data(self, data: str, data_type: str, user_id: int):
-        sql = f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}'
-        self.my_db.execute(sql)
-        self.data.commit()
+        self.sql_commit(f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}')
 
     def new_user(self, username: str, password: str, paths: str, statuses: list):
-        self.my_db.execute(f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}")')
-        self.data.commit()
+        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}")'
+        self.sql_commit(sql)
         return self.get_user_data(username)
 
     def get_secret_data(self, secret: str):
-        self.my_db.execute(f'SELECT * from secrets WHERE secret = "{secret}" AND status = "1"')
-        data = self.my_db.fetchone()
+        data = self.fetchone(f'SELECT * from secrets WHERE secret = "{secret}" AND status = "1"')
         # 24 hours later
         if data[2] > time.time() + 86400:
             self.disable_secret(data[0])
@@ -103,23 +101,19 @@ class Database:
         # 24 hours later
         end_time = time.time() + 86400
         secret = random_token_url(32, 64)
-        self.my_db.execute(f'INSERT INTO secrets (secret, link, time, username) VALUES ("{secret}", "{link}", {end_time}, "{username}")')
-        self.data.commit()
+        sql = f'INSERT INTO secrets (secret, link, time, username) VALUES ("{secret}", "{link}", {end_time}, "{username}")'
+        self.sql_commit(sql)
         return secret
 
     def secret_check(self, username: str, link: str):
-        self.my_db.execute(f'SELECT * from secrets WHERE link = "{link}" AND username = "{username}" AND status = "1"')
-        return self.my_db.fetchone()
+        return self.fetchone(f'SELECT * from secrets WHERE link = "{link}" AND username = "{username}" AND status = "1"')
 
     def disable_secret(self, secret: str):
-        sql = f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"'
-        self.my_db.execute(sql)
-        self.data.commit()
+        self.sql_commit(f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"')
 
     def update_user_information(self, user_id, username, password, paths, ftp, video, audio, pdf, receive, send, system_control, picture):
         sql = f'UPDATE users SET username = "{username}", password = "{password}", paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}"  WHERE id = "{user_id}"'
-        self.my_db.execute(sql)
-        self.data.commit()
+        self.sql_commit(sql)
 
 
 database = Database()
