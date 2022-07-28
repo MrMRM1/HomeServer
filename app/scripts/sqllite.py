@@ -81,6 +81,9 @@ class Database:
     def user_data_by_username(self, username: str):
         return self.fetchone(f'SELECT * from users WHERE username = "{username}"')
 
+    def user_data_by_id(self, user_id):
+        return self.fetchone(f'SELECT * from users WHERE id = "{user_id}"')
+
     def write_users_data(self, data: str, data_type: str, user_id: int):
         self.sql_commit(f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}')
 
