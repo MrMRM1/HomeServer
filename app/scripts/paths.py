@@ -46,7 +46,7 @@ def list_dir(ftp=False, username=None) -> list:
         if user == user_data[12]:
             return data_to_list(user_data[0])
         else:
-            return data_to_list(database.get_user_data(user)[3])
+            return data_to_list(database.user_data_by_username(user)[3])
 
     user_data = database.get_data()
     try:

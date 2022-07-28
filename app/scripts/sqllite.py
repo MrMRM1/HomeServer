@@ -78,7 +78,7 @@ class Database:
             for i, j in zip(s[1:], key):
                 self.write_users_data(i, j, s[0])
 
-    def get_user_data(self, username: str):
+    def user_data_by_username(self, username: str):
         return self.fetchone(f'SELECT * from users WHERE username = "{username}"')
 
     def write_users_data(self, data: str, data_type: str, user_id: int):
@@ -87,7 +87,7 @@ class Database:
     def new_user(self, username: str, password: str, paths: str, statuses: list):
         sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}")'
         self.sql_commit(sql)
-        return self.get_user_data(username)
+        return self.user_data_by_username(username)
 
     def get_secret_data(self, secret: str):
         data = self.fetchone(f'SELECT * from secrets WHERE secret = "{secret}" AND status = "1"')

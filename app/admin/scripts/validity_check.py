@@ -48,7 +48,7 @@ def check_information(func):
         data = request.json
         if check_username(data['username']) is False:
             return jsonify(status=11, text='Username is incorrect'), 200
-        if data['username'] == username_admin or database.get_user_data(data['username']) is not None:
+        if data['username'] == username_admin or database.user_data_by_username(data['username']) is not None:
             return jsonify(status=12, text='The username is already available'), 200
         if check_password(data['password']) is False:
             return jsonify(status=13, text='Password is incorrect'), 200

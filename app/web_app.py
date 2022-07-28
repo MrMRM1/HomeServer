@@ -58,7 +58,7 @@ def login_post():
                 return error_login(data[14])
         # Other users
         else:
-            user_data = database.get_user_data(username)
+            user_data = database.user_data_by_username(username)
             if user_data is not None and password == user_data[2]:
                 return user_login(username)
             else:
@@ -70,7 +70,7 @@ def login_post():
 
 @login_manager.user_loader
 def load_user(username):
-    if database.get_user_data(username) or database.get_data()[12] == username:
+    if database.user_data_by_username(username) or database.get_data()[12] == username:
         return User(username)
 
 
@@ -83,7 +83,7 @@ def home_page():
         if username == data[12]:
             return render_template("home.html", title="Home", login_status=False)
         else:
-            user_data = ','.join(database.get_user_data(username)[5:12])
+            user_data = ','.join(database.user_data_by_username(username)[5:12])
             return render_template("home.html", title="Home", login_status=True, data=user_data)
     else:
         return render_template("home.html", title="Home", login_status=False)

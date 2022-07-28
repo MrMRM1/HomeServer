@@ -19,7 +19,7 @@ def user_information():
     username_admin = database.get_data()[12]
     data = request.json
     if current_user.username == username_admin and username_admin != data['username']:
-        user_data = database.get_user_data(data['username'])
+        user_data = database.user_data_by_username(data['username'])
         if user_data is None:
             return jsonify(status=404, text="Username is not available"), 200
         else:

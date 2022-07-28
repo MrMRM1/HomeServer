@@ -52,7 +52,7 @@ def access_status(location: int) -> bool:
         if data[12] == username:
             return True
         else:
-            user_data = database.get_user_data(username)
+            user_data = database.user_data_by_username(username)
             if user_data[location] == '1':
                 return True
             else:
