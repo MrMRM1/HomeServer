@@ -23,14 +23,14 @@ class Database:
                 if len(data) < 15 or len(users_data) < 12:
                     self.my_db.execute("SELECT * FROM users")
                     users_data = self.my_db.fetchall()
-                    self.update_data_user(data, users_data)
+                    self.update_data_app(data, users_data)
                 try:
                     self.fetchone("SELECT * from secrets")
                 except (sqlite3.OperationalError, TypeError):
-                    self.update_data_user(data, users_data)
+                    self.update_data_app(data, users_data)
 
             except (sqlite3.OperationalError, TypeError):
-                self.update_data_user(data, None)
+                self.update_data_app(data, None)
 
         except sqlite3.OperationalError:
             self.my_db.execute(
@@ -55,7 +55,7 @@ class Database:
     def write_data(self, data, data_type):
         self.sql_commit(f'UPDATE data_user SET {data_type} = "{data}" WHERE data_id = "1"')
 
-    def update_data_user(self, data_user, users):
+    def update_data_app(self, data_user, users):
         data_user = list(data_user)
         if fullmatch(r'^\[.*]$', data_user[0]):
             data_user[0] = ','.join(literal_eval(data_user[0]))
