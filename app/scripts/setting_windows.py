@@ -261,7 +261,7 @@ class Setting:
                     else:
                         messagebox.showerror('Invalid password', 'Enter a valid Password\nMinimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&)')
                 else:
-                    messagebox.showerror('Invalid username', 'Enter a valid username\nusername is 6-20 characters long\nallowed characters a-z A-Z 0-9')
+                    messagebox.showerror('Invalid username', 'Enter a valid username\nusername is 4-20 characters long\nallowed characters a-z A-Z 0-9')
             else:
                 self.database.write_data('0', 'login_status')
 
