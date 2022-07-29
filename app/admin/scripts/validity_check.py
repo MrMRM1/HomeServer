@@ -6,6 +6,7 @@ from flask_login import current_user
 
 from app.scripts.sqllite import database
 from app.scripts.paths import check_path
+from app.admin.scripts.login import is_admin
 
 
 def check_username(username: str) -> bool:
@@ -42,27 +43,26 @@ def check_paths(data):
     return path
 
 
+@is_admin
 def check_information(func):
-    if current_user.is_admin():
-        data = request.json
-        if check_username(data['username']) is False:
-            return jsonify(status=11, text='Username is incorrect'), 200
-        if data['username'] == current_user.username or database.user_data_by_username(data['username']) is not None:
-            return jsonify(status=12, text='The username is already available'), 200
-        if check_password(data['password']) is False:
-            return jsonify(status=13, text='Password is incorrect'), 200
-        if len(data['services'].keys()) != 8:
-            return jsonify(status=14, text='Services are not complete'), 200
-        status = check_status(data)
-        if isinstance(status, list):
-            return jsonify(status=15, text=f'The status of the {status[0]} service is invalid', problem=status[0]), 200
-        path = check_paths(data)
-        if isinstance(path, list):
-            return jsonify(status=16, text='The path is invalid', problem=path[0]), 200
-        if func.__name__ == 'new_user':
-            func(data['username'], sha256(data['password'].encode()).hexdigest(), path,
-                 [data['services']['ftp'], data['services']['video'], data['services']['audio'], data['services']['pdf'],
-                  data['services']['receive'], data['services']['send'], data['services']['system_control'], data['services']['picture']])
-            return jsonify(status=200), 200
+    data = request.json
+    if check_username(data['username']) is False:
+        return jsonify(status=11, text='Username is incorrect'), 200
+    if data['username'] == current_user.username or database.user_data_by_username(data['username']) is not None:
+        return jsonify(status=12, text='The username is already available'), 200
+    if check_password(data['password']) is False:
+        return jsonify(status=13, text='Password is incorrect'), 200
+    if len(data['services'].keys()) != 8:
+        return jsonify(status=14, text='Services are not complete'), 200
+    status = check_status(data)
+    if isinstance(status, list):
+        return jsonify(status=15, text=f'The status of the {status[0]} service is invalid', problem=status[0]), 200
+    path = check_paths(data)
+    if isinstance(path, list):
+        return jsonify(status=16, text='The path is invalid', problem=path[0]), 200
+    if func.__name__ == 'new_user':
+        func(data['username'], sha256(data['password'].encode()).hexdigest(), path,
+             [data['services']['ftp'], data['services']['video'], data['services']['audio'], data['services']['pdf'],
+              data['services']['receive'], data['services']['send'], data['services']['system_control'], data['services']['picture']])
+        return jsonify(status=200), 200
 
-    return jsonify(status=403, text='Access is not allowed'), 200
