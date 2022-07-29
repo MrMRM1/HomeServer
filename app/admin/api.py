@@ -4,7 +4,7 @@ from flask_login import current_user
 from . import admin
 from .scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
-from app.admin.scripts.validity_check import check_information, check_paths, check_status
+from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username
 
 
 @admin.route('/admin/register', methods=['POST'])
@@ -40,4 +40,18 @@ def update_access():
                                      data['services']['audio'], data['services']['pdf'], data['services']['receive'],
                                      data['services']['send'], data['services']['system_control'],
                                      data['services']['picture'])
+    return jsonify(status=200), 200
+
+
+@admin.route('/admin/update_username', methods=['POST'])
+@login_required_custom
+@is_admin
+def update_username():
+    data = request.json
+    if check_username(data['username']) is False:
+        return jsonify(status=11, text='Username is incorrect'), 200
+    if database.user_data_by_username(data['username']) is not None:
+        return jsonify(status=12, text='The username is already available'), 200
+
+    database.update_user_column('username', data['username'], data['id'])
     return jsonify(status=200), 200
