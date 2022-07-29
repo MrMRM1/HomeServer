@@ -40,6 +40,7 @@ class Database:
             self.my_db.execute('INSERT INTO users (ftp_status) VALUES ("1")')
             self.my_db.execute(f'CREATE TABLE secrets (secret LONGTEXT NOT NULL UNIQUE , link TEXT NOT NULL, time DATE NOT NULL, username TEXT NOT NULL, status DEFAULT "1")')
             self.data.commit()
+            self.new_user('guest', '', '', ["1", "1", "1", "1", "0", "1", "0", "1"])
 
     def sql_commit(self, sql):
         self.my_db.execute(sql)
@@ -88,7 +89,7 @@ class Database:
         self.sql_commit(f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}')
 
     def new_user(self, username: str, password: str, paths: str, statuses: list):
-        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}")'
+        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status, receive_status, send_status, system_control_status, picture_status) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}")'
         self.sql_commit(sql)
         return self.user_data_by_username(username)
 
