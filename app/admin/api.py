@@ -1,10 +1,12 @@
+from hashlib import sha256
+
 from flask import jsonify, request
 from flask_login import current_user
 
 from . import admin
 from .scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
-from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username
+from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username, check_password
 
 
 @admin.route('/admin/register', methods=['POST'])
@@ -54,4 +56,22 @@ def update_username():
         return jsonify(status=12, text='The username is already available'), 200
 
     database.update_user_column('username', data['username'], data['id'])
+    return jsonify(status=200), 200
+
+
+@admin.route('/admin/update_password', methods=['POST'])
+@login_required_custom
+@is_admin
+def update_password():
+    data = request.json
+    user_data = database.user_data_by_username(data['username'])
+    if user_data is None:
+        return jsonify(status=17, text='Username is not available'), 200
+    if check_password(data['password']) is False:
+        return jsonify(status=13, text='Password is incorrect'), 200
+    if data['password'] != data['password_verification']:
+        return jsonify(status=18, text='The password must match the verification password'), 200
+    if data['username'] == 'guest':
+        return jsonify(status=19, text='cannot set password for guest'), 200
+    database.update_user_column('password', sha256(data['password'].encode()).hexdigest(), user_data[0])
     return jsonify(status=200), 200
