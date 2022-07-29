@@ -114,8 +114,8 @@ class Database:
     def disable_secret(self, secret: str):
         self.sql_commit(f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"')
 
-    def update_user_information(self, user_id, username, password, paths, ftp, video, audio, pdf, receive, send, system_control, picture):
-        sql = f'UPDATE users SET username = "{username}", password = "{password}", paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}"  WHERE id = "{user_id}"'
+    def update_user_information(self, username, paths, ftp, video, audio, pdf, receive, send, system_control, picture):
+        sql = f'UPDATE users SET paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}"  WHERE username = "{username}"'
         self.sql_commit(sql)
 
     def update_user_column(self, column, data, user_id):
