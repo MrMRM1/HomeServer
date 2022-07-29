@@ -54,7 +54,8 @@ def update_username():
         return jsonify(status=11, text='Username is incorrect'), 200
     if database.user_data_by_username(data['username']) is not None:
         return jsonify(status=12, text='The username is already available'), 200
-
+    if data['id'] == 1:
+        return jsonify(status=20, text='guest username cannot be changed'), 200
     database.update_user_column('username', data['username'], data['id'])
     return jsonify(status=200), 200
 
