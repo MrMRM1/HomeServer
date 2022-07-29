@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_login import current_user
 
 from . import admin
-from .scripts.login import login_required_custom
+from .scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
 from app.admin.scripts.validity_check import check_information
 
@@ -15,9 +15,10 @@ def register():
 
 @admin.route('/admin/user_information', methods=['POST'])
 @login_required_custom
+@is_admin
 def user_information():
     data = request.json
-    if current_user.is_admin() and current_user.username != data['username']:
+    if current_user.username != data['username']:
         user_data = database.user_data_by_username(data['username'])
         if user_data is None:
             return jsonify(status=404, text="Username is not available"), 200
