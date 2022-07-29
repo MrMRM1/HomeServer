@@ -2,7 +2,7 @@ import re
 from functools import wraps
 
 from flask_login import login_required, login_user, current_user
-from flask import render_template, redirect, request, abort
+from flask import render_template, redirect, request, abort, jsonify
 
 from app.scripts.sqllite import database
 from .user import User
@@ -60,3 +60,14 @@ def access_status(location: int) -> bool:
     else:
         return True
 
+
+def is_admin(function):
+
+    def check(*args, **kwargs):
+        if current_user.is_admin():
+            return function(*args, **kwargs)
+        else:
+            return jsonify(status=403, text='Access is not allowed'), 200
+
+    check.__name__ = function.__name__
+    return check
