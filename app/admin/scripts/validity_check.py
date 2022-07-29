@@ -43,12 +43,11 @@ def check_paths(data):
 
 
 def check_information(func):
-    username_admin = database.get_data()[12]
-    if current_user.username == username_admin:
+    if current_user.is_admin():
         data = request.json
         if check_username(data['username']) is False:
             return jsonify(status=11, text='Username is incorrect'), 200
-        if data['username'] == username_admin or database.user_data_by_username(data['username']) is not None:
+        if data['username'] == current_user.username or database.user_data_by_username(data['username']) is not None:
             return jsonify(status=12, text='The username is already available'), 200
         if check_password(data['password']) is False:
             return jsonify(status=13, text='Password is incorrect'), 200
