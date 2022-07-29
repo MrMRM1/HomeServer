@@ -18,13 +18,11 @@ def register():
 @is_admin
 def user_information():
     data = request.json
-    if current_user.username != data['username']:
-        user_data = database.user_data_by_username(data['username'])
-        if user_data is None:
-            return jsonify(status=404, text="Username is not available"), 200
-        else:
-            return jsonify(status=200, id=user_data[0], paths=user_data[3],
-                           services={"ftp": user_data[4], "video": user_data[5], "audio": user_data[6], "pdf": user_data[7],
-                                     "receive": user_data[8], "send": user_data[9], "system_control": user_data[10],
-                                     "picture": user_data[11]}), 200
-    return jsonify(status=403, text='Access is not allowed'), 200
+    user_data = database.user_data_by_username(data['username'])
+    if user_data is None:
+        return jsonify(status=404, text="Username is not available"), 200
+    else:
+        return jsonify(status=200, id=user_data[0], paths=user_data[3],
+                       services={"ftp": user_data[4], "video": user_data[5], "audio": user_data[6], "pdf": user_data[7],
+                                 "receive": user_data[8], "send": user_data[9], "system_control": user_data[10],
+                                 "picture": user_data[11]}), 200
