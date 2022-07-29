@@ -64,7 +64,7 @@ def access_status(location: int) -> bool:
 def is_admin(function):
 
     def check(*args, **kwargs):
-        if current_user.is_admin():
+        if current_user.is_admin() and current_user.username != request.json['username']:
             return function(*args, **kwargs)
         else:
             return jsonify(status=403, text='Access is not allowed'), 200
