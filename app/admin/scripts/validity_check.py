@@ -10,7 +10,7 @@ from app.admin.scripts.login import is_admin
 
 
 def check_username(username: str) -> bool:
-    if re.match(r'^(?=.{6,20}$)[a-zA-Z0-9]+$', username):
+    if re.match(r'^(?=.{4,20}$)[a-zA-Z0-9]+$', username):
         return True
     else:
         return False
