@@ -16,9 +16,8 @@ def register():
 @admin.route('/admin/user_information', methods=['POST'])
 @login_required_custom
 def user_information():
-    username_admin = database.get_data()[12]
     data = request.json
-    if current_user.username == username_admin and username_admin != data['username']:
+    if current_user.is_admin() and current_user.username != data['username']:
         user_data = database.user_data_by_username(data['username'])
         if user_data is None:
             return jsonify(status=404, text="Username is not available"), 200
