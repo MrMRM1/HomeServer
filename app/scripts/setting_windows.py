@@ -113,18 +113,17 @@ class Setting:
         Window related to changing the shutdown password and system sleep mode
         """
 
-        def chack_password():
+        def _save_password():
             """
              Function to check the password and confirm the password and save it in the database
             """
             password = password_box.get()
             password_v = password_v_box.get()
-            if password == password_v and password is not None:
-                password = sha256(password.encode())
-                self.database.write_data(password.hexdigest(), "password")
+            if password == password_v and password is not None and check_password(password):
+                self.database.write_data(sha256(password.encode()).hexdigest(), "password")
                 messagebox.showinfo(title="successful", message="Password set successfully")
             else:
-                messagebox.showerror(title="ERROR", message="Enter valid password")
+                messagebox.showerror(title="ERROR", message="Enter valid password\nMinimum 8 characters,\nat least one uppercase letter, \none lowercase letter, \none number and one special character (@$!%*?&)'")
 
         Label(self.tab_control_system_pas, text="Enter password: ", font=('arial', 10, 'bold')).place(x=10, y=10)
         Label(self.tab_control_system_pas, text="Repeat password for verification: ",
@@ -135,7 +134,7 @@ class Setting:
         password_v_box = Entry(self.tab_control_system_pas, font=('arial', 10, 'bold'), show="*")
         password_v_box.place(x=10, y=85, width=300)
         Button(self.tab_control_system_pas, text="Set password", font=('arial', 10, 'bold'),
-               command=chack_password).place(x=215, y=130)
+               command=_save_password).place(x=215, y=130)
 
     def _ftp_server(self):
         """
