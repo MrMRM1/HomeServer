@@ -1,7 +1,7 @@
 from flask import render_template
 
 from . import picture
-from scripts.paths import list_dir, list_file, check_dir_flask
+from app.scripts.paths import list_dir, list_file, check_dir_flask
 from app.admin.scripts.login import login_required_custom, access_status
 
 
