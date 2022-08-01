@@ -56,7 +56,7 @@ def update_username():
         return jsonify(status=12, text='The username is already available'), 200
     if data['id'] == 1:
         return jsonify(status=20, text='guest username cannot be changed'), 200
-    database.write_users_data('username', data['username'], data['id'])
+    database.write_users_data(data['username'], 'username', data['id'])
     return jsonify(status=200), 200
 
 
@@ -74,5 +74,5 @@ def update_password():
         return jsonify(status=18, text='The password must match the verification password'), 200
     if data['username'] == 'guest':
         return jsonify(status=19, text='cannot set password for guest'), 200
-    database.write_users_data('password', sha256(data['password'].encode()).hexdigest(), user_data[0])
+    database.write_users_data(sha256(data['password'].encode()).hexdigest(), 'password', user_data[0])
     return jsonify(status=200), 200
