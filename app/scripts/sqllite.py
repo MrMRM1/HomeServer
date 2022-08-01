@@ -20,7 +20,7 @@ class Database:
             data = self.fetchone(f"SELECT * from data_user")
             try:
                 users_data = self.fetchone("SELECT * FROM users LIMIT 1")
-                if len(data) < 15 or len(users_data) < 12:
+                if len(data) < 15 or len(users_data) < 13:
                     self.my_db.execute("SELECT * FROM users")
                     users_data = self.my_db.fetchall()
                     self.update_data_app(data, users_data)
@@ -37,10 +37,9 @@ class Database:
                 f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT "1" ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", run_background DEFAULT "0", login_status DEFAULT "0", admin_username TEXT NULL, admin_password TEXT NULL, guest_status DEFAULT "0")')
             self.my_db.execute('INSERT INTO data_user (data_id) VALUES ("1")')
             self.my_db.execute(f'CREATE TABLE users (id INTEGER primary key NOT NULL ,username TEXT NULL UNIQUE, password TEXT NULL, paths LONGTEXT NULL, ftp_status DEFAULT "1", video_status DEFAULT "1", audio_status DEFAULT "1",  pdf_status DEFAULT "1", receive_status DEFAULT "1",  send_status DEFAULT "1",  system_control_status DEFAULT "1",  picture_status DEFAULT "1", ftp_root TEXT NULL)')
-            self.my_db.execute('INSERT INTO users (username) VALUES ("guest")')
+            self.my_db.execute('INSERT INTO users (username, receive_status, system_control_status) VALUES ("guest", "0", "0")')
             self.my_db.execute(f'CREATE TABLE secrets (secret LONGTEXT NOT NULL UNIQUE , link TEXT NOT NULL, time DATE NOT NULL, username TEXT NOT NULL, status DEFAULT "1")')
             self.data.commit()
-            self.new_user('guest', '', '', ["1", "1", "1", "1", "0", "1", "0", "1"])
 
     def sql_commit(self, sql):
         self.my_db.execute(sql)
@@ -74,8 +73,23 @@ class Database:
     def update_users(self, data):
         key = ['username', 'password', 'paths', 'ftp_status', 'video_status', 'audio_status', 'pdf_status',
                'receive_status', 'send_status', 'system_control_status', 'picture_status', 'ftp_root']
+
+        def _data(list_data) -> list:
+            out = []
+            for i in range(3, len(key)):
+                try:
+                    out.append(list_data[i])
+                except IndexError:
+                    out.append(None)
+            return out
+
         for s in data:
             s = list(s)
+            try:
+                self.new_user(s[1], s[2], s[3], _data(s[1:]))
+                continue
+            except:
+                pass
             for i, j in zip(s[1:], key):
                 self.write_users_data(i, j, s[0])
 
@@ -88,8 +102,8 @@ class Database:
     def write_users_data(self, data: str, data_type: str, user_id: int):
         self.sql_commit(f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}')
 
-    def new_user(self, username: str, password: str, paths: str, statuses: list):
-        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status, receive_status, send_status, system_control_status, picture_status) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}")'
+    def new_user(self, username: str, password: str or None, paths: str, statuses: list):
+        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status, receive_status, send_status, system_control_status, picture_status, ftp_root) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}", "{statuses[8]}")'
         self.sql_commit(sql)
         return self.user_data_by_username(username)
 
