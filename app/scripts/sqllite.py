@@ -133,8 +133,5 @@ class Database:
         sql = f'UPDATE users SET paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}", ftp_root = "{ftp_root}"  WHERE username = "{username}"'
         self.sql_commit(sql)
 
-    def update_user_column(self, column, data, user_id):
-        self.sql_commit(f'UPDATE users SET {column} = "{data}" WHERE id = "{user_id}"')
-
 
 database = Database()
