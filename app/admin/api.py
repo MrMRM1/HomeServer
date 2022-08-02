@@ -7,6 +7,7 @@ from . import admin
 from .scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
 from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username, check_password
+from app.ftp.ftp_scripts.filesystems import get_root
 
 
 @admin.route('/admin/register', methods=['POST'])
@@ -76,3 +77,14 @@ def update_password():
         return jsonify(status=19, text='cannot set password for guest'), 200
     database.write_users_data(sha256(data['password'].encode()).hexdigest(), 'password', user_data[0])
     return jsonify(status=200), 200
+
+
+@admin.route('/admin/get_ftp_root', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_ftp_root():
+    data = request.json
+    user_data = database.user_data_by_username(data['username'])
+    if user_data is None:
+        return jsonify(status=17, text='Username is not available'), 200
+    return jsonify(status=200, roots=get_root(data['advance'], data['username'])), 200
