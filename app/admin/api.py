@@ -88,3 +88,10 @@ def get_ftp_root():
     if user_data is None:
         return jsonify(status=17, text='Username is not available'), 200
     return jsonify(status=200, roots=get_root(data['advance'], data['username'])), 200
+
+
+@admin.route('/admin/get_all_users', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_all_users():
+    return jsonify(status=200, users=database.get_all_usernames()), 200
