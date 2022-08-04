@@ -251,8 +251,11 @@ class Setting:
             password = password_box.get()
             password_v = password_v_box.get()
             if self.login_status.get() == 1:
-                if username_box.get() is not None and check_username(username):
-                    if password == password_v and password is not None and check_password(password):
+                if username_box.get() == '':
+                    self.database.write_data('1', 'login_status')
+                    messagebox.showinfo('successful', 'Settings saved successfully')
+                elif check_username(username):
+                    if password == password_v and check_password(password):
                         self.database.write_data('1', 'login_status')
                         self.database.write_data(username, 'admin_username')
                         self.database.write_data(sha256(password.encode()).hexdigest(), 'admin_password')
@@ -263,6 +266,7 @@ class Setting:
                     messagebox.showerror('Invalid username', 'Enter a valid username\nusername is 4-20 characters long\nallowed characters a-z A-Z 0-9')
             else:
                 self.database.write_data('0', 'login_status')
+                messagebox.showinfo('successful', 'Settings saved successfully')
 
         self.login_status = IntVar(self.tab_login_page)
         self.login_status.set(int(self.data[11]))
