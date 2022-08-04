@@ -2,8 +2,8 @@ import os
 from hashlib import sha256
 from threading import Thread
 
-from flask import Flask, render_template, send_from_directory, request, make_response, jsonify
-from flask_login import LoginManager, current_user
+from flask import Flask, render_template, send_from_directory, request, make_response, jsonify, redirect
+from flask_login import LoginManager, current_user, logout_user
 
 from scripts.sqllite import database
 from scripts.filename import pathfile
@@ -37,6 +37,12 @@ def login():
     if database.get_data()[14] == '1':
         guest = True
     return render_template('login.html', guest=guest)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
 
 
 @app.route('/login', methods=['POST'])
