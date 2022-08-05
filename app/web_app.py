@@ -33,10 +33,14 @@ login_manager.login_view = 'login'
 
 @app.route('/login', methods=['GET'])
 def login():
-    guest = False
-    if database.get_data()[14] == '1':
-        guest = True
-    return render_template('login.html', guest=guest)
+    try:
+        _ = current_user.username
+        return redirect('/')
+    except AttributeError:
+        guest = False
+        if database.get_data()[14] == '1':
+            guest = True
+        return render_template('login.html', guest=guest)
 
 
 @app.route('/logout')
