@@ -18,7 +18,7 @@
         <div class="col-3">
             <img src="{% block icon_title %}{% endblock icon_title %}" class="col-5 p-md-1 col-lg-3">
             {% if current_user.is_authenticated %}
-                <img src="{{ url_for('static', filename='icon/logout.png') }}" title="logout" class="col-5 p-md-1 col-lg-3">
+                <img src="{{ url_for('static', filename='icon/logout.png') }}" title="logout" class="col-5 p-md-1 col-lg-3" onclick="window.location='/logout'">
             {% endif %}
         </div>
 
