@@ -42,7 +42,7 @@ def check_update():
      using the latest version will be displayed.
     """
     try:
-        req = Request(url=f"http://mrmrm.ir/update/Home%20Server.php?v={v}", headers={'User-Agent': 'Mozilla/5.0'})
+        req = Request(url=f"https://mrmrm.ir/update/Home%20Server.php?v={v}", headers={'User-Agent': 'Mozilla/5.0'})
         data = loads(urlopen(req).read())
         if data['changes'] == '':
             messagebox.showinfo(title="updated", message="You are using the latest version")
@@ -285,9 +285,9 @@ if __name__ == '__main__':
         menubar.add_cascade(label="File", menu=filemenu)
         # help menu
         helpmenu = Menu(menubar, tearoff=0)
-        helpmenu.add_command(label="About developer", command=lambda: open_new('http://MrMRM.ir'))
+        helpmenu.add_command(label="About developer", command=lambda: open_new('https://MrMRM.ir'))
         helpmenu.add_command(label="Github", command=lambda: open_new('https://github.com/MrMRM1/HomeServer'))
-        helpmenu.add_command(label="Donate", command=lambda: open_new('http://MrMRM.ir/donate'))
+        helpmenu.add_command(label="Donate", command=lambda: open_new('https://MrMRM.ir/donate'))
         helpmenu.add_separator()
         helpmenu.add_command(label="Check Update", command=check_update)
         menubar.add_cascade(label="Help", menu=helpmenu)
