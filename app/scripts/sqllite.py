@@ -86,7 +86,7 @@ class Database:
         for s in data:
             s = list(s)
             try:
-                self.new_user(s[1], s[2], s[3], _data(s[1:]))
+                self.new_user(s[1], s[2], s[3], _data(s[1:-1]), s[-1])
                 continue
             except:
                 pass
@@ -102,8 +102,8 @@ class Database:
     def write_users_data(self, data: str, data_type: str, user_id: int):
         self.sql_commit(f'UPDATE users SET {data_type} = "{data}" WHERE id = {user_id}')
 
-    def new_user(self, username: str, password: str or None, paths: str, statuses: list):
-        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status, receive_status, send_status, system_control_status, picture_status, ftp_root) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}", "{statuses[8]}")'
+    def new_user(self, username: str, password: str or None, paths: str, statuses: list, ftp_root):
+        sql = f'INSERT INTO users (username, password, paths, ftp_status, video_status, audio_status, pdf_status, receive_status, send_status, system_control_status, picture_status, ftp_root) VALUES ("{username}", "{password}", "{paths}", "{statuses[0]}", "{statuses[1]}", "{statuses[2]}", "{statuses[3]}", "{statuses[4]}", "{statuses[5]}", "{statuses[6]}", "{statuses[7]}", "{ftp_root}")'
         self.sql_commit(sql)
         return self.user_data_by_username(username)
 
