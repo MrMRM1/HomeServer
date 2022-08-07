@@ -6,7 +6,7 @@ from flask_login import current_user
 from . import admin
 from .scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
-from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username, check_password
+from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username, check_password, check_ftp_root
 from app.ftp.ftp_scripts.filesystems import get_root
 
 
@@ -36,13 +36,14 @@ def user_information():
 @is_admin
 @check_paths
 @check_status
+@check_ftp_root
 def update_access():
     data = request.json
     database.update_user_information(data['username'], data['paths'], data['services']['ftp'],
                                      data['services']['video'],
                                      data['services']['audio'], data['services']['pdf'], data['services']['receive'],
                                      data['services']['send'], data['services']['system_control'],
-                                     data['services']['picture'])
+                                     data['services']['picture'], data['ftp_root'])
     return jsonify(status=200), 200
 
 
