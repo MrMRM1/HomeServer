@@ -1,12 +1,37 @@
 import os
 
-from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 from pyftpdlib.filesystems import AbstractedFS
 
 from app.ftp.ftp_scripts.filesystems import listdir, chdir, mkdir, open_fs
 from app.ftp.ftp_scripts.handlers import run_as_current_user
+from app.ftp.ftp_scripts.authorizers import DummySha256Authorizer
+from app.scripts.sqllite import database
+
+
+def check_login(data, authorizer):
+    perm = 'elr'
+    if data[8] == '1':
+        perm += 'm'
+    if data[9] == '1':
+        perm += 'w'
+
+    if data[11] == '1':
+
+        authorizer.add_user(data[12], data[13], os.path.realpath(data[7]), perm)
+        all_users = database.get_all_usernames()
+
+        if data[14] == '1' and all_users[0][1] == '1':
+            data_user = database.user_data_by_username(all_users[0][0])
+            authorizer.add_anonymous(homedir=os.path.realpath(data_user[12]), perm='elr')
+
+        for i in all_users[1:]:
+            if i[1] == '1':
+                data_user = database.user_data_by_username(i[0])
+                authorizer.add_user(data_user[1], data_user[2], os.path.realpath(data_user[12]))
+    else:
+        authorizer.add_anonymous(os.path.realpath(data[7]), perm=perm)
 
 
 def ftp_server(data, ip):
@@ -16,13 +41,9 @@ def ftp_server(data, ip):
     :return: Instantiate FTP server class
     """
     # Instantiate a dummy authorizer for managing 'virtual' users
-    authorizer = DummyAuthorizer()
-    perm = 'elr'
-    if data[8] == '1':
-        perm += 'm'
-    if data[9] == '1':
-        perm += 'w'
-    authorizer.add_anonymous(os.path.realpath(data[7]), perm=perm)
+    authorizer = DummySha256Authorizer()
+
+    check_login(data, authorizer)
 
     # Instantiate FTP handler class
     handler = FTPHandler
