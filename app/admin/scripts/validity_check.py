@@ -56,9 +56,26 @@ def check_paths(function):
     return check
 
 
+def check_ftp_root(function):
+
+    def check(*args, **kwargs):
+        data = request.json
+        path = data['ftp_root']
+        if path is not None:
+            roots = data['paths'].split(',')
+            for i in roots:
+                if path in i:
+                    return function(*args, **kwargs)
+        return jsonify(status=21, text='ftp_root is invalid'), 200
+
+    check.__name__ = function.__name__
+    return check
+
+
 @is_admin
 @check_paths
 @check_status
+@check_ftp_root
 def check_information(func):
     data = request.json
     if check_username(data['username']) is False:
@@ -70,6 +87,6 @@ def check_information(func):
     if func.__name__ == 'new_user':
         func(data['username'], sha256(data['password'].encode()).hexdigest(), data['paths'],
              [data['services']['ftp'], data['services']['video'], data['services']['audio'], data['services']['pdf'],
-              data['services']['receive'], data['services']['send'], data['services']['system_control'], data['services']['picture']])
+              data['services']['receive'], data['services']['send'], data['services']['system_control'], data['services']['picture']], data['ftp_root'])
         return jsonify(status=200), 200
 
