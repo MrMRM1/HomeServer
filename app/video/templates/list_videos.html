@@ -49,11 +49,15 @@
         let videos = document.getElementsByTagName('Video');
 
         function fplay(e){
-            e.currentTime=20;
+            if (e.currentTime < 20){
+                e.currentTime=20;
+            }
+            else{
+                e.currentTime = e.currentTime + 40;
+            }
             e.play();
         }
         function fpause(e){
-            e.currentTime=10;
             e.pause();
         }
     </script>
