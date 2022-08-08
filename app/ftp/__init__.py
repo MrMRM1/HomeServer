@@ -20,16 +20,14 @@ def check_login(data, authorizer):
     if data[11] == '1':
 
         authorizer.add_user(data[12], data[13], os.path.realpath(data[7]), perm)
-        all_users = database.get_all_usernames()
+        all_users = database.ftp_users()
+        start = 0
+        if data[14] == '1' and all_users[0][0] == 'guest':
+            start = 1
+            authorizer.add_anonymous(homedir=os.path.realpath(all_users[0][2]), perm='elr')
 
-        if data[14] == '1' and all_users[0][1] == '1':
-            data_user = database.user_data_by_username(all_users[0][0])
-            authorizer.add_anonymous(homedir=os.path.realpath(data_user[12]), perm='elr')
-
-        for i in all_users[1:]:
-            if i[1] == '1':
-                data_user = database.user_data_by_username(i[0])
-                authorizer.add_user(data_user[1], data_user[2], os.path.realpath(data_user[12]))
+        for i in all_users[start:]:
+            authorizer.add_user(i[0], i[1], os.path.realpath(i[2]))
     else:
         authorizer.add_anonymous(os.path.realpath(data[7]), perm=perm)
 
