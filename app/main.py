@@ -307,7 +307,7 @@ if __name__ == '__main__':
         button_run.place(x=430, y=260)
         button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=threading_stop)
         button_stop["state"] = "disabled"
-        button_stop.place(x=390, y=260)
+        button_stop.place(x=375, y=260)
         Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
         Label(root, text=f"FTP Server :", font=('arial', 10, 'bold')).place(x=40, y=290)
         icon_window(root)
