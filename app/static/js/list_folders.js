@@ -61,7 +61,11 @@ function click_btn(elmt){
             }
 
             root += replace_me(elmt, '%20', ' ')
+            console.log(root, 'ssssssssssssssss')
             if (datas.includes(root)) {
+                dirs.push('/Open the folder')
+            }
+            else if (datas.includes('/' + root)){
                 dirs.push('/Open the folder')
             }
             root += '/'
@@ -85,8 +89,23 @@ function click_btn(elmt){
 }
 
 function show_name(elmt){
-    let a = elmt.split('/')
-    return a[a.length - 1 ]
+    console.log(elmt, elmt == '')
+    if (elmt == ''){
+        if (typs !== 'dl_file'){
+            location_dir += 1
+            dirs = cwd(datas, location_dir)
+            creator(dirs)
+        }
+        else {
+            creator(datas)
+        }
+    }
+    else{
+        console.log(elmt, 'aaaaaaaaaaaaaaaaaaaaaaa')
+        let a = elmt.split('/')
+        return a[a.length - 1 ]
+    }
+
 }
 
 
