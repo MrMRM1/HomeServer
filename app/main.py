@@ -1,4 +1,9 @@
 import os
+try:
+    import sys
+    sys.path.append('/'.join(os.path.dirname(sys.modules['__main__'].__file__).split('/')[:-1]))
+except:
+    pass
 import re
 from _tkinter import TclError
 from json import loads
