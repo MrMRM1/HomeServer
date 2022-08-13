@@ -119,7 +119,9 @@ class Setting:
             """
             password = password_box.get()
             password_v = password_v_box.get()
-            if password == password_v and password is not None and check_password(password):
+            if password != password_v:
+                messagebox.showerror(title="ERROR", message="Password and verification password must be the same")
+            elif password is not None and check_password(password):
                 self.database.write_data(sha256(password.encode()).hexdigest(), "password")
                 messagebox.showinfo(title="successful", message="Password set successfully")
             else:
