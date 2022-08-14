@@ -37,7 +37,7 @@ def linux_get_process() -> list:
     :return: A list of program IDs
     """
     app_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-    cmd = "ps -x"
+    cmd = f"ps -x | grep {app_name}"
     pop = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     ids = []
     for i in pop.stdout:
