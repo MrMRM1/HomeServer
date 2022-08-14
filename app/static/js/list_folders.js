@@ -61,7 +61,7 @@ function click_btn(elmt){
             }
 
             root += replace_me(elmt, '%20', ' ')
-            console.log(root, 'ssssssssssssssss')
+
             if (datas.includes(root)) {
                 dirs.push('/Open the folder')
             }
@@ -89,7 +89,6 @@ function click_btn(elmt){
 }
 
 function show_name(elmt){
-    console.log(elmt, elmt == '')
     if (elmt == ''){
         if (typs !== 'dl_file'){
             location_dir += 1
@@ -101,7 +100,6 @@ function show_name(elmt){
         }
     }
     else{
-        console.log(elmt, 'aaaaaaaaaaaaaaaaaaaaaaa')
         let a = elmt.split('/')
         return a[a.length - 1 ]
     }
