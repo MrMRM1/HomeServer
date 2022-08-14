@@ -75,6 +75,8 @@ function click_btn(elmt){
                 if (dirs[0] !== '/Open the folder') {
                     path = dirs[0].split('/')
                     click_btn(path[path.length - 1])
+                } else if (dirs[0] === '/Open the folder'){
+                    click_btn('Open%20the%20folder')
                 } else {
                     creator(dirs)
                 }
