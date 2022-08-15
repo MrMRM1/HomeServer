@@ -123,11 +123,14 @@ def del_path(*args):
     """
     :return: Function to delete the selected path from the database and the list of folders
     """
-    cs = list_box.curselection()[0]
-    paths = database.get_data()[0].split(',')
-    del paths[cs]
-    write_paths(paths)
-    load_data()
+    try:
+        cs = list_box.curselection()[0]
+        paths = database.get_data()[0].split(',')
+        del paths[cs]
+        write_paths(paths)
+        load_data()
+    except IndexError:
+        pass
 
 
 def load_data():
