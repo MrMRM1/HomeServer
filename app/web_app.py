@@ -184,4 +184,4 @@ def upload_file():
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html', message=e.description), 404
