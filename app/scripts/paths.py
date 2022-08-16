@@ -25,6 +25,8 @@ def list_file(format_file: list, path: str) -> list:
     """
     files = []
     path = edit_path_windows_other(path)
+    if os.path.isdir(path) is not True:
+        return abort(404, 'This path has been deleted or unmounted. Please inform the system administrator.')
     for i in format_file:
         if i == '*':
             files = os.listdir(path)
