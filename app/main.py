@@ -20,11 +20,10 @@ from web_app import app
 from ftp import ftp_server
 from scripts.network import port_flask, get_ip
 from scripts.setting_windows import Setting, check_port
-from scripts.sqllite import Database
+from scripts.sqllite import database
 from scripts.already_running import SingleInstance
 
 v = 6
-database = Database()
 connected_network = False
 ip = ''
 
