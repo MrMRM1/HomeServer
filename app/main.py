@@ -84,6 +84,12 @@ def path_dir():
         load_data()
 
 
+def path_clear():
+    if messagebox.askyesno('Delete all paths', 'All the paths you have added will be deleted. Are you sure?'):
+        database.write_data('', 'paths')
+        load_data()
+
+
 def list_folders(path):
     """
     :param path: Folder path
@@ -159,6 +165,7 @@ def threading_start():
         ftp_app.start()
         button_run["state"] = "disabled"
         button_Selection["state"] = "disabled"
+        button_clear["state"] = "disabled"
         port_box["state"] = "disabled"
         list_box["state"] = "disabled"
         button_stop["state"] = "normal"
@@ -176,6 +183,7 @@ def threading_stop():
         ftp_app.join(1)
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
+    button_clear["state"] = "normal"
     port_box["state"] = "normal"
     list_box["state"] = "normal"
     button_stop["state"] = "disabled"
@@ -307,7 +315,9 @@ if __name__ == '__main__':
         title_list = Label(root, text="List of folders (Double click to delete the item)", font=('arial', 10, 'bold'))
         title_list.place(x=40, y=65)
         button_Selection = Button(root, text="Add folder", font=('arial', 10, 'bold'), command=path_dir)
-        button_Selection.place(x=390, y=60)
+        button_Selection.place(x=332, y=60)
+        button_clear = Button(root, text="Clear", font=('arial', 10, 'bold'), command=path_clear)
+        button_clear.place(x=425, y=60)
         list_box = Listbox(root)
         load_data()
         list_box.bind('<Double-Button>', del_path)
