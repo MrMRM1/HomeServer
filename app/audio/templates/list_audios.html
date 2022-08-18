@@ -17,13 +17,25 @@
                     {% if (i + 1) != items_length %}
                         <div class="{{ color[i % 5] }} m-2 p-3 rounded-3 col-xl-6" onclick="play_audio({{ i }})">
                             <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src="/file/{{ items[i]|replace(" ", "%20") }}"></audio>
-                            <h1 class="text-break text-center">{{ items[i].split('\\')[-1] }}</h1>
+                            <h1 class="text-break text-center">
+                                {% if items[i].split('\\')|length > 1 %}
+                                    {{ items[i].split('\\')[-1] }}
+                                {% else %}
+                                    {{ items[i].split('/')[-1] }}
+                                {% endif %}
+                            </h1>
                         </div>
                     {% endif %}
                         {% if ((i + 2) // items_length) != 1 %}
                             <div class="{{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-xl-6" onclick="play_audio({{ i + 1 }})">
                                 <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src="/file/{{ items[i + 1]|replace(" ", "%20") }}"></audio>
-                                <h1 class="text-break text-center">{{ items[i + 1].split('\\')[-1] }}</h1>
+                                <h1 class="text-break text-center">
+                                    {% if items[i + 1].split('\\')|length > 1 %}
+                                        {{ items[i + 1].split('\\')[-1] }}
+                                    {% else %}
+                                        {{ items[i + 1].split('/')[-1] }}
+                                    {% endif %}
+                                </h1>
                             </div>
                         {% endif %}
 
