@@ -14,22 +14,46 @@
                 <div class="col-11 col-md-8 mt-2 ms-auto me-auto d-md-flex justify-content-md-around ">
                     <a class="btn {{ color[i % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i]|replace(" ", "%20") }}>
                         <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}" onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i]|replace(" ", "%20") }}" ></video>
-                        <h1 class="text-break text-center"> {{ items[i].split('\\')[-1] }} </h1>
+                        <h1 class="text-break text-center">
+                            {% if items[i].split('\\')|length > 1 %}
+                                {{ items[i].split('\\')[-1] }}
+                            {% else %}
+                                {{ items[i].split('/')[-1] }}
+                            {% endif %}
+                        </h1>
                     </a>
                     {% if ((i + 2) // items_length) != 1 %}
                         <a class="btn {{ color[(i + 1) % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i + 1]|replace(" ", "%20") }}>
                             <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}"  onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i + 1]|replace(" ", "%20") }}"  ></video>
-                            <h1 class="text-break text-center"> {{ items[i + 1].split('\\')[-1] }} </h1>
+                            <h1 class="text-break text-center">
+                                {% if items[i + 1].split('\\')|length > 1 %}
+                                    {{ items[i + 1].split('\\')[-1] }}
+                                {% else %}
+                                    {{ items[i + 1].split('/')[-1] }}
+                                {% endif %}
+                            </h1>
                         </a>
                         {% if ((i + 3) // items_length) != 1 %}
                             <a class="btn {{ color[(i + 2) % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i + 2]|replace(" ", "%20") }}>
                                 <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}" onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i + 2]|replace(" ", "%20") }}" ></video>
-                                <h1 class="text-break text-center"> {{ items[i + 2].split('\\')[-1] }} </h1>
+                                <h1 class="text-break text-center">
+                                    {% if items[i + 2].split('\\')|length > 1 %}
+                                        {{ items[i + 2].split('\\')[-1] }}
+                                    {% else %}
+                                        {{ items[i + 2].split('/')[-1] }}
+                                    {% endif %}
+                                </h1>
                             </a>
                             {% if ((i + 4) // items_length) != 1 %}
                                 <a class="btn {{ color[(i + 3) % 5] }} flex-column d-flex p-1 col-8 col-md-3 m-md-2 mt-3 m-auto" href=/{{ typs }}/{{ items[i + 3]|replace(" ", "%20") }}>
                                     <video muted preload="none" poster="{{ url_for('video.static', filename='img/black.jpg')}}"  onmouseenter="fplay(this)" onpointerenter="fplay(this)" onmouseleave="fpause(this)" onpointerleave="fpause(this)" class="col-12" src="/file/{{ items[i + 3]|replace(" ", "%20") }}"></video>
-                                    <h1 class="text-break text-center"> {{ items[i + 3].split('\\')[-1] }}  </h1>
+                                    <h1 class="text-break text-center">
+                                        {% if items[i + 3].split('\\')|length > 1 %}
+                                            {{ items[i + 3].split('\\')[-1] }}
+                                        {% else %}
+                                            {{ items[i + 3].split('/')[-1] }}
+                                        {% endif %}
+                                    </h1>
                                 </a>
                             {% endif %}
                         {% endif %}
