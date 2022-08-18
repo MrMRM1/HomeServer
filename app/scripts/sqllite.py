@@ -42,8 +42,15 @@ class Database:
             self.data.commit()
 
     def sql_commit(self, sql):
-        self.my_db.execute(sql)
-        self.data.commit()
+        try:
+            self.my_db.execute(sql)
+            self.data.commit()
+        except sqlite3.OperationalError:
+            # database is locked
+            data = self.fetchone(f"SELECT * from data_user")
+            self.my_db.execute("SELECT * FROM users")
+            users_data = self.my_db.fetchall()
+            self.update_data_app(data, users_data)
 
     def fetchone(self, sql):
         self.my_db.execute(sql)
