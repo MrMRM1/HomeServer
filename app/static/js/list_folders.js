@@ -12,6 +12,12 @@ const datas = all_data['items'].split(',');
 function cwd(data, location_dir){
     const dirs = [];
     let temp;
+    if (datas.includes(root.replace( new RegExp("\/$","gm"),""))) {
+        dirs.push('/Open the folder')
+    }
+    else if (datas.includes('/' + root.replace( new RegExp("\/$","gm"),""))){
+        dirs.push('/Open the folder')
+    }
     for (let i in data) {
         temp = data[i].split('/')
         let name = temp[0];
@@ -60,15 +66,7 @@ function click_btn(elmt){
                 location_dir += 1;
             }
 
-            root += replace_me(elmt, '%20', ' ')
-
-            if (datas.includes(root)) {
-                dirs.push('/Open the folder')
-            }
-            else if (datas.includes('/' + root)){
-                dirs.push('/Open the folder')
-            }
-            root += '/'
+            root += replace_me(elmt, '%20', ' ') + '/'
 
             dirs = dirs.concat(cwd(datas, location_dir))
             if (dirs.length === 1) {
