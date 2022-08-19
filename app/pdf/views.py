@@ -17,7 +17,7 @@ def list_folders():
 @check_dir_flask
 def list_pdf(link):
     if access_status(7):
-        return render_template("list_folders.html", title=link, items=list_file(['pdf'], link), typs="show_pdf")
+        return render_template("list_folders.html", title=link, items=','.join(list_file(['pdf'], link)), typs="show_pdf")
 
 
 @pdf.route('/show_pdf/<path:link>')
