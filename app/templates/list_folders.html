@@ -25,6 +25,17 @@
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
     <script src="{{ url_for('static', filename='js/list_folders.js')}}"></script>
+    <script>
+        $(window).on('hashchange', function() {
+            const path = decodeURI(window.location.hash.replace('#', ''));
+            if (path !== root){
+                location_dir = path.split('/').length + 1;
+                root = path;
+                dirs = cwd(datas, location_dir);
+                creator(dirs);
+            }
+        });
+    </script>
 {% endblock %}
 
 
