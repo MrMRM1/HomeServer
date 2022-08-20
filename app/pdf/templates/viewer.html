@@ -28,6 +28,7 @@ See https://github.com/adobe-type-tools/cmap-resources
     <title>{{ title }}</title>
 	<div id="pdf_iner" style="display: none">/file/{{ link|replace(" ", "%20") }}</div>
     <link rel="stylesheet" href="{{ url_for('pdf.static', filename='web/viewer.css')}}">
+    <link rel="stylesheet" href="{{ url_for('pdf.static', filename='style.css')}}">
 
 <!-- This snippet is used in production (included from viewer.html) -->
 <link rel="resource" type="application/l10n" href="{{ url_for('pdf.static', filename='web/locale/locale.properties')}}">
@@ -118,6 +119,10 @@ See https://github.com/adobe-type-tools/cmap-resources
 
         <div id="secondaryToolbar" class="secondaryToolbar hidden doorHangerRight">
           <div id="secondaryToolbarButtonContainer">
+            <button id="secondaryHome" onclick="window.location='/'" class="secondaryToolbarButton visibleLargeView" title="Go to Home" tabindex="51" data-l10n-id="presentation_mode">
+              <span>Go to Home</span>
+            </button>
+
             <button id="secondaryPresentationMode" class="secondaryToolbarButton visibleLargeView" title="Switch to Presentation Mode" tabindex="51" data-l10n-id="presentation_mode">
               <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
             </button>
@@ -230,6 +235,9 @@ See https://github.com/adobe-type-tools/cmap-resources
                 <span id="numPages" class="toolbarLabel"></span>
               </div>
               <div id="toolbarViewerRight">
+                <button id="Home" class="toolbarButton hiddenLargeView" onclick="window.location='/'" title="Go to Home">
+                  <span>Go to Home</span>
+                </button>
                 <button id="presentationMode" class="toolbarButton hiddenLargeView" title="Switch to Presentation Mode" tabindex="31" data-l10n-id="presentation_mode">
                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
                 </button>
