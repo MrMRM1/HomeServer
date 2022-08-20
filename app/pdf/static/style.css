@@ -1,0 +1,6 @@
+#secondaryHome::before{
+    -webkit-mask-image: url('/static/icon/home.png');
+}
+#Home::before{
+    -webkit-mask-image: url('/static/icon/home.png');
+}
