@@ -250,7 +250,9 @@ def delete_window():
     :return: Stops or hides the program according to the settings
     """
     if database.get_data()[10] == "0":
-        if messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
+        if button_stop["state"] == "disabled":
+            root.destroy()
+        elif messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
             if button_run["state"] == "disabled":
                 threading_stop()
             root.destroy()
