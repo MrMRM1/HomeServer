@@ -68,6 +68,7 @@ function back_audio(){
 }
 
 function play_audio(a){
+    audio_player.pause();
     audio_name(a);
     audio_player.src = audios[a].src;
     audio_player.play();
