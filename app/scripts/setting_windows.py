@@ -90,7 +90,7 @@ class Setting:
         Saves the upload folder path to the database.
         """
         deiconiry = filedialog.askdirectory()
-        if deiconiry != '':
+        if deiconiry not in ['', ()]:
             self.database.write_data(deiconiry, "upload")
             path_upload['text'] = deiconiry
             path_upload.bind("<Button-1>", lambda event, e=deiconiry: open_path(e))
