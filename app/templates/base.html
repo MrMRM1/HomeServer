@@ -14,7 +14,7 @@
 <body class="bg-white">
 <div class="col-12 btn-primary p-2 p-xl-0 d-flex justify-content-between">
     <div class="col-10 col-md-8 btn-primary ms-auto me-auto m-2 mt-xl-0 mb-xl-0 d-flex justify-content-between">
-        <p class="mt-auto mb-auto fs-3" onclick="window.location='/'">{% block text_title %}{% endblock text_title %}</p>
+        <p class="mt-auto mb-auto fs-3" onclick="window.location='/'" title="Go Home">{% block text_title %}{% endblock text_title %}</p>
         <div class="col-3">
             <img src="{% block icon_title %}{% endblock icon_title %}" class="col-5 p-md-1 col-lg-3">
             {% if current_user.is_authenticated %}
