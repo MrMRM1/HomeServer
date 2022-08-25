@@ -12,6 +12,7 @@ from app.ftp.ftp_scripts.filesystems import get_root
 
 @admin.route('/admin/register', methods=['POST'])
 @login_required_custom
+@is_admin
 def register():
     return check_information(database.new_user)
 
