@@ -1,7 +1,23 @@
-{% extends 'base.html' %}
+{% include 'navbar.html' %}
+{% include 'new_user.html' %}
+{% include 'update_access.html' %}
+{% include 'update_password.html' %}
+{% include 'update_username.html' %}
 
-{% block title %}Dashboard{% endblock %}
-{% block text_title %} Dashboard {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Dashboard </title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon/icon.ico')}}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
-{% block body %}
-{% endblock %}
+</head>
+<body class="bg-white">
+
+
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+</body>
