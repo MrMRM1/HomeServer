@@ -18,5 +18,28 @@
     {% include 'update_password.html' %}
     {% include 'update_username.html' %}
 
+    <div class="table-responsive">
+        <table class="table table-striped mt-2">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">UserName</th>
+                <th scope="col">FTP</th>
+                <th scope="col">Video</th>
+                <th scope="col">Audio</th>
+                <th scope="col">PDF</th>
+                <th scope="col">Receive</th>
+                <th scope="col">Send</th>
+                <th scope="col">System Control</th>
+                <th scope="col">Picture</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+    
+
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script type="module" src="{{ url_for('admin.static', filename='js/dashboard.js')}}"></script>
 </body>
