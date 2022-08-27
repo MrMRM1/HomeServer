@@ -12,7 +12,8 @@ def edit_path_windows_other(path: str) -> str:
     :param path:  Directory path
     :return: If it is Windows, it remains unchanged, in other systems / it is added to the first path
     """
-    if os.name != 'nt':
+    
+    if os.name != 'nt' and path[0] != '/':
         path = '/' + path
     return path
 
