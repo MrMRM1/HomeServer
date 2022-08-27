@@ -1,9 +1,3 @@
-{% include 'navbar.html' %}
-{% include 'new_user.html' %}
-{% include 'update_access.html' %}
-{% include 'update_password.html' %}
-{% include 'update_username.html' %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +12,11 @@
 </head>
 <body class="bg-white">
 
+    {% include 'navbar.html' %}
+    {% include 'new_user.html' %}
+    {% include 'update_access.html' %}
+    {% include 'update_password.html' %}
+    {% include 'update_username.html' %}
 
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 </body>
