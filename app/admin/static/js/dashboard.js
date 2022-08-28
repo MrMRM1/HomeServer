@@ -29,5 +29,92 @@ fetch('/admin/get_all_users', {
 
 });
 
+// Update Password 
 
+document.getElementById('update_password_btn').addEventListener("click", () => {
+    let input_username = document.getElementById('username_passwordSelect');
+    input_username.innerHTML = '<option selected>Choose...</option>';
+    for (let i in username){
+        input_username.innerHTML += '<option value="'+ username[i] + '">' + username[i] +'</option>'
+    }
+})
+
+document.getElementById('password_save_btn').addEventListener("click", () => {
+    let user_name = document.getElementById('username_passwordSelect');
+    let password = document.getElementById('password_change');
+    let password_verification = document.getElementById('password_verification_change');
+    let password_modal_close = document.getElementById('password_modal_close');
+    if (password.value.match(password_patern)){
+        if (password.value == password_verification.value){
+            if (username.includes(user_name.value)){
+
+                fetch('/admin/update_password', {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({'username': user_name.value,
+                                        'password': password.value,
+                                        'password_verification': password_verification.value}),
+                }).then((response) => {
+                    return response.json();
+                }).then((jsonObject) => {
+                    if (jsonObject.status == 200){
+                        
+                    }
+                    else {
+                        
+                    }
+            
+                });
+                password.value = '';
+                password_verification.value = '';
+                password.classList.remove('is-valid');
+                password_verification.classList.remove('is-valid');
+                user_name.classList.remove('is-valid');
+                password_modal_close.click();
+            }
+            else {
+                user_name.classList.add('is-invalid');
+            }
+        }
+        else {
+            password_verification.classList.add('is-invalid');
+        }
+    }else {
+        password.classList.add('is-invalid');
+    }
+})
+document.getElementById('password_change').addEventListener('input', () => {
+    let password = document.getElementById('password_change');
+    password.classList.remove('is-invalid');
+    password.classList.remove('is-valid');
+    if (password.value.match(password_patern)){
+        password.classList.add('is-valid');
+    }
+    else {
+        password.classList.add('is-invalid');
+    }
+})
+document.getElementById('password_verification_change').addEventListener('input', () => {
+    let password_verification_change = document.getElementById('password_verification_change');
+    let password = document.getElementById('password_change');
+    password_verification_change.classList.remove('is-invalid');
+    password_verification_change.classList.remove('is-valid');
+    if ((password_verification_change.value == password.value) && (password.value.match(password_patern))){
+        password_verification_change.classList.add('is-valid');
+    }
+    else {
+        password_verification_change.classList.add('is-invalid');
+    }
+})
+document.getElementById('username_passwordSelect').addEventListener('change', () => {
+    let user_name = document.getElementById('username_passwordSelect');
+    user_name.classList.remove('is-invalid');
+    user_name.classList.remove('is-valid');
+    if (username.includes(user_name.value)){
+        user_name.classList.add('is-valid');
+    }
+    else {
+        user_name.classList.add('is-invalid');
+    } 
+})
 
