@@ -1,6 +1,13 @@
 let username = [];
 const password_patern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm;
 
+function showAlert(message, typeAlert){
+    document.getElementById('myAlert').innerHTML = '<div class="alert ' + typeAlert + '">'+message+'</div>';
+        setTimeout(function(){
+            document.getElementById('myAlert').innerHTML = '';
+        }, 6000);
+}
+
 function _checkbox(status){
     if (status == '1'){
         return '<td><input type="checkbox" disabled checked></td>'
@@ -58,10 +65,10 @@ document.getElementById('password_save_btn').addEventListener("click", () => {
                     return response.json();
                 }).then((jsonObject) => {
                     if (jsonObject.status == 200){
-                        
+                        showAlert(user_name.value + "'s password has been successfully changed.", 'alert-success')
                     }
                     else {
-                        
+                        showAlert(jsonObject.text, 'alert-danger')
                     }
             
                 });
