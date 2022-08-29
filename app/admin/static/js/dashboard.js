@@ -3,6 +3,11 @@ const password_patern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d
 const username_pattern = /^(?=.{4,20}$)[a-zA-Z0-9]+$/gm;
 let close_menu = document.getElementById('close_menu');
 
+function remove_valid_invalid(element){
+    element.classList.remove('is-invalid');
+    element.classList.remove('is-valid');
+}
+
 function post_data(url, data){
     return fetch(url, {
         method: "POST",
