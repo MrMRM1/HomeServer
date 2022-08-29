@@ -33,20 +33,24 @@ function _checkbox(status){
 }
 
 
-post_data('/admin/information_all_users', {'data': ''}).then((jsonObject) => {
-    if (jsonObject.status == 200){
-        const tbody = document.getElementById('tbody');
-        for (let i in jsonObject.users){
-            tbody.innerHTML += '<tr id="'+ i +'"><th scope="row">' + i +'</th><td>'+ jsonObject.users[i][0] + '</td> </tr>'
-            username.push(jsonObject.users[i][0]);
-            let tr = document.getElementById(i);
-            for (let j=1; j< jsonObject.users[i].length; j++){
-                tr.innerHTML += _checkbox(jsonObject.users[i][j])
+function table_dashboard(){
+    post_data('/admin/information_all_users', {'data': ''}).then((jsonObject) => {
+        if (jsonObject.status == 200){
+            const tbody = document.getElementById('tbody');
+            tbody.innerHTML = '';
+            username = [];
+            for (let i in jsonObject.users){
+                tbody.innerHTML += '<tr id="'+ i +'"><th scope="row">' + i +'</th><td>'+ jsonObject.users[i][0] + '</td> </tr>'
+                username.push(jsonObject.users[i][0]);
+                let tr = document.getElementById(i);
+                for (let j=1; j< jsonObject.users[i].length; j++){
+                    tr.innerHTML += _checkbox(jsonObject.users[i][j])
+                }
             }
         }
-    }
-
-});
+    });
+}
+table_dashboard();
 
 // Update Password 
 
