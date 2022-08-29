@@ -132,3 +132,77 @@ document.getElementById('username_passwordSelect').addEventListener('change', ()
     } 
 })
 
+// Update username
+
+document.getElementById('update_username_btn').addEventListener("click", () => {
+    let input_username = document.getElementById('UserNameSelect');
+    let user_name = document.getElementById('input_username_change');
+    remove_valid_invalid(input_username);
+    remove_valid_invalid(user_name);
+    user_name.value = '';
+    input_username.innerHTML = '<option selected>Choose...</option>';
+    post_data('/admin/get_all_users', {}).then(jsonObject => {
+        for (let i in jsonObject['users']){
+            input_username.innerHTML += '<option value="'+ jsonObject['users'][i][0] + '">' + jsonObject['users'][i][1] +'</option>'
+        }
+    })
+    
+})
+
+document.getElementById('UserNameSelect').addEventListener('change', () => {
+    let user_name = document.getElementById('UserNameSelect');
+
+    remove_valid_invalid(user_name);
+
+    if (user_name.value !== 'Choose...'){
+        user_name.classList.add('is-valid');
+    }
+    else {
+        user_name.classList.add('is-invalid');
+    } 
+})
+
+document.getElementById('input_username_change').addEventListener('input', () => {
+    let user_name = document.getElementById('input_username_change');
+
+    remove_valid_invalid(user_name);
+    
+    if (user_name.value.match(username_pattern)){
+        user_name.classList.add('is-valid');
+    }
+    else {
+        user_name.classList.add('is-invalid');
+    }
+})
+
+document.getElementById('btn_username_save_change').addEventListener("click", () => {
+    let input_username = document.getElementById('UserNameSelect');
+    let user_name = document.getElementById('input_username_change');
+    let close_update_username = document.getElementById('btn_close_update_username');
+    
+    if (input_username.value !== 'Choose...'){
+        input_username.classList.add('is-valid');
+        if (user_name.value.match(username_pattern)){
+            user_name.classList.add('is-valid');
+            post_data('/admin/update_username', {
+                'id': input_username.value,
+                'username': user_name.value
+            }).then(jsonObject => {
+                if (jsonObject.status == 200){
+                    showAlert('Username changed successfully', 'alert-success')
+                }
+                else{
+                    showAlert(jsonObject.text, 'alert-danger')
+                }
+                close_update_username.click();
+                close_menu.click();
+            })
+        }
+        else {
+            user_name.classList.add('is-invalid');
+        }
+    }
+    else {
+        input_username.classList.add('is-invalid');
+    } 
+})
