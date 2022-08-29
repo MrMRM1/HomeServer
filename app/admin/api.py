@@ -97,3 +97,10 @@ def get_ftp_root():
 @is_admin
 def information_all_users():
     return jsonify(status=200, users=database.information_all_users()), 200
+
+
+@admin.route('/admin/get_all_users', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_all_users():
+    return jsonify(status=200, users=database.get_all_users()), 200
