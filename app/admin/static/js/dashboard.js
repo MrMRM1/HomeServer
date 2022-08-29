@@ -2,6 +2,16 @@ let username = [];
 const password_patern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm;
 let close_menu = document.getElementById('close_menu');
 
+function post_data(url, data){
+    return fetch(url, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+    }).then(response => response.json()).then(jsonObject => {
+        return jsonObject
+    });
+}
+
 function showAlert(message, typeAlert){
     document.getElementById('myAlert').innerHTML = '<div class="alert ' + typeAlert + '">'+message+'</div>';
         setTimeout(function(){
@@ -16,13 +26,8 @@ function _checkbox(status){
     return '<td><input type="checkbox" disabled></td>'
 }
 
-fetch('/admin/information_all_users', {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({'data': ''}),
-}).then((response) => {
-        return response.json();
-}).then((jsonObject) => {
+
+post_data('/admin/information_all_users', {'data': ''}).then((jsonObject) => {
     if (jsonObject.status == 200){
         const tbody = document.getElementById('tbody');
         for (let i in jsonObject.users){
@@ -55,16 +60,10 @@ document.getElementById('password_save_btn').addEventListener("click", () => {
     if (password.value.match(password_patern)){
         if (password.value == password_verification.value){
             if (username.includes(user_name.value)){
-
-                fetch('/admin/update_password', {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({'username': user_name.value,
-                                        'password': password.value,
-                                        'password_verification': password_verification.value}),
-                }).then((response) => {
-                    return response.json();
-                }).then((jsonObject) => {
+                post_data('/admin/update_password', {'username': user_name.value,
+                'password': password.value,
+                'password_verification': password_verification.value}
+                ).then((jsonObject) => {
                     if (jsonObject.status == 200){
                         showAlert(user_name.value + "'s password has been successfully changed.", 'alert-success')
                     }
