@@ -15,7 +15,7 @@ function _checkbox(status){
     return '<td><input type="checkbox" disabled></td>'
 }
 
-fetch('/admin/get_all_users', {
+fetch('/admin/information_all_users', {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({'data': ''}),

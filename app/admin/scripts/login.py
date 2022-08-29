@@ -66,7 +66,7 @@ def is_admin(function):
     def check(*args, **kwargs):
         if current_user.is_admin():
             try:
-                if function.__name__ == 'get_all_users':
+                if function.__name__ in ['get_all_users', 'information_all_users']:
                     return function(*args, **kwargs)
                 elif current_user.username != request.json['username']:
                     return function(*args, **kwargs)

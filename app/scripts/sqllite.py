@@ -140,7 +140,7 @@ class Database:
         sql = f'UPDATE users SET paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}", ftp_root = "{ftp_root}"  WHERE username = "{username}"'
         self.sql_commit(sql)
 
-    def get_all_usernames(self):
+    def information_all_users(self):
         sql = 'SELECT username, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status from users'
         self.my_db.execute(sql)
         return self.my_db.fetchall()
