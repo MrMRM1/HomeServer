@@ -5,7 +5,7 @@
 {% block icon_title %}{{ url_for('static', filename='icon/home.png')}}{% endblock %}
 
 {% block body %}
-    <div id="data" data-user="{{ data }}" data-login_status="{{ login_status }}"></div>
+    <div id="data" data-user="{{ data }}" data-admin="{{ current_user.is_admin() }}" data-login_status="{{ login_status }}"></div>
     <div class="d-flex justify-content-center ">
 
         <div id="list" class="home_box col-8 mt-2">
@@ -17,7 +17,7 @@
     <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
     <script>
         const color = ['btn-primary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info']
-        const buttons = {'Video': {'icon': 'video.png', 'href': '/video'}, 'Audio': {'icon': 'audio.png', 'href': '/audio'}, 'PDF': {'icon': 'pdf.png', 'href': '/pdf'}, 'Receive': {'icon': 'download.png', 'href': '/all_file'}, 'Send': {'icon': 'upload.png', 'href': '/send'}, 'System Control': {'icon': 'system.png', 'href': '/system_control'}, 'Picture': {'icon': 'picture.png', 'href': '/picture'}}
+        const buttons = {'Video': {'icon': 'video.png', 'href': '/video'}, 'Audio': {'icon': 'audio.png', 'href': '/audio'}, 'PDF': {'icon': 'pdf.png', 'href': '/pdf'}, 'Receive': {'icon': 'download.png', 'href': '/all_file'}, 'Send': {'icon': 'upload.png', 'href': '/send'}, 'System Control': {'icon': 'system.png', 'href': '/system_control'}, 'Picture': {'icon': 'picture.png', 'href': '/picture'}, 'Dashboard': {'icon': 'admin.png', 'href': '/admin'}}
         const data = $('#data').data()
         const data_user = data['user'].split(',')
         const login_status = data['login_status']
