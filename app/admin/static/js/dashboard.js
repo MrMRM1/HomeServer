@@ -56,6 +56,13 @@ table_dashboard();
 
 document.getElementById('update_password_btn').addEventListener("click", () => {
     let input_username = document.getElementById('username_passwordSelect');
+    let password = document.getElementById('password_change');
+    let password_verification = document.getElementById('password_verification_change');
+    password.value = '';
+    password_verification.value = '';
+    remove_valid_invalid(input_username);
+    remove_valid_invalid(password);
+    remove_valid_invalid(password_verification);
     input_username.innerHTML = '<option selected>Choose...</option>';
     for (let i in username){
         input_username.innerHTML += '<option value="'+ username[i] + '">' + username[i] +'</option>'
@@ -82,11 +89,6 @@ document.getElementById('password_save_btn').addEventListener("click", () => {
                     }
             
                 });
-                password.value = '';
-                password_verification.value = '';
-                password.classList.remove('is-valid');
-                password_verification.classList.remove('is-valid');
-                user_name.classList.remove('is-valid');
                 password_modal_close.click();
                 close_menu.click();
             }
@@ -101,10 +103,10 @@ document.getElementById('password_save_btn').addEventListener("click", () => {
         password.classList.add('is-invalid');
     }
 })
+
 document.getElementById('password_change').addEventListener('input', () => {
     let password = document.getElementById('password_change');
-    password.classList.remove('is-invalid');
-    password.classList.remove('is-valid');
+    remove_valid_invalid(password);
     if (password.value.match(password_patern)){
         password.classList.add('is-valid');
     }
@@ -112,11 +114,11 @@ document.getElementById('password_change').addEventListener('input', () => {
         password.classList.add('is-invalid');
     }
 })
+
 document.getElementById('password_verification_change').addEventListener('input', () => {
     let password_verification_change = document.getElementById('password_verification_change');
     let password = document.getElementById('password_change');
-    password_verification_change.classList.remove('is-invalid');
-    password_verification_change.classList.remove('is-valid');
+    remove_valid_invalid(password_verification_change);
     if ((password_verification_change.value == password.value) && (password.value.match(password_patern))){
         password_verification_change.classList.add('is-valid');
     }
@@ -124,10 +126,10 @@ document.getElementById('password_verification_change').addEventListener('input'
         password_verification_change.classList.add('is-invalid');
     }
 })
+
 document.getElementById('username_passwordSelect').addEventListener('change', () => {
     let user_name = document.getElementById('username_passwordSelect');
-    user_name.classList.remove('is-invalid');
-    user_name.classList.remove('is-valid');
+    remove_valid_invalid(user_name);
     if (username.includes(user_name.value)){
         user_name.classList.add('is-valid');
     }
@@ -193,14 +195,15 @@ document.getElementById('btn_username_save_change').addEventListener("click", ()
                 'username': user_name.value
             }).then(jsonObject => {
                 if (jsonObject.status == 200){
+                    table_dashboard();
                     showAlert('Username changed successfully', 'alert-success')
                 }
                 else{
                     showAlert(jsonObject.text, 'alert-danger')
                 }
-                close_update_username.click();
-                close_menu.click();
             })
+            close_update_username.click();
+            close_menu.click();
         }
         else {
             user_name.classList.add('is-invalid');
