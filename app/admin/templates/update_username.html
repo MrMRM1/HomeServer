@@ -6,11 +6,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <form>
+          <div class="mb-3">
+            <label class="col-form-label" for="UserNameSelect">username:</label>
+            <select class="form-select" id="UserNameSelect"></select>
+          </div>
+          <div class="mb-3">
+            <label for="input_username_change" class="col-form-label">New username:</label>
+            <input type="text" class="form-control" id="input_username_change">
+            <div class="invalid-feedback">
+              username is 4-20 characters long <br> allowed characters a-z A-Z 0-9
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_close_update_username">Close</button>
+        <button type="button" class="btn btn-primary" id="btn_username_save_change">Save changes</button>
       </div>
     </div>
   </div>
