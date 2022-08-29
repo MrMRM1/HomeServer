@@ -1,5 +1,6 @@
 let username = [];
 const password_patern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm;
+const username_pattern = /^(?=.{4,20}$)[a-zA-Z0-9]+$/gm;
 let close_menu = document.getElementById('close_menu');
 
 function post_data(url, data){
