@@ -150,5 +150,9 @@ class Database:
         self.my_db.execute(sql)
         return self.my_db.fetchall()
 
+    def get_all_users(self):
+        sql = 'SELECT id, username from users'
+        self.my_db.execute(sql)
+        return self.my_db.fetchall()
 
 database = Database()
