@@ -1,5 +1,6 @@
 let username = [];
 const password_patern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm;
+let close_menu = document.getElementById('close_menu');
 
 function showAlert(message, typeAlert){
     document.getElementById('myAlert').innerHTML = '<div class="alert ' + typeAlert + '">'+message+'</div>';
@@ -78,6 +79,7 @@ document.getElementById('password_save_btn').addEventListener("click", () => {
                 password_verification.classList.remove('is-valid');
                 user_name.classList.remove('is-valid');
                 password_modal_close.click();
+                close_menu.click();
             }
             else {
                 user_name.classList.add('is-invalid');
