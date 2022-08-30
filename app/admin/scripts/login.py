@@ -66,11 +66,9 @@ def is_admin(function):
     def check(*args, **kwargs):
         if current_user.is_admin():
             try:
-                if function.__name__ in ['get_all_users', 'information_all_users']:
+                if current_user.username != request.json['username']:
                     return function(*args, **kwargs)
-                elif current_user.username != request.json['username']:
-                    return function(*args, **kwargs)
-            except TypeError:
+            except (TypeError, KeyError):
                 return function(*args, **kwargs)
             except:
                 return jsonify(status=403, text='Access is not allowed'), 200
