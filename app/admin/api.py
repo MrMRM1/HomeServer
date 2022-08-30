@@ -104,3 +104,10 @@ def information_all_users():
 @is_admin
 def get_all_users():
     return jsonify(status=200, users=database.get_all_users()), 200
+
+
+@admin.route('/admin/get_paths', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_paths():
+    return jsonify(status=200, paths=database.get_data()[0]), 200
