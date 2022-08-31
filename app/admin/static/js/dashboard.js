@@ -204,3 +204,35 @@ document.getElementById('btn_username_save_change').addEventListener("click", ()
         update_username_username_select.classList.add('is-invalid');
     } 
 })
+
+// New User
+
+let btn_new_user = document.getElementById('new_user_btn');
+let new_user_username = document.getElementById('new_user_username');
+let new_user_password = document.getElementById('new_user_password');
+let new_user_password_verification = document.getElementById('new_user_password_verification');
+let new_user_inputFtp_root = document.getElementById('new_user_inputFtp_root');
+let new_user_paths = document.getElementById('new_user_paths');
+
+let paths = [];
+
+document.getElementById('new_user_btn').addEventListener("click", () => {
+    remove_valid_invalid(new_user_inputFtp_root);
+    remove_valid_invalid(new_user_username);
+    remove_valid_invalid(new_user_password);
+    remove_valid_invalid(new_user_password_verification);
+
+    new_user_username.value = '';
+    new_user_password.value = '';
+    new_user_password_verification.value = '';
+    new_user_paths.innerHTML = '';
+    new_user_inputFtp_root.innerHTML = '<option selected>Choose...</option>';
+
+    post_data('/admin/get_paths', {}).then(jsonObject => {
+        paths = jsonObject['paths'].split(',')
+        for (let i in paths){
+            new_user_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="path_checkbox'+ i +'"><label class="form-check-label text-nowrap" for="path_checkbox'+ i +'">'+ paths[i] +'</label></div>';
+        }
+    })
+    
+})
