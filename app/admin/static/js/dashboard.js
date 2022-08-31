@@ -3,6 +3,32 @@ const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\
 const username_pattern = /^(?=.{4,20}$)[a-zA-Z0-9]+$/gm;
 let close_menu = document.getElementById('close_menu');
 
+function get_root_ftp(path, advance){
+    let roots = []
+    
+    function append_root(index){
+        for (let i in path){
+            let path_split = path[i].split('/')
+            let temp = [];
+            for (let j=0; j<index; j++){
+                let folder = path_split[j]
+                if (!temp.includes(folder)){
+                    temp.push( folder ) 
+                }
+            }
+            let root =  temp.join('/') + '/'   
+            if ( !roots.includes(root) ) {
+                roots.push(root)
+            } 
+        }
+    }
+    for (let i=1; i < advance+1; i++){
+        append_root(i)
+    }
+    
+    return roots
+}
+
 function remove_valid_invalid(element){
     element.classList.remove('is-invalid');
     element.classList.remove('is-valid');
