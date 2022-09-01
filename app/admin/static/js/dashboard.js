@@ -4,6 +4,8 @@ const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\
 const username_pattern = /^(?=.{4,20}$)[a-zA-Z0-9]+$/gm;
 let close_menu = document.getElementById('close_menu');
 
+// functions 
+
 function get_root_ftp(path, advance){
     let roots = []
     
@@ -59,6 +61,40 @@ function _checkbox(status){
     return '<td><input type="checkbox" disabled></td>'
 }
 
+function valid_and_invalid(element, condition){
+    remove_valid_invalid(element);
+    if (condition){
+        element.classList.add('is-valid');
+        return true
+    }
+    else {
+        element.classList.add('is-invalid');
+        return false
+    }
+    
+}
+
+function check_input_select(element){
+    return valid_and_invalid(element, element.value !== 'Choose...');
+}
+
+function check_username(element){
+    return valid_and_invalid(element, element.value.match(username_pattern));
+}
+
+function check_password(element){
+    return valid_and_invalid(element, element.value.match(password_pattern));
+}
+
+function check_password_verification(password, password_v){
+    return valid_and_invalid(password_v, password.value == password_v.value);
+}
+
+function check_username_select(element){
+    return valid_and_invalid(element, username.includes(element.value));
+}
+
+// dashboard 
 
 function table_dashboard(){
     post_data('/admin/information_all_users', {'data': ''}).then((jsonObject) => {
@@ -86,11 +122,13 @@ let update_password_password = document.getElementById('password_change');
 let update_password_password_verification = document.getElementById('password_verification_change');
 
 document.getElementById('update_password_btn').addEventListener("click", () => {
-    update_password_password.value = '';
-    update_password_password_verification.value = '';
     remove_valid_invalid(update_password_username_select);
     remove_valid_invalid(update_password_password);
     remove_valid_invalid(update_password_password_verification);
+
+    update_password_password.value = '';
+    update_password_password_verification.value = '';
+    
     update_password_username_select.innerHTML = '<option selected>Choose...</option>';
     for (let i in username){
         update_password_username_select.innerHTML += '<option value="'+ username[i] + '">' + username[i] +'</option>'
@@ -99,64 +137,39 @@ document.getElementById('update_password_btn').addEventListener("click", () => {
 
 document.getElementById('password_save_btn').addEventListener("click", () => {
     let password_modal_close = document.getElementById('password_modal_close');
-    if (update_password_password.value.match(password_patern)){
-        if (update_password_password.value == update_password_password_verification.value){
-            if (username.includes(update_password_username_select.value)){
-                post_data('/admin/update_password', {'username': update_password_username_select.value,
-                'password': update_password_password.value,
-                'password_verification': update_password_password_verification.value}
-                ).then((jsonObject) => {
-                    if (jsonObject.status == 200){
-                        showAlert(update_password_username_select.value + "'s password has been successfully changed.", 'alert-success')
-                    }
-                    else {
-                        showAlert(jsonObject.text, 'alert-danger')
-                    }
-            
-                });
-                password_modal_close.click();
-                close_menu.click();
+
+    if ((check_password(update_password_password)) &&
+        (check_password_verification(update_password_password, update_password_password_verification)) && 
+        (check_username_select(update_password_username_select)))
+    {
+        post_data('/admin/update_password', {'username': update_password_username_select.value,
+        'password': update_password_password.value,
+        'password_verification': update_password_password_verification.value}
+        ).then((jsonObject) => {
+            if (jsonObject.status == 200){
+                showAlert(update_password_username_select.value + "'s password has been successfully changed.", 'alert-success')
             }
             else {
-                update_password_username_select.classList.add('is-invalid');
+                showAlert(jsonObject.text, 'alert-danger')
             }
-        }
-        else {
-            update_password_password_verification.classList.add('is-invalid');
-        }
-    }else {
-        update_password_password.classList.add('is-invalid');
+    
+        });
+        password_modal_close.click();
+        close_menu.click();
     }
+    
 })
 
-document.getElementById('password_change').addEventListener('input', () => {
-    remove_valid_invalid(update_password_password);
-    if (update_password_password.value.match(password_pattern)){
-        update_password_password.classList.add('is-valid');
-    }
-    else {
-        update_password_password.classList.add('is-invalid');
-    }
+update_password_password.addEventListener('input', () => {
+    check_password(update_password_password)
 })
 
-document.getElementById('password_verification_change').addEventListener('input', () => {
-    remove_valid_invalid(update_password_password_verification);
-    if ((update_password_password_verification.value == update_password_password.value) && (update_password_password.value.match(password_patern))){
-        update_password_password_verification.classList.add('is-valid');
-    }
-    else {
-        update_password_password_verification.classList.add('is-invalid');
-    }
+update_password_password_verification.addEventListener('input', () => {
+    check_password_verification(update_password_password, update_password_password_verification);
 })
 
-document.getElementById('username_passwordSelect').addEventListener('change', () => {
-    remove_valid_invalid(update_password_username_select);
-    if (username.includes(update_password_username_select.value)){
-        update_password_username_select.classList.add('is-valid');
-    }
-    else {
-        update_password_username_select.classList.add('is-invalid');
-    } 
+update_password_username_select.addEventListener('change', () => {
+    check_username_select(update_password_username_select);
 })
 
 // Update username
@@ -167,8 +180,10 @@ let update_username_username_input = document.getElementById('input_username_cha
 document.getElementById('update_username_btn').addEventListener("click", () => {
     remove_valid_invalid(update_username_username_select);
     remove_valid_invalid(update_username_username_input);
+
     update_username_username_input.value = '';
     update_username_username_select.innerHTML = '<option selected>Choose...</option>';
+
     post_data('/admin/get_all_users', {}).then(jsonObject => {
         for (let i in jsonObject['users']){
             update_username_username_select.innerHTML += '<option value="'+ jsonObject['users'][i][0] + '">' + jsonObject['users'][i][1] +'</option>'
@@ -177,59 +192,37 @@ document.getElementById('update_username_btn').addEventListener("click", () => {
     
 })
 
-document.getElementById('UserNameSelect').addEventListener('change', () => {
-
-    remove_valid_invalid(update_username_username_select);
-
-    if (update_username_username_select.value !== 'Choose...'){
-        update_username_username_select.classList.add('is-valid');
-    }
-    else {
-        update_username_username_select.classList.add('is-invalid');
-    } 
+update_username_username_select.addEventListener('change', () => {
+    check_input_select(update_username_username_select);
 })
 
-document.getElementById('input_username_change').addEventListener('input', () => {
-
-    remove_valid_invalid(update_username_username_input);
-    
-    if (update_username_username_input.value.match(username_pattern)){
-        update_username_username_input.classList.add('is-valid');
-    }
-    else {
-        update_username_username_input.classList.add('is-invalid');
-    }
+update_username_username_input.addEventListener('input', () => {
+    check_username(update_username_username_input);
 })
 
 document.getElementById('btn_username_save_change').addEventListener("click", () => {
     let close_update_username = document.getElementById('btn_close_update_username');
     
-    if (update_username_username_select.value !== 'Choose...'){
-        update_username_username_select.classList.add('is-valid');
-        if (update_username_username_input.value.match(username_pattern)){
-            update_username_username_input.classList.add('is-valid');
-            post_data('/admin/update_username', {
-                'id': update_username_username_select.value,
-                'username': update_username_username_input.value
-            }).then(jsonObject => {
-                if (jsonObject.status == 200){
-                    table_dashboard();
-                    showAlert('Username changed successfully', 'alert-success')
-                }
-                else{
-                    showAlert(jsonObject.text, 'alert-danger')
-                }
-            })
-            close_update_username.click();
-            close_menu.click();
-        }
-        else {
-            update_username_username_input.classList.add('is-invalid');
-        }
+    if ((check_input_select(update_username_username_select)) &&
+        (check_username(update_username_username_input)))
+    {
+        
+        post_data('/admin/update_username', {
+            'id': update_username_username_select.value,
+            'username': update_username_username_input.value
+        }).then(jsonObject => {
+            if (jsonObject.status == 200){
+                table_dashboard();
+                showAlert('Username changed successfully', 'alert-success')
+            }
+            else{
+                showAlert(jsonObject.text, 'alert-danger')
+            }
+        })
+        close_update_username.click();
+        close_menu.click();
+        
     }
-    else {
-        update_username_username_select.classList.add('is-invalid');
-    } 
 })
 
 // New User
