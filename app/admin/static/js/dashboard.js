@@ -1,4 +1,5 @@
 let username = [];
+let paths = [];
 const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm;
 const username_pattern = /^(?=.{4,20}$)[a-zA-Z0-9]+$/gm;
 let close_menu = document.getElementById('close_menu');
@@ -240,7 +241,6 @@ let new_user_password_verification = document.getElementById('new_user_password_
 let new_user_inputFtp_root = document.getElementById('new_user_inputFtp_root');
 let new_user_paths = document.getElementById('new_user_paths');
 
-let paths = [];
 
 document.getElementById('new_user_btn').addEventListener("click", () => {
     remove_valid_invalid(new_user_inputFtp_root);
@@ -248,6 +248,7 @@ document.getElementById('new_user_btn').addEventListener("click", () => {
     remove_valid_invalid(new_user_password);
     remove_valid_invalid(new_user_password_verification);
 
+    paths = [];
     new_user_username.value = '';
     new_user_password.value = '';
     new_user_password_verification.value = '';
@@ -255,9 +256,14 @@ document.getElementById('new_user_btn').addEventListener("click", () => {
     new_user_inputFtp_root.innerHTML = '<option selected>Choose...</option>';
 
     post_data('/admin/get_paths', {}).then(jsonObject => {
-        paths = jsonObject['paths'].split(',')
+        paths = jsonObject.paths.split(',')
+
         for (let i in paths){
             new_user_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="path_checkbox'+ i +'"><label class="form-check-label text-nowrap" for="path_checkbox'+ i +'">'+ paths[i] +'</label></div>';
+        }
+        let ftp_root = get_root_ftp(paths, 3);
+        for (let i in ftp_root){
+            new_user_inputFtp_root.innerHTML += '<option value="'+ ftp_root[i] + '">'+ ftp_root[i] +'</option>'
         }
     })
     
