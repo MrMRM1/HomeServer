@@ -122,7 +122,8 @@ function creator(dirs){
             if (i !== lengh_dir){
 
                 if (typs === 'dl_file'){
-                    $('#group' + i).append(text_make(i, 'download', 'href="/file/'+ replace_me(dirs[i])+'"'))
+                    console.log(root)
+                    $('#group' + i).append(text_make(i, 'download', 'href="/file/'+  window.location.href.split('/all_file/')[1] + '/' + replace_me(dirs[i])+'"'))
                 }
                 else {
                     $('#group' + i).append(text_make(i))
@@ -133,7 +134,7 @@ function creator(dirs){
 
                 if (typs === 'dl_file'){
 
-                    $('#group' + (i)).append(text_make((i+1), 'download', 'href="/file/'+ replace_me(dirs[(i+1)])+'"'));
+                    $('#group' + (i)).append(text_make((i+1), 'download', 'href="/file/'+ window.location.href.split('/all_file/')[1] + '/' +  replace_me(dirs[(i+1)])+'"'));
                 }
                 else {
                     $('#group' + (i)).append(text_make((i+1)));
