@@ -87,7 +87,7 @@ function check_password(element){
 }
 
 function check_password_verification(password, password_v){
-    return valid_and_invalid(password_v, password.value == password_v.value);
+    return valid_and_invalid(password_v, (password.value == password_v.value) && (password_v.value.match(password_pattern)));
 }
 
 function check_username_select(element){
