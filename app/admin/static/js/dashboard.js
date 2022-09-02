@@ -281,7 +281,7 @@ document.getElementById('new_user_btn').addEventListener("click", () => {
         paths = jsonObject.paths.split(',')
 
         for (let i in paths){
-            new_user_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="path_checkbox'+ i +'"><label class="form-check-label text-nowrap" for="path_checkbox'+ i +'">'+ paths[i] +'</label></div>';
+            new_user_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="path_checkbox'+ i +'"><label class="form-check-label text-nowrap" for="path_checkbox'+ i +'" id="path_label'+ i +'">'+ paths[i] +'</label></div>';
         }
         let ftp_root = get_root_ftp(paths, 3);
         for (let i in ftp_root){
