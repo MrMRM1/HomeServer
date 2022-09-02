@@ -261,3 +261,19 @@ document.getElementById('new_user_btn').addEventListener("click", () => {
     })
     
 })
+
+new_user_inputFtp_root.addEventListener('change', () => {
+    check_input_select(new_user_inputFtp_root);
+})
+
+new_user_username.addEventListener('input', () => {
+    check_username(new_user_username);
+})
+
+new_user_password.addEventListener('input', () => {
+    check_password(new_user_password);
+})
+
+new_user_password_verification.addEventListener('input', () => {
+    check_password_verification(new_user_password, new_user_password_verification)
+})
