@@ -131,7 +131,8 @@ function table_dashboard(){
             tbody.innerHTML = '';
             username = [];
             for (let i in jsonObject.users){
-                tbody.innerHTML += '<tr id="'+ i +'"><th scope="row">' + i +'</th><td>'+ jsonObject.users[i][0] + '</td> </tr>'
+                let num = parseInt(i) + 1;
+                tbody.innerHTML += '<tr id="'+ i +'"><th scope="row">' + num +'</th><td>'+ jsonObject.users[i][0] + '</td> </tr>'
                 username.push(jsonObject.users[i][0]);
                 let tr = document.getElementById(i);
                 for (let j=1; j< jsonObject.users[i].length; j++){
