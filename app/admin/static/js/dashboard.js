@@ -54,6 +54,14 @@ function my_alert(element, message, typeAlert){
         }, 6000);
 }
 
+function showAlert(message, typeAlert){
+    my_alert('myAlert', message, typeAlert);
+}
+
+function new_user_showAlert(message, typeAlert){
+    my_alert('new_user_myAlert', message, typeAlert)
+}
+
 function _checkbox(status){
     if (status == '1'){
         return '<td><input type="checkbox" disabled checked></td>'
