@@ -45,7 +45,7 @@ def check_paths(function):
     def check(*args, **kwargs):
         data = request.json
         path = data['paths']
-        if path is not None:
+        if path is not None and path != '':
             path = path.split(',')
             for i in path:
                 if check_path(i) is False:
