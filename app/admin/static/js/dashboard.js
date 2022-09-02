@@ -47,10 +47,10 @@ function post_data(url, data){
     });
 }
 
-function showAlert(message, typeAlert){
-    document.getElementById('myAlert').innerHTML = '<div class="alert ' + typeAlert + '">'+message+'</div>';
+function my_alert(element, message, typeAlert){
+    document.getElementById(element).innerHTML = '<div class="alert ' + typeAlert + '">'+message+'</div>';
         setTimeout(function(){
-            document.getElementById('myAlert').innerHTML = '';
+            document.getElementById(element).innerHTML = '';
         }, 6000);
 }
 
