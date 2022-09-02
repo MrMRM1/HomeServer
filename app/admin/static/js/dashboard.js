@@ -102,6 +102,26 @@ function check_username_select(element){
     return valid_and_invalid(element, username.includes(element.value));
 }
 
+function get_paths_user(idcheckbox, idlabel){
+    let paths_user = [];
+    for (let i in paths){
+        let check_box = document.getElementById(idcheckbox + i);
+        let path = document.getElementById(idlabel + i);
+        if (check_box.checked){
+            paths_user.push(path.innerHTML);
+        }
+    }
+    
+    return paths_user
+}
+
+function checkbox_status(element){
+    if (element.checked){
+        return '1'
+    }
+    return '0'
+}
+
 // dashboard 
 
 function table_dashboard(){
