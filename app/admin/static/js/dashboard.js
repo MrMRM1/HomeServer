@@ -306,3 +306,59 @@ new_user_password.addEventListener('input', () => {
 new_user_password_verification.addEventListener('input', () => {
     check_password_verification(new_user_password, new_user_password_verification)
 })
+
+document.getElementById('new_user_save_changes').addEventListener("click", () => {
+    let new_user_close = document.getElementById('new_user_close');
+    let ftp = document.getElementById('new_user_checkbox_ftp');
+    let video = document.getElementById('new_user_checkbox_video');
+    let audio = document.getElementById('new_user_checkbox_audio');
+    let pdf = document.getElementById('new_user_checkbox_pdf');
+    let receive = document.getElementById('new_user_checkbox_receive');
+    let send = document.getElementById('new_user_checkbox_send');
+    let system_control = document.getElementById('new_user_checkbox_system_control');
+    let picture = document.getElementById('new_user_checkbox_picture');
+    let user_paths = get_paths_user('path_checkbox', 'path_label' );
+
+    
+    if ((check_username(new_user_username)) && 
+        (check_input_select(new_user_inputFtp_root)) &&
+        (check_password(new_user_password)) && 
+        (check_password_verification(new_user_password, new_user_password_verification))
+    ){
+        if (user_paths.length == 0){
+            new_user_showAlert('You have to choose a path', 'alert-danger')
+        }
+        else {
+            post_data('/admin/register', {
+                'username': new_user_username.value,
+                'password': new_user_password.value,
+                'paths': user_paths.join(','),
+                'ftp_root': new_user_inputFtp_root.value,
+                'services': {
+                    'ftp': checkbox_status(ftp),
+                    'video': checkbox_status(video),
+                    'audio': checkbox_status(audio),
+                    'pdf': checkbox_status(pdf),
+                    'receive': checkbox_status(receive),
+                    'send': checkbox_status(send),
+                    'system_control': checkbox_status(system_control),
+                    'picture': checkbox_status(picture)
+                }
+            }).then(jsonObject => {
+                if (jsonObject.status == 200){
+                    table_dashboard();
+                    new_user_close.click();
+                    close_menu.click();
+                    showAlert('User added successfully', 'alert-success');
+                }
+                else if ((jsonObject.status == 16) || (jsonObject.status == 15)){
+                    new_user_showAlert(jsonObject.text + '\n' + jsonObject.problem, 'alert-danger');
+                }
+                else{
+                    new_user_showAlert(jsonObject.text, 'alert-danger');
+                }
+            })
+        }
+    }
+    
+})
