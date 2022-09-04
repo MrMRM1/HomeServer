@@ -122,6 +122,48 @@ function checkbox_status(element){
     return '0'
 }
 
+function inner_username(element){
+    for (let i in username){
+        element.innerHTML += '<option value="'+ username[i] + '">' + username[i] +'</option>'
+    }
+}
+
+function set_checked(element, status){
+    if (status == '1'){
+        element.checked = true;
+    }
+    else {
+        element.checked = false;
+    }
+}
+
+function set_checkbox_status(data){
+    set_checked(update_access_checkbox_audio, data.audio)
+    set_checked(update_access_checkbox_ftp, data.ftp)
+    set_checked(update_access_checkbox_receive, data.receive)
+    set_checked(update_access_checkbox_video, data.video)
+    set_checked(update_access_checkbox_send, data.send)
+    set_checked(update_access_checkbox_system_control, data.system_control)
+    set_checked(update_access_checkbox_pdf, data.pdf)
+    set_checked(update_access_checkbox_picture, data.picture)
+}
+
+function set_user_path(user_paths){
+    update_access_paths.innerHTML = ''
+    user_paths = user_paths.split(',')
+    post_data('/admin/get_paths', {}).then(jsonObject => {
+        paths = jsonObject.paths.split(',')
+        for (let i in paths){
+            let checked_status = '';
+            if (user_paths.includes(paths[i])){
+                checked_status = 'checked';
+            }
+            update_access_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="update_access_path_checkbox'+ i +'"' + checked_status + '><label class="form-check-label text-nowrap" for="update_access_path_checkbox'+ i +'" id="update_access_path_label'+ i +'">'+ paths[i] +'</label></div>';
+        }
+
+    })
+}
+
 // dashboard 
 
 function table_dashboard(){
