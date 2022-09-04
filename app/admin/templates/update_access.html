@@ -1,16 +1,111 @@
 <div class="modal fade" id="update_access" tabindex="-1" aria-labelledby="update_accessLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header col-lg-8 col-xl-6 ms-lg-auto me-lg-auto">
         <h5 class="modal-title" id="update_accessLabel">Update Access</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div id="update_access_myAlert" class="col-4 fixed-top ms-auto me-auto mt-5 text-center"></div>
+      <div class="modal-body col-lg-8 col-xl-6 ms-lg-auto me-lg-auto">
+        <form class="row g-3">
+
+          <div class="col-md-6">
+            <label for="update_access_username" class="form-label">Username:</label>
+            <select id="update_access_username" class="form-select">
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="update_access_inputFtp_root" class="form-label">FTP Root:</label>
+            <select id="update_access_inputFtp_root" class="form-select">
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label"> Services: </label>
+          </div>
+
+          <div class="col-md-3 col-sm-6 mt-0 pt-0">
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_ftp">
+              <label class="form-check-label" for="update_access_checkbox_ftp">
+                FTP
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_receive">
+              <label class="form-check-label" for="update_access_checkbox_receive">
+                Receive
+              </label>
+            </div>
+           
+          </div>
+
+          <div class="col-md-3 col-sm-6 mt-0 pt-0">
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_video">
+              <label class="form-check-label" for="update_access_checkbox_video">
+                Video
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_send">
+              <label class="form-check-label" for="update_access_checkbox_send">
+                Send
+              </label>
+            </div>
+            
+          </div>
+
+          <div class="col-md-3 col-sm-6 mt-0 pt-0">
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_audio">
+              <label class="form-check-label" for="update_access_checkbox_audio">
+                Audio
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_system_control">
+              <label class="form-check-label" for="update_access_checkbox_system_control">
+                System Control
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6 mt-0 pt-0">
+            
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_pdf">
+              <label class="form-check-label" for="update_access_checkbox_pdf">
+                PDF
+              </label>
+            </div>
+            
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="update_access_checkbox_picture">
+              <label class="form-check-label" for="update_access_checkbox_picture">
+                Picture
+              </label>
+            </div>
+
+          </div>
+          
+          <div class="col-12">
+            <label class="form-label">Pahts:</label>
+            <div class="overflow-scroll" style="height: 15rem;" id="update_access_paths">
+            </div>
+          </div>
+          
+        </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer col-lg-8 col-xl-6 ms-lg-auto me-lg-auto">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="update_access_close">Close</button>
+        <button type="button" class="btn btn-primary" id="update_access_save_changes">Save changes</button>
       </div>
     </div>
   </div>
