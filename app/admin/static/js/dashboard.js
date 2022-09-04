@@ -201,9 +201,7 @@ document.getElementById('update_password_btn').addEventListener("click", () => {
     update_password_password_verification.value = '';
     
     update_password_username_select.innerHTML = '<option selected>Choose...</option>';
-    for (let i in username){
-        update_password_username_select.innerHTML += '<option value="'+ username[i] + '">' + username[i] +'</option>'
-    }
+    inner_username(update_password_username_select)
 })
 
 document.getElementById('password_save_btn').addEventListener("click", () => {
