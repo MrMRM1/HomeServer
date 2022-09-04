@@ -402,3 +402,25 @@ document.getElementById('new_user_save_changes').addEventListener("click", () =>
     }
     
 })
+
+// Update Access
+
+let update_access_username = document.getElementById('update_access_username');
+let update_access_ftp_root = document.getElementById('update_access_inputFtp_root');
+let update_access_checkbox_ftp = document.getElementById('update_access_checkbox_ftp');
+let update_access_checkbox_receive = document.getElementById('update_access_checkbox_receive');
+let update_access_checkbox_video = document.getElementById('update_access_checkbox_video');
+let update_access_checkbox_send = document.getElementById('update_access_checkbox_send');
+let update_access_checkbox_audio = document.getElementById('update_access_checkbox_audio');
+let update_access_checkbox_system_control = document.getElementById('update_access_checkbox_system_control');
+let update_access_checkbox_pdf = document.getElementById('update_access_checkbox_pdf');
+let update_access_checkbox_picture = document.getElementById('update_access_checkbox_picture');
+let update_access_paths = document.getElementById('update_access_paths');
+
+document.getElementById('update_user_access_btn').addEventListener('click', () => {
+    update_access_username.innerHTML = '<option selected>Choose...</option>'
+    inner_username(update_access_username)
+    update_access_ftp_root.innerHTML = ''
+    update_access_paths.innerHTML = ''
+
+})
