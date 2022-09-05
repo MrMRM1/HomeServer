@@ -62,6 +62,10 @@ function new_user_showAlert(message, typeAlert){
     my_alert('new_user_myAlert', message, typeAlert)
 }
 
+function update_access_showAlert(message, typeAlert){
+    my_alert('update_access_myAlert', message, typeAlert)
+}
+
 function _checkbox(status){
     if (status == '1'){
         return '<td><input type="checkbox" disabled checked></td>'
