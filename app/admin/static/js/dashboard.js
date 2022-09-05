@@ -164,6 +164,19 @@ function set_user_path(user_paths){
     })
 }
 
+function set_ftp_root(root){
+    let ftp_root = get_root_ftp(paths, 3);
+    update_access_ftp_root.innerHTML = '<option>Choose...</option>';
+    for (let i in ftp_root){
+        let selected_status = '';
+        console.log(ftp_root[i], ftp_root[i] == root, root )
+        if ((ftp_root[i] == root+'/') || (ftp_root[i] == root)){
+            selected_status = 'selected'
+        }
+        update_access_ftp_root.innerHTML += '<option '+ selected_status +' value="'+ ftp_root[i] + '">'+ ftp_root[i] +'</option>'
+    }
+}
+
 // dashboard 
 
 function table_dashboard(){
