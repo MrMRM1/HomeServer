@@ -439,6 +439,8 @@ document.getElementById('update_user_access_btn').addEventListener('click', () =
     inner_username(update_access_username)
     update_access_ftp_root.innerHTML = ''
     update_access_paths.innerHTML = ''
+    remove_valid_invalid(update_access_username)
+    remove_valid_invalid(update_access_ftp_root)
 
 })
 
