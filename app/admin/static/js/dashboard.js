@@ -148,7 +148,7 @@ function set_checkbox_status(data){
     set_checked(update_access_checkbox_picture, data.picture)
 }
 
-function set_user_path(user_paths){
+function set_user_path(user_paths, ftp_root){
     update_access_paths.innerHTML = ''
     user_paths = user_paths.split(',')
     post_data('/admin/get_paths', {}).then(jsonObject => {
@@ -160,7 +160,7 @@ function set_user_path(user_paths){
             }
             update_access_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="update_access_path_checkbox'+ i +'"' + checked_status + '><label class="form-check-label text-nowrap" for="update_access_path_checkbox'+ i +'" id="update_access_path_label'+ i +'">'+ paths[i] +'</label></div>';
         }
-
+        set_ftp_root(ftp_root);
     })
 }
 
@@ -436,4 +436,17 @@ document.getElementById('update_user_access_btn').addEventListener('click', () =
     update_access_ftp_root.innerHTML = ''
     update_access_paths.innerHTML = ''
 
+})
+
+update_access_username.addEventListener('change', () => {
+    if (check_username_select(update_access_username)){
+        post_data('/admin/user_information', {
+            'username': update_access_username.value
+        }).then(jsonObject => {
+            if (jsonObject.status == 200){
+                set_user_path(jsonObject.paths, jsonObject.ftp_root);
+                set_checkbox_status(jsonObject.services);
+            }
+        })
+    }
 })
