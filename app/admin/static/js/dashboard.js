@@ -456,3 +456,45 @@ update_access_username.addEventListener('change', () => {
         })
     }
 })
+
+document.getElementById('update_access_save_changes').addEventListener('click', () => {
+    let close_update_access = document.getElementById('update_access_close')
+    let user_paths = get_paths_user('update_access_path_checkbox', 'update_access_path_label' );
+    if (check_username_select(update_access_username) &&
+        check_input_select(update_access_ftp_root))
+    {
+        if (user_paths.length == 0){
+            update_access_showAlert('You have to choose a path', 'alert-danger')
+        }
+        else {
+            post_data('/admin/update_access', {
+                'username': update_access_username.value,
+                'paths': user_paths.join(','),
+                'ftp_root': update_access_ftp_root.value,
+                'services': {
+                    'ftp': checkbox_status(update_access_checkbox_ftp),
+                    'video': checkbox_status(update_access_checkbox_video),
+                    'audio': checkbox_status(update_access_checkbox_audio),
+                    'pdf': checkbox_status(update_access_checkbox_pdf),
+                    'receive': checkbox_status(update_access_checkbox_receive),
+                    'send': checkbox_status(update_access_checkbox_send),
+                    'system_control': checkbox_status(update_access_checkbox_system_control),
+                    'picture': checkbox_status(update_access_checkbox_picture)
+                }
+            }).then(jsonObject => {
+                if (jsonObject.status == 200){
+                    table_dashboard();
+                    close_update_access.click();
+                    close_menu.click();
+                    showAlert('User added successfully', 'alert-success');
+                }
+                else if ((jsonObject.status == 16) || (jsonObject.status == 15)){
+                    update_access_showAlert(jsonObject.text + '\n' + jsonObject.problem, 'alert-danger');
+                }
+                else{
+                    update_access_showAlert(jsonObject.text, 'alert-danger');
+                }
+            })
+        }
+    }
+})
