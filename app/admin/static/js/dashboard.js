@@ -486,7 +486,7 @@ document.getElementById('update_access_save_changes').addEventListener('click', 
                     table_dashboard();
                     close_update_access.click();
                     close_menu.click();
-                    showAlert('User added successfully', 'alert-success');
+                    showAlert('User updated successfully', 'alert-success');
                 }
                 else if ((jsonObject.status == 16) || (jsonObject.status == 15)){
                     update_access_showAlert(jsonObject.text + '\n' + jsonObject.problem, 'alert-danger');
