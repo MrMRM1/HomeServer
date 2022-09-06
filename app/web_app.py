@@ -91,7 +91,7 @@ def home_page():
     if data[11] == '1':
         username = current_user.username
         if username == data[12]:
-            return render_template("home.html", title="Home", login_status=False)
+            return render_template("home.html", title="Home", login_status=False, is_admin=True)
         else:
             user_data = ','.join(database.user_data_by_username(username)[5:12])
             return render_template("home.html", title="Home", login_status=True, data=user_data)
