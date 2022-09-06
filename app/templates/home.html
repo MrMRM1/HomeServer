@@ -5,7 +5,7 @@
 {% block icon_title %}{{ url_for('static', filename='icon/home.png')}}{% endblock %}
 
 {% block body %}
-    <div id="data" data-user="{{ data }}" data-admin="{{ current_user.is_admin() }}" data-login_status="{{ login_status }}"></div>
+    <div id="data" data-user="{{ data }}" data-admin="{{ is_admin }}" data-login_status="{{ login_status }}"></div>
     <div class="d-flex justify-content-center ">
 
         <div id="list" class="home_box col-8 mt-2">
@@ -23,6 +23,7 @@
         const login_status = data['login_status']
         const key_buttons = Object.keys(buttons);
         const len_buttons = key_buttons.length;
+        const is_admin = data['admin']
         function creat_button(i, href, text, icon){
             return '<a class="btn '+ color[i % 5] +' m-2 p-3 rounded-3 col-md-6 d-flex justify-content-between" href="'+ href +'"><h1 class="mt-auto mb-auto">'+ text +'</h1><img src="/static/icon/'+ icon +'" class="col-2"></a>'
         }
@@ -37,6 +38,9 @@
                 $('#list').append('<div id="group'+grp+'" class="d-md-flex ms-auto me-auto justify-content-md-around"></div>')
             }
             if (((i !== len_buttons) && (data_user[i] === '1')) || (login_status === 'False')){
+                if ((key_buttons[i] == 'Dashboard') && (is_admin != 'True')){
+                    continue
+                }
                 $('#group'+grp).append(creat_button(itm, buttons[key_buttons[i]]['href'], key_buttons[i], buttons[key_buttons[i]]['icon']));
                 j = j+1;
                 itm++
