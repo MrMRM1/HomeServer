@@ -1,0 +1,29 @@
+<div class="modal fade" id="system_control_update_password" tabindex="-1" aria-labelledby="system_control_update_passwordLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="system_control_update_passwordLabel">Update system control password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="system_control_update_password" class="col-form-label">Password:</label>
+              <input type="password" class="form-control" id="system_control_update_password_password">
+              <div class="invalid-feedback">
+                Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&)
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="system_control_update_password_verification" class="col-form-label">Password Verification:</label>
+              <input type="password" class="form-control" id="system_control_update_password_verification">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="system_control_update_password_modal_close">Close</button>
+          <button type="button" class="btn btn-primary" id="system_control_update_password_save_btn">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
