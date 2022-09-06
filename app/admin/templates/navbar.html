@@ -13,24 +13,32 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/">Home</a>
-                </li>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
                     <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#new_user" id="new_user_btn">New User</a>
-                </li>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#new_user" id="new_user_btn">New User</a>
+                    </li>
                     <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="userUpdate" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    User Update
-                    </a>
-                <ul class="dropdown-menu" aria-labelledby="userUpdate">
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#update_username" id="update_username_btn">Update UserName</a></li>
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#update_password" id="update_password_btn">Update Password</a></li>
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#update_access" id="update_user_access_btn">Update UserAccess</a></li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
+                        <a class="nav-link dropdown-toggle" href="#" id="userUpdate" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        User Update
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userUpdate">
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#update_username" id="update_username_btn">Update UserName</a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#update_password" id="update_password_btn">Update Password</a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#update_access" id="update_user_access_btn">Update UserAccess</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="systemcontrol" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        System Control
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="systemcontrol">
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#system_control_update_password" id="system_control_update_password_btn">Update Password</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
