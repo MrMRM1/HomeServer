@@ -498,3 +498,44 @@ document.getElementById('update_access_save_changes').addEventListener('click', 
         }
     }
 })
+
+// Update system control password
+
+let system_control_password = document.getElementById('system_control_update_password_password')
+let system_control_password_verification = document.getElementById('system_control_update_password_verification')
+
+document.getElementById('system_control_update_password_btn').addEventListener('click', () => {
+    remove_valid_invalid(system_control_password);
+    remove_valid_invalid(system_control_password_verification);
+    system_control_password.value = '';
+    system_control_password_verification.value = '';
+})
+
+system_control_password.addEventListener('input', () => {
+    check_password(system_control_password)
+})
+system_control_password_verification.addEventListener('input', () => {
+    check_password_verification(system_control_password, system_control_password_verification)
+})
+
+document.getElementById('system_control_update_password_save_btn').addEventListener('click', () => {
+    let system_control_update_password_close = document.getElementById('system_control_update_password_modal_close');
+    if (check_password(system_control_password) && 
+        check_password_verification(system_control_password, system_control_password_verification))
+    {
+        post_data('/admin/system_control_password', {
+            'password': system_control_password.value,
+            'password_verification': system_control_password_verification.value
+        }).then(jsonObject => {
+            if (jsonObject.status == 200){
+                system_control_update_password_close.click();
+                close_menu.click();
+                showAlert('Password changed successfully', 'alert-success')
+            }
+            else{
+                update_access_showAlert(jsonObject.text, 'alert-danger');
+            }
+        })
+
+    }
+})
