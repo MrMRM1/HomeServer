@@ -111,3 +111,16 @@ def get_all_users():
 @is_admin
 def get_paths():
     return jsonify(status=200, paths=database.get_data()[0]), 200
+
+
+@admin.route('/admin/system_control_password', methods=['POST'])
+@login_required_custom
+@is_admin
+def system_control_password():
+    data = request.json
+    if check_password(data['password']) is False:
+        return jsonify(status=13, text='Password is incorrect'), 200
+    if data['password'] != data['password_verification']:
+        return jsonify(status=18, text='The password must match the verification password'), 200
+    database.write_data(sha256(data['password'].encode()).hexdigest(), "password")
+    return jsonify(status=200), 200
