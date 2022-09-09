@@ -181,6 +181,19 @@ function set_ftp_root(root){
     }
 }
 
+function update_access_update_page(){
+    if (check_username_select(update_access_username)){
+        post_data('/admin/user_information', {
+            'username': update_access_username.value
+        }).then(jsonObject => {
+            if (jsonObject.status == 200){
+                set_user_path(jsonObject.paths, jsonObject.ftp_root);
+                set_checkbox_status(jsonObject.services);
+            }
+        })
+    }
+}
+
 // dashboard 
 
 function table_dashboard(){
