@@ -173,7 +173,6 @@ function set_ftp_root(root){
     update_access_ftp_root.innerHTML = '<option>Choose...</option>';
     for (let i in ftp_root){
         let selected_status = '';
-        console.log(ftp_root[i], ftp_root[i] == root, root )
         if ((ftp_root[i] == root+'/') || (ftp_root[i] == root)){
             selected_status = 'selected'
         }
