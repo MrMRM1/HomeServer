@@ -464,16 +464,7 @@ document.getElementById('update_user_access_btn').addEventListener('click', () =
 })
 
 update_access_username.addEventListener('change', () => {
-    if (check_username_select(update_access_username)){
-        post_data('/admin/user_information', {
-            'username': update_access_username.value
-        }).then(jsonObject => {
-            if (jsonObject.status == 200){
-                set_user_path(jsonObject.paths, jsonObject.ftp_root);
-                set_checkbox_status(jsonObject.services);
-            }
-        })
-    }
+    update_access_update_page()
 })
 
 document.getElementById('update_access_save_changes').addEventListener('click', () => {
