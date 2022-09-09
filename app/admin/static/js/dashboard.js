@@ -194,6 +194,13 @@ function update_access_update_page(){
     }
 }
 
+function edit_info(user){
+    document.getElementById('update_user_access_btn').click();
+    update_access_username.value = user;
+    update_access_update_page()
+}
+window.edit_info = edit_info;
+
 // dashboard 
 
 function table_dashboard(){
