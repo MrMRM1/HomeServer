@@ -41,7 +41,10 @@ def show_video(link):
 def creat_secret():
     data = json.loads(request.data)
     link = data['link'].partition('file/')[2]
-    username = current_user.username
+    try:
+        username = current_user.username
+    except AttributeError:
+        return jsonify(status=200, url=request.headers['Origin']+'/file/'+link), 200
     if check_path(link):
         old_secret = database.secret_check(username, link)
         if old_secret is not None:
