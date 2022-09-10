@@ -77,7 +77,7 @@ class Database:
         if users is not None:
             self.update_users(users)
 
-    def update_users(self, data):
+    def update_users(self, datas):
         key = ['username', 'password', 'paths', 'ftp_status', 'video_status', 'audio_status', 'pdf_status',
                'receive_status', 'send_status', 'system_control_status', 'picture_status', 'ftp_root']
 
@@ -90,15 +90,15 @@ class Database:
                     out.append(None)
             return out
 
-        for s in data:
-            s = list(s)
+        for data in datas:
+            data = list(data)
             try:
-                self.new_user(s[1], s[2], s[3], _data(s[1:-1]), s[-1])
+                self.new_user(data[1], data[2], data[3], _data(data[1:-1]), data[-1])
                 continue
             except:
                 pass
-            for i, j in zip(s[1:], key):
-                self.write_users_data(i, j, s[0])
+            for i, j in zip(data[1:], key):
+                self.write_users_data(i, j, data[0])
 
     def user_data_by_username(self, username: str):
         return self.fetchone(f'SELECT * from users WHERE username = "{username}"')
