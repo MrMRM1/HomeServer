@@ -9,8 +9,11 @@
 {% block body %}
 
     <div class="flex-row justify-content-center ">
-
-        {% if items_length != 1  %}
+        {% if items_length == 1 %}
+            <div class="alert alert-info col-8 ms-auto mt-5 me-auto" role="alert">
+                No files to display
+            </div>
+        {% elif items_length != 1  %}
             {% for i in range(0, items_length, 2) %}
                 <div class="col-8 mt-2 ms-auto me-auto">
                     <div class="d-xl-flex ms-auto me-auto justify-content-xl-around">
