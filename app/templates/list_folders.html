@@ -23,6 +23,11 @@
     <div id="main" class="flex-row justify-content-center ">
         <h1 id="path" class="font-weight-bold col-10 col-md-8 ms-auto me-auto m-2 mt-xl-0 mb-xl-0 text-break"></h1>
     </div>
+    {% if items|length == 0 %}
+        <div class="alert alert-info col-8 ms-auto mt-5 me-auto" role="alert">
+            No files to display
+        </div>
+    {% endif %}
     <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
     <script src="{{ url_for('static', filename='js/list_folders.js')}}"></script>
     <script>
