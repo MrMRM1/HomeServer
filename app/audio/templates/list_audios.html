@@ -19,7 +19,7 @@
                     <div class="d-xl-flex ms-auto me-auto justify-content-xl-around">
                     {% if (i + 1) != items_length %}
                         <div class="{{ color[i % 5] }} m-2 p-3 rounded-3 col-xl-6" onclick="play_audio({{ i }})">
-                            <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src="/file/{{ items[i]|replace(" ", "%20") }}"></audio>
+                            <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src='/file/{{ items[i]|replace(" ", "%20") }}'></audio>
                             <h1 class="text-break text-center">
                                 {% if items[i].split('\\')|length > 1 %}
                                     {{ items[i].split('\\')[-1] }}
@@ -31,7 +31,7 @@
                     {% endif %}
                         {% if ((i + 2) // items_length) != 1 %}
                             <div class="{{ color[(i + 1) % 5] }} m-2 p-3 rounded-3 col-xl-6" onclick="play_audio({{ i + 1 }})">
-                                <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src="/file/{{ items[i + 1]|replace(" ", "%20") }}"></audio>
+                                <audio class="audios ms-auto me-auto col-12 p-1 mb-1" preload="none" src='/file/{{ items[i + 1]|replace(" ", "%20") }}'></audio>
                                 <h1 class="text-break text-center">
                                     {% if items[i + 1].split('\\')|length > 1 %}
                                         {{ items[i + 1].split('\\')[-1] }}
@@ -67,7 +67,7 @@
                 <audio  id="player" class="ms-auto me-auto col-12 col-md-6 ms-md-auto me-md-auto d-md-flex" preload="none" src="" controls></audio>
             </div>
         </div>
-    </div>
+
 
 
     <script src="{{ url_for('audio.static', filename='js/jsmediatags.min.js')}}"></script>
