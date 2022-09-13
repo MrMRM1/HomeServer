@@ -104,7 +104,6 @@ function upload(url, files_number) {
   }
   // Get a reference to the progress bar, wrapper & status label
   var progress = document.getElementById(`file${files_number}_progress`);
-  // let progress_wrapper = document.getElementById(`file${files_number}_progress_wrapper`);
   var progress_status = document.getElementById(`file${files_number}_progress_status`);
   var loading_file = document.getElementById(`file${files_number}_loading`);
   var done_file = document.getElementById(`file${files_number}_done`);
@@ -132,9 +131,6 @@ function upload(url, files_number) {
 
   // Show the cancel button
   cancel_btn.classList.remove("d-none");
-
-  // Show the progress bar
-  // progress_wrapper.classList.remove("d-none");
 
   // Get a reference to the file
   var file = input.files[files_number];
@@ -271,13 +267,6 @@ function set_size(){
 // Function to reset the page
 function reset() {
 
-
-
-  // Reset the progress bar state
-  progress.setAttribute("style", `width: 0%`);
-
-  // Reset the input placeholder
-
   // Clear the input
   input.value = null;
 
@@ -294,12 +283,10 @@ function reset() {
   loading_btn.classList.add("d-none");
 
   // Hide the progress bar
-  // progress_wrapper.classList.add("d-none");
   number_file_uploaded = 0;
   number_files = 0;
   input_url = "";
   file_input_label.innerText = "0";
   file_input_size.innerText = "";
-
 
 }
