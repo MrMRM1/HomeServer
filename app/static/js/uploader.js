@@ -1,8 +1,3 @@
-// Get a reference to the progress bar, wrapper & status label
-var progress = document.getElementById("progress");
-var progress_wrapper = document.getElementById("progress_wrapper");
-var progress_status = document.getElementById("progress_status");
-
 // Get a reference to the 3 buttons
 var upload_btn = document.getElementById("upload_btn");
 var loading_btn = document.getElementById("loading_btn");
@@ -18,6 +13,9 @@ var file_input_size = document.getElementById("file_input_size");
 let number_file_uploaded = 0;
 let number_files = 0;
 let input_url = "";
+// 
+let file_boxes = document.getElementById("file_boxes");
+let files_canceled = [];
 // Function to show alerts
 function show_alert(message, alert) {
 
@@ -33,6 +31,50 @@ function show_alert(message, alert) {
     }, 10000);
 
 }
+
+function remove_box_file(index){
+  files_canceled.push(input.files[index].name)
+  document.getElementById(`file${index}`).remove()
+  number_files = input.files.length - files_canceled.length
+  file_input_label.innerText = number_files_upload();
+  set_size()
+}
+
+function generate_box_file(index){
+  let tag = `<div id="file${index}" class="col-md-6 col-11 ms-auto me-auto mt-2 border rounded-3">
+  <div class="m-3 mt-4 float-start">
+      <div id="file${index}_loading" class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
+      <div>
+          <img class="d-none" id="file${index}_done" src="static/icon/done.svg" />
+      </div>
+  </div>
+  <button onclick="remove_box_file(${index})" type="button" class="btn-close float-end m-3 mt-4" aria-label="Close"></button>
+  <div class="mt-2 text-break">
+      <p id="file${index}_name">${input.files[index].name}</p>
+  </div>
+  <div class="d-flex">
+      <p id="file${index}_size">File Size : ${change_size_number(input.files[index].size)} |</p>
+      <p class="ms-1" id="file${index}_progress_status">0% uploaded</p>
+  </div>
+  <div class="col-10 me-auto ms-auto">
+      <div class="progress mb-2">
+          <div id="file${index}_progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+  </div>
+</div>`
+file_boxes.innerHTML += tag
+}
+
+function create_box_file(){
+  file_boxes.innerHTML = ''
+  files_canceled = [];
+  for (let i=0; i<input.files.length; i++){
+    generate_box_file(i)
+  }
+}
+
 function upload_multiple(url) {
   if (!input.value) {
 
@@ -41,8 +83,11 @@ function upload_multiple(url) {
     return;
 
   }
-  number_files = input.files.length;
   input_url = url;
+  if (number_file_uploaded == 0){
+    number_files = input.files.length;
+    create_box_file()
+  }
   upload(input_url, number_file_uploaded)
 }
 
@@ -57,6 +102,12 @@ function upload(url, files_number) {
     return;
 
   }
+  // Get a reference to the progress bar, wrapper & status label
+  var progress = document.getElementById(`file${files_number}_progress`);
+  // let progress_wrapper = document.getElementById(`file${files_number}_progress_wrapper`);
+  var progress_status = document.getElementById(`file${files_number}_progress_status`);
+  var loading_file = document.getElementById(`file${files_number}_loading`);
+  var done_file = document.getElementById(`file${files_number}_done`);
 
   // Create a new FormData instance
   var data = new FormData();
@@ -83,92 +134,97 @@ function upload(url, files_number) {
   cancel_btn.classList.remove("d-none");
 
   // Show the progress bar
-  progress_wrapper.classList.remove("d-none");
+  // progress_wrapper.classList.remove("d-none");
 
   // Get a reference to the file
   var file = input.files[files_number];
 
   // Get a reference to the filename
   var filename = file.name;
+  if (!files_canceled.includes(filename)){
 
-  // Get a reference to the filesize & set a cookie
-  var filesize = file.size;
-  document.cookie = `filesize=${filesize}`;
+    // Get a reference to the filesize & set a cookie
+    var filesize = file.size;
+    document.cookie = `filesize=${filesize}`;
 
-  // Append the file to the FormData instance
-  data.append("file", file);
+    // Append the file to the FormData instance
+    data.append("file", file);
 
-  // request progress handler
-  request.upload.addEventListener("progress", function (e) {
+    // request progress handler
+    request.upload.addEventListener("progress", function (e) {
 
-    // Get the loaded amount and total filesize (bytes)
-    var loaded = e.loaded;
-    var total = e.total
+      // Get the loaded amount and total filesize (bytes)
+      var loaded = e.loaded;
+      var total = e.total
 
-    // Calculate percent uploaded
-    
-    var percent_complete = (loaded / total) * 100;
+      // Calculate percent uploaded
+      
+      var percent_complete = (loaded / total) * 100;
 
-    // Update the progress text and progress bar
-    progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
-    progress_status.innerText = `${Math.floor(percent_complete)}% (` + change_size_number(loaded) + `) uploaded`;
+      // Update the progress text and progress bar
+      progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
+      progress_status.innerText = `${Math.floor(percent_complete)}% (` + change_size_number(loaded) + `) uploaded`;
 
-  })
+    })
 
-  // request load handler (transfer complete)
-  request.addEventListener("load", function (e) {
+    // request load handler (transfer complete)
+    request.addEventListener("load", function (e) {
 
-    if (request.status == 200) {
-      number_file_uploaded = number_file_uploaded + 1 ;
-      if (number_files == number_file_uploaded) {
-        show_alert(`${request.response.message} ` + number_files_upload(), "success");
+      if (request.status == 200) {
+        loading_file.classList.add('d-none');
+        done_file.classList.remove('d-none')
+        console.log(request)
+        number_file_uploaded = number_file_uploaded + 1 ;
+        if (number_files == number_file_uploaded) {
+          show_alert(`${request.response.message} ` + number_files_upload(), "success");
+        }
+
+      }
+      else {
+
+        show_alert(`Error uploading file`, "danger");
+
+      }
+  
+      if (number_files != number_file_uploaded){
+      file_input_label.innerText = number_files_upload();
+      upload_multiple(input_url);
+      }
+      else{
+        reset();
       }
 
-    }
-    else {
 
-      show_alert(`Error uploading file`, "danger");
+    });
 
-    }
+    // request error handler
+    request.addEventListener("error", function (e) {
 
-    if (number_files != number_file_uploaded){
-    file_input_label.innerText = number_files_upload();
-    upload_multiple(input_url);
-    }
-    else{
       reset();
-    }
 
+      show_alert(`Error uploading file`, "warning");
 
-  });
+    });
 
-  // request error handler
-  request.addEventListener("error", function (e) {
+    // request abort handler
+    request.addEventListener("abort", function (e) {
 
-    reset();
+      reset();
 
-    show_alert(`Error uploading file`, "warning");
+      show_alert(`Upload cancelled`, "primary");
 
-  });
+    });
 
-  // request abort handler
-  request.addEventListener("abort", function (e) {
+    // Open and send the request
+    request.open("post", url);
+    request.send(data);
 
-    reset();
+    cancel_btn.addEventListener("click", function () {
 
-    show_alert(`Upload cancelled`, "primary");
+      request.abort();
 
-  });
-
-  // Open and send the request
-  request.open("post", url);
-  request.send(data);
-
-  cancel_btn.addEventListener("click", function () {
-
-    request.abort();
-
-  })
+    })
+  }
 
 }
 
@@ -196,15 +252,20 @@ function number_files_upload(){
 
 // Function to update the input placeholder
 function input_filename() {
-  let sizes = 0 ;
   number_files = input.files.length;
   file_input_label.innerText = number_files_upload() ;
-  for (var i=0; i < input.files.length; i++){
-    sizes = sizes + input.files[i].size;
+  set_size()
+}
 
+function set_size(){
+  let sizes = 0 ;
+  for (var i=0; i < input.files.length; i++){
+    if (!files_canceled.includes(input.files[i].name)){
+      sizes = sizes + input.files[i].size;
+    }
+    
   }
   file_input_size.innerText = change_size_number(sizes) ;
-
 }
 
 // Function to reset the page
@@ -233,7 +294,7 @@ function reset() {
   loading_btn.classList.add("d-none");
 
   // Hide the progress bar
-  progress_wrapper.classList.add("d-none");
+  // progress_wrapper.classList.add("d-none");
   number_file_uploaded = 0;
   number_files = 0;
   input_url = "";
