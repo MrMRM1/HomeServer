@@ -48,7 +48,7 @@ function post_data(url, data){
 }
 
 function my_alert(element, message, typeAlert){
-    document.getElementById(element).innerHTML = '<div class="alert ' + typeAlert + '">'+message+'</div>';
+    document.getElementById(element).innerHTML = `<div class="alert ${typeAlert}">${message}</div>`;
         setTimeout(function(){
             document.getElementById(element).innerHTML = '';
         }, 6000);
@@ -128,7 +128,7 @@ function checkbox_status(element){
 
 function inner_username(element){
     for (let i in username){
-        element.innerHTML += '<option value="'+ username[i] + '">' + username[i] +'</option>'
+        element.innerHTML += `<option value="${username[i]}">${username[i]}</option>`
     }
 }
 
@@ -162,7 +162,7 @@ function set_user_path(user_paths, ftp_root){
             if (user_paths.includes(paths[i])){
                 checked_status = 'checked';
             }
-            update_access_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="update_access_path_checkbox'+ i +'"' + checked_status + '><label class="form-check-label text-nowrap" for="update_access_path_checkbox'+ i +'" id="update_access_path_label'+ i +'">'+ paths[i] +'</label></div>';
+            update_access_paths.innerHTML += `<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="update_access_path_checkbox${i}" ${checked_status}><label class="form-check-label text-nowrap" for="update_access_path_checkbox${ i }" id="update_access_path_label${i}">${paths[i]}</label></div>`;
         }
         set_ftp_root(ftp_root);
     })
@@ -176,7 +176,7 @@ function set_ftp_root(root){
         if ((ftp_root[i] == root+'/') || (ftp_root[i] == root)){
             selected_status = 'selected'
         }
-        update_access_ftp_root.innerHTML += '<option '+ selected_status +' value="'+ ftp_root[i] + '">'+ ftp_root[i] +'</option>'
+        update_access_ftp_root.innerHTML += `<option ${selected_status} value="${ftp_root[i]}">${ftp_root[i]}</option>`
     }
 }
 
@@ -210,7 +210,7 @@ function table_dashboard(){
             username = [];
             for (let i in jsonObject.users){
                 let num = parseInt(i) + 1;
-                tbody.innerHTML += '<tr id="'+ i +'"><th scope="row">' + num +'</th><td title="Click to edit the access" onclick="edit_info(\''+ jsonObject.users[i][0] +'\')">'+ jsonObject.users[i][0] + '</td> </tr>'
+                tbody.innerHTML += `<tr id="${i}"><th scope="row">${num}</th><td title="Click to edit the access" onclick="edit_info('${jsonObject.users[i][0]}')">${jsonObject.users[i][0]}</td> </tr>`
                 username.push(jsonObject.users[i][0]);
                 let tr = document.getElementById(i);
                 for (let j=1; j< jsonObject.users[i].length; j++){
@@ -291,7 +291,7 @@ document.getElementById('update_username_btn').addEventListener("click", () => {
 
     post_data('/admin/get_all_users', {}).then(jsonObject => {
         for (let i in jsonObject['users']){
-            update_username_username_select.innerHTML += '<option value="'+ jsonObject['users'][i][0] + '">' + jsonObject['users'][i][1] +'</option>'
+            update_username_username_select.innerHTML += `<option value="${jsonObject['users'][i][0]}">${jsonObject['users'][i][1]}</option>`
         }
     })
     
@@ -357,11 +357,11 @@ document.getElementById('new_user_btn').addEventListener("click", () => {
         paths = jsonObject.paths.split(',')
 
         for (let i in paths){
-            new_user_paths.innerHTML += '<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="path_checkbox'+ i +'"><label class="form-check-label text-nowrap" for="path_checkbox'+ i +'" id="path_label'+ i +'">'+ paths[i] +'</label></div>';
+            new_user_paths.innerHTML += `<div class="form-check ms-1"><input class="form-check-input" type="checkbox" value="" id="path_checkbox${i}"><label class="form-check-label text-nowrap" for="path_checkbox${i}" id="path_label${i}">${paths[i]}</label></div>`;
         }
         let ftp_root = get_root_ftp(paths, 3);
         for (let i in ftp_root){
-            new_user_inputFtp_root.innerHTML += '<option value="'+ ftp_root[i] + '">'+ ftp_root[i] +'</option>'
+            new_user_inputFtp_root.innerHTML += `<option value="${ftp_root[i]}">${ftp_root[i]}</option>`
         }
     })
     
