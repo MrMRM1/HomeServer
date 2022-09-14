@@ -13,7 +13,7 @@ var file_input_size = document.getElementById("file_input_size");
 let number_file_uploaded = 0;
 let file_index = 0;
 let number_files = 0;
-let input_url = "";
+let input_url = "/send";
 // 
 let file_boxes = document.getElementById("file_boxes");
 let files_canceled = [];
@@ -76,7 +76,7 @@ function create_box_file(){
   }
 }
 
-function upload_multiple(url) {
+function upload_multiple() {
   if (!input.value) {
 
     show_alert("No file selected", "warning")
@@ -84,7 +84,6 @@ function upload_multiple(url) {
     return;
 
   }
-  input_url = url;
   if (number_file_uploaded == 0){
     number_files = input.files.length;
     create_box_file()
@@ -313,7 +312,6 @@ function reset() {
   file_index = 0;
   number_file_uploaded = 0;
   number_files = 0;
-  input_url = "";
   file_input_label.innerText = "0";
   file_input_size.innerText = "";
 
