@@ -11,6 +11,7 @@ var input = document.getElementById("file_input");
 var file_input_label = document.getElementById("file_input_label");
 var file_input_size = document.getElementById("file_input_size");
 let number_file_uploaded = 0;
+let file_index = 0;
 let number_files = 0;
 let input_url = "";
 // 
@@ -33,7 +34,7 @@ function show_alert(message, alert) {
 }
 
 function remove_box_file(index){
-  files_canceled.push(input.files[index].name)
+  files_canceled.push(index)
   document.getElementById(`file${index}`).remove()
   number_files = input.files.length - files_canceled.length
   file_input_label.innerText = number_files_upload();
@@ -50,7 +51,7 @@ function generate_box_file(index){
           <img class="d-none" id="file${index}_done" src="static/icon/done.svg" />
       </div>
   </div>
-  <button onclick="remove_box_file(${index})" type="button" class="btn-close float-end m-3 mt-4" aria-label="Close"></button>
+  <button onclick="remove_box_file(${index})" id="file${index}_close" type="button" class="btn-close float-end m-3 mt-4" aria-label="Close"></button>
   <div class="mt-2 text-break">
       <p id="file${index}_name">${input.files[index].name}</p>
   </div>
@@ -88,7 +89,7 @@ function upload_multiple(url) {
     number_files = input.files.length;
     create_box_file()
   }
-  upload(input_url, number_file_uploaded)
+  upload(input_url, file_index)
 }
 
 // Function to upload file
@@ -137,7 +138,7 @@ function upload(url, files_number) {
 
   // Get a reference to the filename
   var filename = file.name;
-  if (!files_canceled.includes(filename)){
+  if (!files_canceled.includes(files_number)){
 
     // Get a reference to the filesize & set a cookie
     var filesize = file.size;
@@ -169,8 +170,8 @@ function upload(url, files_number) {
       if (request.status == 200) {
         loading_file.classList.add('d-none');
         done_file.classList.remove('d-none')
-        console.log(request)
-        number_file_uploaded = number_file_uploaded + 1 ;
+        number_file_uploaded += 1 ;
+        file_index += 1;
         if (number_files == number_file_uploaded) {
           show_alert(`${request.response.message} ` + number_files_upload(), "success");
         }
@@ -202,24 +203,49 @@ function upload(url, files_number) {
 
     });
 
-    // request abort handler
-    request.addEventListener("abort", function (e) {
-
-      reset();
-
-      show_alert(`Upload cancelled`, "primary");
-
-    });
-
     // Open and send the request
     request.open("post", url);
     request.send(data);
 
     cancel_btn.addEventListener("click", function () {
-
       request.abort();
+      reset();
+      file_boxes.innerHTML = ''
+      show_alert(`Upload cancelled`, "primary");
 
     })
+    document.getElementById(`file${files_number}_close`).addEventListener("click", function () {
+      request.abort();
+      if (filename == input.files[files_number].name){
+        file_index += 1;
+      }
+      if (number_files != number_file_uploaded){
+        file_input_label.innerText = number_files_upload();
+        upload_multiple(input_url);
+      }
+      else if (number_files == number_file_uploaded) {
+        if (number_files == 0){
+          show_alert(`Upload cancelled`, "primary");
+        }
+        else{
+          show_alert(`File uploaded ${number_files_upload()} `, "success");
+        }
+      
+        reset();
+      }
+
+    })
+  }
+  else{
+    file_index += 1;
+    if (number_files == number_file_uploaded) {
+      show_alert(`${request.response.message} ` + number_files_upload(), "success");
+    }
+    if (number_files != number_file_uploaded){
+      file_input_label.innerText = number_files_upload();
+      upload_multiple(input_url);
+    }
+
   }
 
 }
@@ -256,7 +282,7 @@ function input_filename() {
 function set_size(){
   let sizes = 0 ;
   for (var i=0; i < input.files.length; i++){
-    if (!files_canceled.includes(input.files[i].name)){
+    if (!files_canceled.includes(i)){
       sizes = sizes + input.files[i].size;
     }
     
@@ -283,6 +309,8 @@ function reset() {
   loading_btn.classList.add("d-none");
 
   // Hide the progress bar
+  files_canceled = [];
+  file_index = 0;
   number_file_uploaded = 0;
   number_files = 0;
   input_url = "";
