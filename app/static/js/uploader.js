@@ -135,8 +135,6 @@ function upload(url, files_number) {
   // Get a reference to the file
   var file = input.files[files_number];
 
-  // Get a reference to the filename
-  var filename = file.name;
   if (!files_canceled.includes(files_number)){
 
     // Get a reference to the filesize & set a cookie
