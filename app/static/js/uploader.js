@@ -84,7 +84,7 @@ function upload_multiple() {
     return;
 
   }
-  if (number_file_uploaded == 0){
+  if ((number_file_uploaded == 0) && (files_canceled.length == 0)){
     number_files = input.files.length;
     create_box_file()
   }
