@@ -176,26 +176,13 @@ function upload(url, files_number) {
         loading_file.classList.add('d-none');
         done_file.classList.remove('d-none')
         number_file_uploaded += 1 ;
-        file_index += 1;
-        if (number_files == number_file_uploaded) {
-          show_alert(`${request.response.message} ` + number_files_upload(), "success");
-        }
-
+        checked()
       }
       else {
 
         show_alert(`Error uploading file`, "danger");
 
       }
-  
-      if (number_files != number_file_uploaded){
-      file_input_label.innerText = number_files_upload();
-      upload_multiple(input_url);
-      }
-      else{
-        reset();
-      }
-
 
     });
 
@@ -221,36 +208,12 @@ function upload(url, files_number) {
     })
     document.getElementById(`file${files_number}_close`).addEventListener("click", function () {
       request.abort();
-      if (filename == input.files[files_number].name){
-        file_index += 1;
-      }
-      if (number_files != number_file_uploaded){
-        file_input_label.innerText = number_files_upload();
-        upload_multiple(input_url);
-      }
-      else if (number_files == number_file_uploaded) {
-        if (number_files == 0){
-          show_alert(`Upload cancelled`, "primary");
-        }
-        else{
-          show_alert(`File uploaded ${number_files_upload()} `, "success");
-        }
-      
-        reset();
-      }
-
+      checked()
     })
+
   }
   else{
-    file_index += 1;
-    if (number_files == number_file_uploaded) {
-      show_alert(`${request.response.message} ` + number_files_upload(), "success");
-    }
-    if (number_files != number_file_uploaded){
-      file_input_label.innerText = number_files_upload();
-      upload_multiple(input_url);
-    }
-
+    checked()
   }
 
 }
