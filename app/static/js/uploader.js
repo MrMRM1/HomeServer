@@ -48,6 +48,21 @@ function checked(){
     reset();
   }
 }
+function cancel_push(index){
+  if ((input.files.length != 0) && (!files_canceled.includes(index))){
+    files_canceled.push(index)
+    number_files = input.files.length - files_canceled.length
+    file_input_label.innerText = number_files_upload();
+    set_size()
+  }
+}
+
+function remove_box_file(index){
+  document.getElementById(`file${index}`).remove()
+  if (input.files.length != 0){
+    cancel_push(index)
+  }
+}
 
 function generate_box_file(index){
   let tag = `<div id="file${index}" class="col-md-6 col-11 ms-auto me-auto mt-2 border rounded-3">
