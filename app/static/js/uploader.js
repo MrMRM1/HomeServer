@@ -33,12 +33,20 @@ function show_alert(message, alert) {
 
 }
 
-function remove_box_file(index){
-  files_canceled.push(index)
-  document.getElementById(`file${index}`).remove()
-  number_files = input.files.length - files_canceled.length
-  file_input_label.innerText = number_files_upload();
-  set_size()
+function checked(){
+  file_index += 1;
+  if (number_files != number_file_uploaded){
+    file_input_label.innerText = number_files_upload();
+    upload_multiple(input_url);
+  }
+  else if ((number_file_uploaded == 0) && (number_files == number_file_uploaded)){
+    show_alert(`Upload cancelled`, "primary");
+    reset();
+  }
+  else if (number_files == number_file_uploaded) {
+    show_alert(`File uploaded ` + number_files_upload(), "success");
+    reset();
+  }
 }
 
 function generate_box_file(index){
