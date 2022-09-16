@@ -169,7 +169,10 @@ def uploads_file():
 def upload_file():
     if access_status(9):
         if request.method == 'POST':
-            f = request.files['file']
+            try:
+                f = request.files['file']
+            except:
+                return make_response(jsonify({"message": "Upload canceled "}), 200)
             path = database.get_data()[3]
             try:
                 f.save(pathfile(path, f.filename))
