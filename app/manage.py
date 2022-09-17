@@ -22,18 +22,17 @@ connected_network = False
 ip = ''
 
 
-def threading_start(port_app=8880):
+def threading_start():
     """
     :return: Function to execute the flask program in the form of threading
     """
     global run_app
     global ftp_app
     data = database.get_data()
-    if port_app != '':
-        run_app = Thread(target=run, args=(port_app,))
-        run_app.start()
-        ftp_app = Thread(target=run_ftp, args=(data,))
-        ftp_app.start()
+    run_app = Thread(target=run, args=(data[1],))
+    run_app.start()
+    ftp_app = Thread(target=run_ftp, args=(data,))
+    ftp_app.start()
 
 
 def run(port_app):
