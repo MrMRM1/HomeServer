@@ -25,7 +25,7 @@
             <div class="col d-flex justify-content-center">
               <!-- Checkbox -->
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checked" checked />
+                <input class="form-check-input" type="checkbox" value="" id="checked"/>
                 <label class="form-check-label" for="checked"> Remember me </label>
               </div>
             </div>
@@ -33,7 +33,7 @@
 
           <!-- Submit button -->
         <div class="col d-flex justify-content-center">
-          <button type="submit" name="sing_in" class="btn btn-primary btn-block mb-4 ms-2 me-2">Sign in</button>
+          <button type="submit" name="sing_in" onclick="lsRememberMe()" class="btn btn-primary btn-block mb-4 ms-2 me-2">Sign in</button>
             {% if guest %}
           <button type="submit" name="guest" class="btn btn-outline-primary btn-block mb-4 ms-2 me-2">Guest</button>
             {% endif %}
@@ -50,7 +50,27 @@
                 document.getElementById('myAlert').innerHTML = '';
             }, 6000);
     }
+    
+    const rmCheck = document.getElementById("checked");
+    var usernameunput = document.getElementById("username");
 
+    if (localStorage.checkbox && localStorage.usernameunput !== "") {
+      rmCheck.setAttribute("checked", "checked");
+      usernameunput.value = localStorage.username;
+    } else {
+      rmCheck.removeAttribute("checked");
+      usernameunput.value = "";
+    }
+
+    function lsRememberMe() {
+      if (rmCheck.checked && usernameunput.value !== "") {
+        localStorage.username = usernameunput.value;
+        localStorage.checkbox = rmCheck.checked;
+      } else {
+        localStorage.username = "";
+        localStorage.checkbox = "";
+      }
+    }
 
     </script>
 
