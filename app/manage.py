@@ -89,7 +89,6 @@ def run(port_app):
     else:
         address_app = f"{ip}:{port_app}"
     logger.info(f'Web app: http://{address_app}')
-    database.write_data(port_app, "port")
     if gevent_import:
         http_server = WSGIServer((ip, int(port_app)), app)
         http_server.serve_forever()
