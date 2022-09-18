@@ -1,8 +1,10 @@
-import sys
+import getopt
+import logging
 import os
+import sys
 from threading import Thread
 from time import sleep
-import logging
+
 try:
     import sys
     sys.path.append('/'.join(os.path.dirname(sys.modules['__main__'].__file__).split('/')[:-1]))
@@ -17,7 +19,7 @@ except ModuleNotFoundError:
 
 from web_app import app
 from ftp import ftp_server
-from scripts.network import get_ip
+from scripts.network import get_ip, check_port_bool
 from scripts.sqllite import database
 
 v = 6
@@ -115,8 +117,22 @@ def run_ftp(data):
 
 
 def main(argv):
-    if 'runserver' in argv:
+    try:
+        opts, args = getopt.getopt(argv, "h", ["help", "port="])
+    except getopt.GetoptError:
+        sys.exit(2)
+    if 'runserver' in args:
         threading_start()
+    else:
+        for opt, arg in opts:
+            if opt in ('-h', '--help'):
+                pass
+            elif opt == '--port':
+                if check_port_bool(arg):
+                    database.write_data(arg, "port")
+                    logger.info('Port changed successfully')
+                else:
+                    logger.error('The port value must be a number')
 
 
 if __name__ == "__main__":
