@@ -20,10 +20,48 @@ from ftp import ftp_server
 from scripts.network import get_ip
 from scripts.sqllite import database
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 v = 6
 connected_network = False
 ip = ''
+
+
+class CustomFormatter(logging.Formatter):
+
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    format = "%(asctime)s - %(levelname)s - %(message)s"
+
+    FORMATS = {
+        logging.DEBUG: HEADER + format + ENDC,
+        logging.INFO: OKCYAN + format + ENDC,
+        logging.WARNING: WARNING + format + ENDC,
+        logging.ERROR: FAIL + format + ENDC,
+        logging.CRITICAL: BOLD + format + ENDC
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+ch.setFormatter(CustomFormatter())
+
+logger.addHandler(ch)
 
 
 def threading_start():
@@ -50,13 +88,13 @@ def run(port_app):
         address_app = str(ip)
     else:
         address_app = f"{ip}:{port_app}"
-    logging.info(f'Web app: http://{address_app}')
+    logger.info(f'Web app: http://{address_app}')
     database.write_data(port_app, "port")
     if gevent_import:
         http_server = WSGIServer((ip, int(port_app)), app)
         http_server.serve_forever()
     else:
-        logging.warning("Install gevent module for better app performance")
+        logger.warning("Install gevent module for better app performance")
         app.run(host=ip, port=port_app, debug=False)
 
 
@@ -67,12 +105,12 @@ def run_ftp(data):
     global address_run_ftp
     global ftp_server_control
     if data[6] == '0':
-        logging.info('FTP server: disabled')
+        logger.info('FTP server: disabled')
     else:
         address_run_ftp = f'Host: {ip}  Port: {data[5]}'
         if data[11] == '0':
             address_run_ftp += '  Login anonymously'
-        logging.info(f'FTP server: {address_run_ftp}')
+        logger.info(f'FTP server: {address_run_ftp}')
         ftp_server_control = ftp_server(data, ip)
         ftp_server_control.serve_forever(handle_exit=False)
 
@@ -87,7 +125,7 @@ if __name__ == "__main__":
         ip = get_ip()
         connected_network = True
     except OSError:
-        logging.error('You are not connected to any networks')
+        logger.error('You are not connected to any networks')
         exit()
     main(sys.argv[1:])
     sleep(2)
