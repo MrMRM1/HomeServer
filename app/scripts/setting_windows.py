@@ -5,6 +5,7 @@ from tkinter import filedialog, messagebox, Label, Button, Entry, ttk, Toplevel,
 
 from app.ftp.ftp_scripts.filesystems import get_root
 from app.admin.scripts.validity_check import check_username, check_password
+from app.scripts.network import check_port_bool
 
 if platform.system() != 'Windows':
     import subprocess
@@ -44,13 +45,9 @@ def open_path(path: str) -> None:
 def check_port(port: str) -> str:
     def show_error():
         messagebox.showerror('Error enter a valid value', 'The port value must be a number')
-    try:
-        port_number = str(int(port))
-        if len(port) == len(port_number) and port != '':
-            return port_number
-        else:
-            show_error()
-    except ValueError:
+    if check_port_bool(port):
+        return port
+    else:
         show_error()
     return ''
 
