@@ -36,7 +36,7 @@ class CustomFormatter(logging.Formatter):
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-    format = "%(asctime)s - %(levelname)s - %(message)s"
+    format = "%(levelname)s - %(message)s"
 
     FORMATS = {
         logging.DEBUG: HEADER + format + ENDC,
