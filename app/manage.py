@@ -9,7 +9,11 @@ try:
 except:
     pass
 
-from gevent.pywsgi import WSGIServer
+try:
+    from gevent.pywsgi import WSGIServer
+    gevent_import = True
+except ModuleNotFoundError:
+    gevent_import = False
 
 from web_app import app
 from ftp import ftp_server
@@ -48,8 +52,12 @@ def run(port_app):
         address_app = f"{ip}:{port_app}"
     logging.info(f'Web app: http://{address_app}')
     database.write_data(port_app, "port")
-    http_server = WSGIServer((ip, int(port_app)), app)
-    http_server.serve_forever()
+    if gevent_import:
+        http_server = WSGIServer((ip, int(port_app)), app)
+        http_server.serve_forever()
+    else:
+        logging.warning("Install gevent module for better app performance")
+        app.run(host=ip, port=port_app, debug=False)
 
 
 def run_ftp(data):
