@@ -125,6 +125,6 @@ if __name__ == "__main__":
         connected_network = True
     except OSError:
         logger.error('You are not connected to any networks')
-        exit()
+        sys.exit(2)
     main(sys.argv[1:])
     sleep(2)
