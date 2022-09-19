@@ -123,6 +123,7 @@ def main(argv):
         sys.exit(2)
     if 'runserver' in args:
         threading_start()
+        sleep(2)
     else:
         for opt, arg in opts:
             if opt in ('-h', '--help'):
