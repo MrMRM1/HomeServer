@@ -131,6 +131,7 @@ or
 python manage.py [OPTION]...
 Option         Long option             Meaning
 -a             --path                  Show all accessible paths of the program 
+-b             --add_path              Add an accessible path, example: --add_path="/home/username/Desktop"
 -h             --help                  Show this help text and exit
 -p             --port=<int>            Change the web app port. The port must be a number between 0 and 65535 and not already used
     ''')
