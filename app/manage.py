@@ -21,6 +21,7 @@ from web_app import app
 from ftp import ftp_server
 from scripts.network import get_ip, check_port_bool
 from scripts.sqllite import database
+from scripts.paths import add_path_database
 
 v = 6
 connected_network = False
@@ -116,6 +117,14 @@ def run_ftp(data):
         ftp_server_control.serve_forever(handle_exit=False)
 
 
+def add_path(path):
+    if os.path.isdir(path):
+        add_path_database(path)
+        logger.info("Path added successfully")
+    else:
+        logger.error("The path is wrong")
+
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -129,7 +138,7 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:a", ["help", "port=", "path"])
+        opts, args = getopt.getopt(argv, "hp:ab:", ["help", "port=", "path", "add_path"])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -148,6 +157,8 @@ def main(argv):
                     logger.error('The port value must be a number')
             elif opt in ('-a', '--path'):
                 print(*database.get_data()[0].split(','), sep='\n')
+            elif opt in ('-b', '--add_path'):
+                add_path(arg)
 
 
 if __name__ == "__main__":
