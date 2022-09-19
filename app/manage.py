@@ -138,7 +138,7 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:", ["help", "port=", "path", "add_path"])
+        opts, args = getopt.getopt(argv, "hp:ab:", ["help", "port=", "path", "add_path="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
