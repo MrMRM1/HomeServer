@@ -22,6 +22,7 @@ from scripts.network import port_flask, get_ip
 from scripts.setting_windows import Setting, check_port
 from scripts.sqllite import database
 from scripts.already_running import SingleInstance
+from scripts.paths import add_path_database, write_paths
 
 v = 6
 connected_network = False
@@ -72,15 +73,7 @@ def path_dir():
         messagebox.showwarning(title="WARNING",
                                message="You are not allowed to select a drive, you must select a folder")
     else:
-        try:
-            paths = database.get_data()[0].split(',')
-            if directory not in paths:
-                for i in list_folders(directory):
-                    if i not in paths:
-                        paths.append(i)
-        except:
-            paths = [directory]
-        write_paths(paths)
+        add_path_database(directory)
         load_data()
 
 
