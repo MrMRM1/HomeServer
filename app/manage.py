@@ -121,6 +121,7 @@ def _help():
 or 
 python manage.py [OPTION]...
 Option         Long option             Meaning
+-a             --path                  Show all accessible paths of the program 
 -h             --help                  Show this help text and exit
 -p             --port=<int>            Change the web app port. The port must be a number between 0 and 65535 and not already used
     ''')
@@ -128,7 +129,7 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:", ["help", "port="])
+        opts, args = getopt.getopt(argv, "hp:a", ["help", "port=", "path"])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -145,6 +146,8 @@ def main(argv):
                     logger.info('Port changed successfully')
                 else:
                     logger.error('The port value must be a number')
+            elif opt in ('-a', '--path'):
+                print(*database.get_data()[0].split(','), sep='\n')
 
 
 if __name__ == "__main__":
