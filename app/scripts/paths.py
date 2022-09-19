@@ -99,3 +99,38 @@ def check_dir_flask(function):
     check.__name__ = function.__name__
     return check
 
+
+def write_paths(paths):
+    """
+    :param paths: The path to be stored in the database
+    :return: Delete the empty path and save the path in the database
+    """
+    if '' in paths:
+        paths.remove('')
+    database.write_data(','.join(paths), "paths")
+
+
+def list_folders(path):
+    """
+    :param path: Folder path
+    :return: The path of the folders inside the given path
+    """
+    a = []
+    b = [x[0] for x in os.walk(path)]
+    for i in b:
+        i = i.split('\\')
+        i = '/'.join(i)
+        a.append(i)
+    return a
+
+
+def add_path_database(path: str) -> None:
+    try:
+        paths = database.get_data()[0].split(',')
+        if path not in paths:
+            for i in list_folders(path):
+                if i not in paths:
+                    paths.append(i)
+    except:
+        paths = [path]
+    write_paths(paths)
