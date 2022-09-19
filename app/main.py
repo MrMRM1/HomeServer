@@ -90,20 +90,6 @@ def path_clear():
         load_data()
 
 
-def list_folders(path):
-    """
-    :param path: Folder path
-    :return: The path of the folders inside the given path
-    """
-    a = []
-    b = [x[0] for x in os.walk(path)]
-    for i in b:
-        i = i.split('\\')
-        i = '/'.join(i)
-        a.append(i)
-    return a
-
-
 def del_itms():
     """
     :return: Delete a folder path from the folder list
