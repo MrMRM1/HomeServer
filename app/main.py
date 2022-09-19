@@ -93,16 +93,6 @@ def del_itms():
         pass
 
 
-def write_paths(paths):
-    """
-    :param paths: The path to be stored in the database
-    :return: Delete the empty path and save the path in the database
-    """
-    if '' in paths:
-        paths.remove('')
-    database.write_data(','.join(paths), "paths")
-
-
 def del_path(*args):
     """
     :return: Function to delete the selected path from the database and the list of folders
