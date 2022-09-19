@@ -118,7 +118,7 @@ def run_ftp(data):
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "h", ["help", "port="])
+        opts, args = getopt.getopt(argv, "hp:", ["help", "port="])
     except getopt.GetoptError:
         sys.exit(2)
     if 'runserver' in args:
@@ -128,7 +128,7 @@ def main(argv):
         for opt, arg in opts:
             if opt in ('-h', '--help'):
                 pass
-            elif opt == '--port':
+            elif opt in ('-p', '--port'):
                 if check_port_bool(arg):
                     database.write_data(arg, "port")
                     logger.info('Port changed successfully')
