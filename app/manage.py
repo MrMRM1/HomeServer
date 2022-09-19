@@ -143,4 +143,3 @@ if __name__ == "__main__":
         logger.error('You are not connected to any networks')
         sys.exit(2)
     main(sys.argv[1:])
-    sleep(2)
