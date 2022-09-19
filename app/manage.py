@@ -116,10 +116,21 @@ def run_ftp(data):
         ftp_server_control.serve_forever(handle_exit=False)
 
 
+def _help():
+    print('''Usage: "python manage.py runserver" to run servers
+or 
+python manage.py [OPTION]...
+Option         Long option             Meaning
+-h             --help                  Show this help text and exit
+-p             --port=<int>            Change the web app port. The port must be a number between 0 and 65535 and not already used
+    ''')
+
+
 def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hp:", ["help", "port="])
     except getopt.GetoptError:
+        _help()
         sys.exit(2)
     if 'runserver' in args:
         threading_start()
@@ -127,7 +138,7 @@ def main(argv):
     else:
         for opt, arg in opts:
             if opt in ('-h', '--help'):
-                pass
+                _help()
             elif opt in ('-p', '--port'):
                 if check_port_bool(arg):
                     database.write_data(arg, "port")
