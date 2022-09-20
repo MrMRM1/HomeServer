@@ -4,6 +4,7 @@ import os
 import sys
 from threading import Thread
 from time import sleep
+from hashlib import sha256
 
 try:
     import sys
@@ -23,7 +24,7 @@ from scripts.network import get_ip, check_port_bool
 from scripts.sqllite import database
 from scripts.paths import add_path_database, write_paths
 from ftp.ftp_scripts.filesystems import get_root
-from admin.scripts.validity_check import check_username
+from admin.scripts.validity_check import check_username, check_password
 
 v = 6
 connected_network = False
@@ -180,6 +181,15 @@ def save_username(username):
         logger.error('Enter a valid username\nusername is 4-20 characters long\nallowed characters a-z A-Z 0-9')
 
 
+def save_password(password):
+    if check_password(password):
+        database.write_data(sha256(password.encode()).hexdigest(), 'admin_password')
+        logger.info('password saved successfully')
+    else:
+        logger.error('Enter a valid Password\nMinimum 8 characters, at least one uppercase letter, one lowercase '
+                     'letter, one number and one special character (@$!%*?&)')
+
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -194,10 +204,10 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:j:k:",
+        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:j:k:l:",
                                    ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=",
                                     "ftp_root=", "ftp_create_directory=", "ftp_store_file=", "login_status=",
-                                    "username="])
+                                    "username=", "password="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -230,6 +240,8 @@ def main(argv):
                 save_status(arg, 'login_status')
             elif opt in ('-k', '--username'):
                 save_username(arg)
+            elif opt in ('-l', '--password'):
+                save_password(arg)
 
 
 if __name__ == "__main__":
