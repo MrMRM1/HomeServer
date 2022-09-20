@@ -219,8 +219,8 @@ Option         Long option             Meaning
 -j             --login_status          Setting whether or not login is enabled, 0 or 1
 -k             --username              Admin username setting
 -i             --password              Admin password setting
--m             --received_path         Setting the receiving path
--n             --received              Show receiving path
+-m             --receive_path         Setting the receiving path
+-n             --receive              Show receiving path
 -p             --port=<int>            Change the web app port. The port must be a number between 0 and 65535 and not already used
     ''')
 
@@ -263,9 +263,9 @@ def main(argv):
                     save_username(arg)
                 case '-l' | '--password':
                     save_password(arg)
-                case '-m' | '--received_path':
+                case '-m' | '--receive_path':
                     save_received_path(arg)
-                case '-n' | '--received':
+                case '-n' | '--receive':
                     print(f"received path: {database.get_data()[3]}")
 
 
