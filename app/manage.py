@@ -146,7 +146,7 @@ def save_port(port, typ):
         logger.error('The port value must be a number')
 
 
-def ftp_server_status(arg, typ):
+def save_status(arg, typ):
     if arg in ['0', '1']:
         if typ == 'ftp_server':
             database.write_data(arg, 'ftp_server')
@@ -154,6 +154,8 @@ def ftp_server_status(arg, typ):
             database.write_data(arg, 'ftp_create_directory')
         elif typ == 'ftp_store_file':
             database.write_data(arg, 'ftp_store_file')
+        elif typ == 'login_status':
+            database.write_data(arg, 'login_status')
         logger.info(f'{typ} saved successfully')
     else:
         logger.error(f'The value entered for {typ} is incorrect, it should be 0 or 1')
@@ -183,9 +185,9 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:",
+        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:j:",
                                    ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=",
-                                    "ftp_root=", "ftp_create_directory=", "ftp_store_file="])
+                                    "ftp_root=", "ftp_create_directory=", "ftp_store_file=", "login_status="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -205,15 +207,17 @@ def main(argv):
             elif opt in ('-d', '--del_path'):
                 del_path(arg)
             elif opt in ('-e', '--ftp_server'):
-                ftp_server_status(arg, 'ftp_server')
+                save_status(arg, 'ftp_server')
             elif opt in ('-f', '--ftp_root'):
                 ftp_root_save(arg)
             elif opt in ('-g', '--ftp_create_directory'):
-                ftp_server_status(arg, 'ftp_create_directory')
+                save_status(arg, 'ftp_create_directory')
             elif opt in ('-h', '--help'):
                 _help()
             elif opt in ('-i', '--ftp_store_file'):
-                ftp_server_status(arg, 'ftp_store_file')
+                save_status(arg, 'ftp_store_file')
+            elif opt in ('-j', '--login_status'):
+                save_status(arg, 'login_status')
 
 
 if __name__ == "__main__":
