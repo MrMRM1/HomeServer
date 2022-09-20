@@ -190,6 +190,14 @@ def save_password(password):
                      'letter, one number and one special character (@$!%*?&)')
 
 
+def save_received_path(path):
+    if os.path.isdir(path):
+        database.write_data(path, "upload")
+        logger.info("Received path saved successfully")
+    else:
+        logger.error("The path received is incorrect")
+
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -204,10 +212,10 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:j:k:l:",
+        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:j:k:l:m:",
                                    ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=",
                                     "ftp_root=", "ftp_create_directory=", "ftp_store_file=", "login_status=",
-                                    "username=", "password="])
+                                    "username=", "password=", "received_path="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -242,6 +250,8 @@ def main(argv):
                 save_username(arg)
             elif opt in ('-l', '--password'):
                 save_password(arg)
+            elif opt in ('-m', '--received_path'):
+                save_received_path(arg)
 
 
 if __name__ == "__main__":
