@@ -206,22 +206,22 @@ def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
 python manage.py [OPTION]...
-Option         Long option             Meaning
--a             --path                  Show all accessible paths of the program 
--b             --add_path              Add an accessible path, example: --add_path="/home/username/Desktop"
--c             --ftp_port              FTP port setting
--d             --del_path              Remove an access path
--e             --ftp_server            Turn off and on the FTP server, 0 or 1
--f             --ftp_root              Set FTP root
--g             --ftp_create_directory  Set FTP create directory
--h             --help                  Show this help text and exit
--i             --ftp_store_file        Set FTP store file   
--j             --login_status          Setting whether or not login is enabled, 0 or 1
--k             --username              Admin username setting
--i             --password              Admin password setting
--m             --receive_path         Setting the receiving path
--n             --receive              Show receiving path
--p             --port=<int>            Change the web app port. The port must be a number between 0 and 65535 and not already used
+Option      Long option             Meaning
+-a          --path                  Show all accessible paths of the program 
+-b          --add_path              Add an accessible path, example: --add_path="/home/username/Desktop"
+-c          --ftp_port              FTP port setting
+-d          --del_path              Remove an access path
+-e          --ftp_server            Turn off and on the FTP server, 0 or 1
+-f          --ftp_root              Set FTP root
+-g          --ftp_create_directory  Set FTP create directory
+-h          --help                  Show this help text and exit
+-i          --ftp_store_file        Set FTP store file   
+-j          --login_status          Setting whether or not login is enabled, 0 or 1
+-k          --username              Admin username setting
+-i          --password              Admin password setting
+-m          --receive_path         Setting the receiving path
+-n          --receive              Show receiving path
+-p          --port=<int>            Change the web app port. The port must be a number between 0 and 65535 and not already used
     ''')
 
 
