@@ -224,36 +224,37 @@ def main(argv):
         sleep(2)
     else:
         for opt, arg in opts:
-            if opt in ('-p', '--port'):
-                save_port(arg, 'web')
-            elif opt in ('-a', '--path'):
-                print(*database.get_data()[0].split(','), sep='\n')
-            elif opt in ('-b', '--add_path'):
-                add_path(arg)
-            elif opt in ('-c', '--ftp_port'):
-                save_port(arg, 'ftp')
-            elif opt in ('-d', '--del_path'):
-                del_path(arg)
-            elif opt in ('-e', '--ftp_server'):
-                save_status(arg, 'ftp_server')
-            elif opt in ('-f', '--ftp_root'):
-                ftp_root_save(arg)
-            elif opt in ('-g', '--ftp_create_directory'):
-                save_status(arg, 'ftp_create_directory')
-            elif opt in ('-h', '--help'):
-                _help()
-            elif opt in ('-i', '--ftp_store_file'):
-                save_status(arg, 'ftp_store_file')
-            elif opt in ('-j', '--login_status'):
-                save_status(arg, 'login_status')
-            elif opt in ('-k', '--username'):
-                save_username(arg)
-            elif opt in ('-l', '--password'):
-                save_password(arg)
-            elif opt in ('-m', '--received_path'):
-                save_received_path(arg)
-            elif opt in ('-n', '--received'):
-                print(f"received path: {database.get_data()[3]}")
+            match opt:
+                case '-p' | '--port':
+                    save_port(arg, 'web')
+                case '-a' | '--path':
+                    print(*database.get_data()[0].split(','), sep='\n')
+                case '-b' | '--add_path':
+                    add_path(arg)
+                case '-c' | '--ftp_port':
+                    save_port(arg, 'ftp')
+                case '-d' | '--del_path':
+                    del_path(arg)
+                case '-e' | '--ftp_server':
+                    save_status(arg, 'ftp_server')
+                case '-f' | '--ftp_root':
+                    ftp_root_save(arg)
+                case '-g' | '--ftp_create_directory':
+                    save_status(arg, 'ftp_create_directory')
+                case '-h' | '--help':
+                    _help()
+                case '-i' | '--ftp_store_file':
+                    save_status(arg, 'ftp_store_file')
+                case '-j' | '--login_status':
+                    save_status(arg, 'login_status')
+                case '-k' | '--username':
+                    save_username(arg)
+                case '-l' | '--password':
+                    save_password(arg)
+                case '-m' | '--received_path':
+                    save_received_path(arg)
+                case '-n' | '--received':
+                    print(f"received path: {database.get_data()[3]}")
 
 
 if __name__ == "__main__":
