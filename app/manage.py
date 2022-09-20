@@ -22,6 +22,7 @@ from ftp import ftp_server
 from scripts.network import get_ip, check_port_bool
 from scripts.sqllite import database
 from scripts.paths import add_path_database, write_paths
+from ftp.ftp_scripts.filesystems import get_root
 
 v = 6
 connected_network = False
@@ -29,7 +30,6 @@ ip = ''
 
 
 class CustomFormatter(logging.Formatter):
-
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -154,6 +154,16 @@ def ftp_server_status(arg):
         logger.error('The value entered for ftp_server is incorrect, it should be 0 or 1')
 
 
+def ftp_root_save(root):
+    data = database.get_data()
+    allowed_root = get_root(4, data[12])
+    if root in allowed_root:
+        database.write_data(root, 'ftp_root')
+        logger.info('FTP Root saved successfully')
+    else:
+        logger.error("The entered root is wrong. You are allowed to use these roots:\n" + '\n'.join(allowed_root))
+
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -168,8 +178,9 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:",
-                                   ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server="])
+        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:",
+                                   ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=",
+                                    "ftp_root="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -192,6 +203,8 @@ def main(argv):
                 del_path(arg)
             elif opt in ('-e', '--ftp_server'):
                 ftp_server_status(arg)
+            elif opt in ('-f', '--ftp_root'):
+                ftp_root_save(arg)
 
 
 if __name__ == "__main__":
