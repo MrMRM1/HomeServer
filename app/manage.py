@@ -29,6 +29,10 @@ from admin.scripts.validity_check import check_username, check_password
 v = 6
 connected_network = False
 ip = ''
+LONG_OPTION = ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=", "ftp_root=",
+               "ftp_create_directory=", "ftp_store_file=", "login_status=", "username=", "password=", "received_path=",
+               "received"]
+OPTION = "hp:ab:d:c:e:f:g:i:j:k:l:m:n"
 
 
 class CustomFormatter(logging.Formatter):
@@ -212,10 +216,7 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:f:g:i:j:k:l:m:n",
-                                   ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=",
-                                    "ftp_root=", "ftp_create_directory=", "ftp_store_file=", "login_status=",
-                                    "username=", "password=", "received_path=", "received"])
+        opts, args = getopt.getopt(argv, OPTION, LONG_OPTION)
     except getopt.GetoptError:
         _help()
         sys.exit(2)
