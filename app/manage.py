@@ -30,8 +30,8 @@ v = 6
 connected_network = False
 ip = ''
 LONG_OPTION = ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=", "ftp_root=",
-               "ftp_create_directory=", "ftp_store_file=", "login_status=", "username=", "password=", "received_path=",
-               "received"]
+               "ftp_create_directory=", "ftp_store_file=", "login_status=", "username=", "password=", "receive_path=",
+               "receive"]
 OPTION = "hp:ab:d:c:e:f:g:i:j:k:l:m:n"
 
 
