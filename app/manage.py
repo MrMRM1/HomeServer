@@ -135,6 +135,16 @@ def del_path(path: str) -> None:
         logger.error('The path is not available in the program')
 
 
+def save_port(port, typ):
+    if check_port_bool(port):
+        if typ == 'web':
+            database.write_data(port, "port")
+        elif typ == 'ftp':
+            database.write_data(port, 'port_ftp')
+        logger.info('Port changed successfully')
+    else:
+        logger.error('The port value must be a number')
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -149,7 +159,7 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:", ["help", "port=", "path", "add_path=", "del_path="])
+        opts, args = getopt.getopt(argv, "hp:ab:d:c:", ["help", "port=", "path", "add_path=", "del_path=", "ftp_port="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -161,15 +171,13 @@ def main(argv):
             if opt in ('-h', '--help'):
                 _help()
             elif opt in ('-p', '--port'):
-                if check_port_bool(arg):
-                    database.write_data(arg, "port")
-                    logger.info('Port changed successfully')
-                else:
-                    logger.error('The port value must be a number')
+                save_port(arg, 'web')
             elif opt in ('-a', '--path'):
                 print(*database.get_data()[0].split(','), sep='\n')
             elif opt in ('-b', '--add_path'):
                 add_path(arg)
+            elif opt in ('-c', '--ftp_port'):
+                save_port(arg, 'ftp')
             elif opt in ('-d', '--del_path'):
                 del_path(arg)
 
