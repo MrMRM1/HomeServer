@@ -145,6 +145,15 @@ def save_port(port, typ):
     else:
         logger.error('The port value must be a number')
 
+
+def ftp_server_status(arg):
+    if arg in ['0', '1']:
+        database.write_data(arg, 'ftp_server')
+        logger.info('FTP server status saved successfully')
+    else:
+        logger.error('The value entered for ftp_server is incorrect, it should be 0 or 1')
+
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -159,7 +168,8 @@ Option         Long option             Meaning
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hp:ab:d:c:", ["help", "port=", "path", "add_path=", "del_path=", "ftp_port="])
+        opts, args = getopt.getopt(argv, "hp:ab:d:c:e:",
+                                   ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server="])
     except getopt.GetoptError:
         _help()
         sys.exit(2)
@@ -180,6 +190,8 @@ def main(argv):
                 save_port(arg, 'ftp')
             elif opt in ('-d', '--del_path'):
                 del_path(arg)
+            elif opt in ('-e', '--ftp_server'):
+                ftp_server_status(arg)
 
 
 if __name__ == "__main__":
