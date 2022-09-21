@@ -125,6 +125,8 @@ def run_ftp(data):
 
 def add_path(path):
     if os.path.isdir(path):
+        if path[-1] == '/':
+            path = path[:-1]
         add_path_database(path)
         logger.info("Path added successfully")
     else:
