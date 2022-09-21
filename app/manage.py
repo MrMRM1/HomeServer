@@ -268,7 +268,7 @@ def main(argv):
                 case '-m' | '--receive_path':
                     save_received_path(arg)
                 case '-n' | '--receive':
-                    print(f"received path: {database.get_data()[3]}")
+                    print(f"Path of received files: {database.get_data()[3]}")
 
 
 if __name__ == "__main__":
