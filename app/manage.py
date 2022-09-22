@@ -149,7 +149,7 @@ def save_port(port, typ):
             database.write_data(port, "port")
         elif typ == 'ftp':
             database.write_data(port, 'port_ftp')
-        logger.info('Port changed successfully')
+        logger.info(f'{typ} changed successfully')
     else:
         logger.error('The port value must be a number')
 
