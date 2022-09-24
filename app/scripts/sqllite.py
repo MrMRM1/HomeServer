@@ -140,8 +140,9 @@ class Database:
     def disable_secret(self, secret: str):
         self.sql_commit(f'UPDATE secrets SET status = "0" WHERE secret = "{secret}"')
 
-    def update_user_information(self, username, paths, ftp, video, audio, pdf, receive, send, system_control, picture, ftp_root):
-        sql = f'UPDATE users SET paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}", ftp_root = "{ftp_root}"  WHERE username = "{username}"'
+    def update_user_information(self, username, paths, ftp, video, audio, pdf, receive, send, system_control, picture,
+                                ftp_create_directory, ftp_store_file, ftp_root):
+        sql = f'UPDATE users SET paths = "{paths}", ftp_status = "{ftp}", video_status = "{video}", audio_status = "{audio}", pdf_status = "{pdf}", receive_status = "{receive}", send_status = "{send}", system_control_status = "{system_control}", picture_status = "{picture}", ftp_create_directory = "{ftp_create_directory}", ftp_store_file = "{ftp_store_file}", ftp_root = "{ftp_root}"  WHERE username = "{username}"'
         self.sql_commit(sql)
 
     def information_all_users(self):
