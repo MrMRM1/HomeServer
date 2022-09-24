@@ -20,7 +20,7 @@ class Database:
             data = self.fetchone(f"SELECT * from data_user")
             try:
                 users_data = self.fetchone("SELECT * FROM users LIMIT 1")
-                if len(data) < 15 or len(users_data) < 13:
+                if len(data) < 15 or len(users_data) < 15:
                     self.my_db.execute("SELECT * FROM users")
                     users_data = self.my_db.fetchall()
                     self.update_data_app(data, users_data)
@@ -79,7 +79,8 @@ class Database:
 
     def update_users(self, datas):
         key = ['username', 'password', 'paths', 'ftp_status', 'video_status', 'audio_status', 'pdf_status',
-               'receive_status', 'send_status', 'system_control_status', 'picture_status', 'ftp_root']
+               'receive_status', 'send_status', 'system_control_status', 'picture_status', 'ftp_create_directory',
+               'ftp_store_file', 'ftp_root']
 
         def _data(list_data) -> list:
             out = []
