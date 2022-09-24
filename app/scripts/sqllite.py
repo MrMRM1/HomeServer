@@ -145,7 +145,7 @@ class Database:
         self.sql_commit(sql)
 
     def information_all_users(self):
-        sql = 'SELECT username, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status from users'
+        sql = 'SELECT username, ftp_status, video_status, audio_status, pdf_status,receive_status, send_status, system_control_status, picture_status, ftp_create_directory, ftp_store_file from users'
         self.my_db.execute(sql)
         return self.my_db.fetchall()
 
