@@ -87,6 +87,8 @@ def check_information(func):
     if func.__name__ == 'new_user':
         func(data['username'], sha256(data['password'].encode()).hexdigest(), data['paths'],
              [data['services']['ftp'], data['services']['video'], data['services']['audio'], data['services']['pdf'],
-              data['services']['receive'], data['services']['send'], data['services']['system_control'], data['services']['picture']], data['ftp_root'])
+              data['services']['receive'], data['services']['send'], data['services']['system_control'],
+              data['services']['picture'], data['services']['ftp_create_directory'], data['services']['ftp_store_file']],
+             data['ftp_root'])
         return jsonify(status=200), 200
 
