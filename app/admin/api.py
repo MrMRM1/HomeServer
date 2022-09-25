@@ -29,7 +29,8 @@ def user_information():
         return jsonify(status=200, id=user_data[0], paths=user_data[3],
                        services={"ftp": user_data[4], "video": user_data[5], "audio": user_data[6], "pdf": user_data[7],
                                  "receive": user_data[8], "send": user_data[9], "system_control": user_data[10],
-                                 "picture": user_data[11]}, ftp_root=user_data[12]), 200
+                                 "picture": user_data[11], "ftp_create_directory": user_data[12],
+                                 "ftp_store_file": user_data[13]}, ftp_root=user_data[12]), 200
 
 
 @admin.route('/admin/update_access', methods=['POST'])
