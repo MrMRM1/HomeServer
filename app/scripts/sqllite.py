@@ -151,7 +151,7 @@ class Database:
         return self.my_db.fetchall()
 
     def ftp_users(self):
-        sql = 'SELECT username, password, ftp_root  from users WHERE ftp_status = "1"'
+        sql = 'SELECT username, password, ftp_root, ftp_create_directory, ftp_store_file  from users WHERE ftp_status = "1"'
         self.my_db.execute(sql)
         return self.my_db.fetchall()
 
