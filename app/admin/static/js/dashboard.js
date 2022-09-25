@@ -150,6 +150,8 @@ function set_checkbox_status(data){
     set_checked(update_access_checkbox_system_control, data.system_control)
     set_checked(update_access_checkbox_pdf, data.pdf)
     set_checked(update_access_checkbox_picture, data.picture)
+    set_checked(update_access_checkbox_create_directory, data.ftp_create_directory)
+    set_checked(update_access_checkbox_store_file, data.ftp_store_file)
 }
 
 function set_user_path(user_paths, ftp_root){
@@ -451,6 +453,8 @@ let update_access_checkbox_audio = document.getElementById('update_access_checkb
 let update_access_checkbox_system_control = document.getElementById('update_access_checkbox_system_control');
 let update_access_checkbox_pdf = document.getElementById('update_access_checkbox_pdf');
 let update_access_checkbox_picture = document.getElementById('update_access_checkbox_picture');
+let update_access_checkbox_create_directory = document.getElementById('update_access_checkbox_create_directory');
+let update_access_checkbox_store_file = document.getElementById('update_access_checkbox_store_file');
 let update_access_paths = document.getElementById('update_access_paths');
 
 document.getElementById('update_user_access_btn').addEventListener('click', () => {
@@ -489,7 +493,9 @@ document.getElementById('update_access_save_changes').addEventListener('click', 
                     'receive': checkbox_status(update_access_checkbox_receive),
                     'send': checkbox_status(update_access_checkbox_send),
                     'system_control': checkbox_status(update_access_checkbox_system_control),
-                    'picture': checkbox_status(update_access_checkbox_picture)
+                    'picture': checkbox_status(update_access_checkbox_picture),
+                    'ftp_create_directory': checkbox_status(update_access_checkbox_create_directory),
+                    'ftp_store_file': checkbox_status(update_access_checkbox_store_file)
                 }
             }).then(jsonObject => {
                 if (jsonObject.status == 200){
