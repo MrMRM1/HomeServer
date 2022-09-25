@@ -27,7 +27,7 @@ def check_status(function):
 
     def check(*args, **kwargs):
         data = request.json
-        if len(data['services'].keys()) != 8:
+        if len(data['services'].keys()) != 10:
             return jsonify(status=14, text='Services are not complete'), 200
         for i in data['services'].keys():
             if data['services'][i] == '1' or data['services'][i] == '0':
