@@ -395,6 +395,8 @@ document.getElementById('new_user_save_changes').addEventListener("click", () =>
     let send = document.getElementById('new_user_checkbox_send');
     let system_control = document.getElementById('new_user_checkbox_system_control');
     let picture = document.getElementById('new_user_checkbox_picture');
+    let ftp_store_file = document.getElementById('new_user_checkbox_store_file');
+    let ftp_create_directory = document.getElementById('new_user_checkbox_create_directory');
     let user_paths = get_paths_user('path_checkbox', 'path_label' );
 
     
@@ -420,7 +422,9 @@ document.getElementById('new_user_save_changes').addEventListener("click", () =>
                     'receive': checkbox_status(receive),
                     'send': checkbox_status(send),
                     'system_control': checkbox_status(system_control),
-                    'picture': checkbox_status(picture)
+                    'picture': checkbox_status(picture),
+                    'ftp_create_directory': checkbox_status(ftp_create_directory),
+                    'ftp_store_file': checkbox_status(ftp_store_file)
                 }
             }).then(jsonObject => {
                 if (jsonObject.status == 200){
