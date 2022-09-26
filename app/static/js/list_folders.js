@@ -106,6 +106,17 @@ function show_name(elmt){
 
 }
 
+function add_path(paths){
+    let path = paths.split('/')
+    $('#path').html('')
+    for (let i in path){
+        if (path[i] != ''){
+            $('#path').append(`<li class="breadcrumb-item">${path[i]}</li>`)
+        }
+    }
+    
+}
+
 
 function creator(dirs){
     updateHistory(root)
@@ -114,7 +125,7 @@ function creator(dirs){
     }
     const lengh_dir = dirs.length;
     $('#list').remove()
-    $('#path').html(root)
+    add_path(root)
     if (lengh_dir !== 0){
         $('#main').append('<div id="list" class="col-8 mt-2 ms-auto me-auto"></div>')
         for (let i=0; i < lengh_dir; i = i+2){
