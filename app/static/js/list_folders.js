@@ -119,9 +119,13 @@ function add_path(paths){
     $('#path').html('')
     if (paths != ''){
         $('#path').append(`<li class="breadcrumb-item"><a href="#"><img src="/static/icon/home.png" alt="Home" style="max-height: 18px; filter: invert(1);"></a></li>`)
+        let len_path = list_path.length - 2
         for (let i in list_path){
-            if (list_path[i] != ''){
+            if ((list_path[i] != '') && (i != len_path)){
                 $('#path').append(`<li class="breadcrumb-item"><a href="#${generate_path(parseInt(i) + 1, list_path)}">${list_path[i]}</a></li>`)
+            }
+            else if (i == len_path){
+                $('#path').append(`<li class="breadcrumb-item">${list_path[i]}</li>`)
             }
         }
     }
