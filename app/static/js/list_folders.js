@@ -106,6 +106,14 @@ function show_name(elmt){
 
 }
 
+function generate_path(len, paths){
+    let path = ''
+    for (let i=0; i < len; i++){
+        path += `${paths[i]}/`
+    }
+    return path
+}
+
 function add_path(paths){
     let path = paths.split('/')
     $('#path').html('')
