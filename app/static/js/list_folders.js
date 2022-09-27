@@ -115,14 +115,16 @@ function generate_path(len, paths){
 }
 
 function add_path(paths){
-    let path = paths.split('/')
+    let list_path = paths.split('/')
     $('#path').html('')
-    for (let i in path){
-        if (path[i] != ''){
-            $('#path').append(`<li class="breadcrumb-item">${path[i]}</li>`)
+    if (paths != ''){
+        $('#path').append(`<li class="breadcrumb-item"><a href="#"><img src="/static/icon/home.png" alt="Home" style="max-height: 18px; filter: invert(1);"></a></li>`)
+        for (let i in list_path){
+            if (list_path[i] != ''){
+                $('#path').append(`<li class="breadcrumb-item"><a href="#${generate_path(parseInt(i) + 1, list_path)}">${list_path[i]}</a></li>`)
+            }
         }
     }
-    
 }
 
 
