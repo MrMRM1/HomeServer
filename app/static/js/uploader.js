@@ -196,7 +196,8 @@ function upload(url, files_number) {
         checked()
       }
       else {
-
+        reset();
+        file_boxes.innerHTML = ''
         show_alert(`Error uploading file`, "danger");
 
       }
