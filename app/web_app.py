@@ -1,12 +1,12 @@
-import os
 from hashlib import sha256
 from threading import Thread
+from urllib.parse import unquote_plus
 
 from flask import Flask, render_template, send_from_directory, request, make_response, jsonify, redirect
 from flask_login import LoginManager, current_user, logout_user
 
 from scripts.sqllite import database
-from scripts.filename import pathfile
+from scripts.paths import save_file, check_path_save_file
 from video import video
 from audio import audio
 from pdf import pdf
@@ -168,21 +168,22 @@ def uploads_file():
 @login_required_custom
 def upload_file():
     if access_status(9):
-        if request.method == 'POST':
-            try:
-                f = request.files['file']
-            except:
-                return make_response(jsonify({"message": "Upload canceled "}), 200)
-            path = database.get_data()[3]
-            try:
-                f.save(pathfile(path, f.filename))
-            except:
-                os.makedirs(f"{path}")
-                f.save(pathfile(path, f.filename))
+        try:
+            f = request.files['file']
+        except:
+            return make_response(jsonify({"message": "Upload canceled "}), 200)
+        path = unquote_plus(request.headers['Path'])
+        if path == '/send':
+            status = save_file(database.get_data()[3], f)
+        else:
+            path = edit_path_windows_other('/'.join(path.split('/')[2:]))
+            status = check_path_save_file(path, f)
+        if status:
             res = make_response(jsonify({"message": "File uploaded"}), 200)
+        else:
+            res = make_response(jsonify({"message": "Access blocked"}), 403)
 
-            return res
-        return render_template('send.html', title="Send")
+        return res
 
 
 @app.errorhandler(404)
