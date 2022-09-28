@@ -214,6 +214,7 @@ function upload(url, files_number) {
 
     // Open and send the request
     request.open("post", url);
+    request.setRequestHeader('path', window.location.pathname)
     request.send(data);
 
     cancel_btn.addEventListener("click", function () {
