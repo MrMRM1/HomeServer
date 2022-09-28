@@ -144,3 +144,10 @@ def save_file(path, file):
         os.makedirs(f"{path}")
         file.save(pathfile(path, file.filename))
     return True
+
+
+def check_path_save_file(path, file):
+    if (os.path.isdir(path)) and (check_path(path)):
+        return save_file(path, file)
+    else:
+        return False
