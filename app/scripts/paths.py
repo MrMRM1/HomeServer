@@ -5,6 +5,7 @@ from flask import abort, request
 from flask_login import current_user
 
 from .sqllite import database
+from app.scripts.filename import pathfile
 
 
 def edit_path_windows_other(path: str) -> str:
@@ -134,3 +135,12 @@ def add_path_database(path: str) -> None:
     except:
         paths = [path]
     write_paths(paths)
+
+
+def save_file(path, file):
+    try:
+        file.save(pathfile(path, file.filename))
+    except:
+        os.makedirs(f"{path}")
+        file.save(pathfile(path, file.filename))
+    return True
