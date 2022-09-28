@@ -73,7 +73,7 @@ function generate_box_file(index){
           <span class="visually-hidden">Loading...</span>
       </div>
       <div>
-          <img class="d-none" id="file${index}_done" src="static/icon/done.svg" />
+          <img class="d-none" id="file${index}_done" src="/static/icon/done.svg" />
       </div>
   </div>
   <button onclick="remove_box_file(${index})" id="file${index}_close" type="button" class="btn-close float-end m-3 mt-4" aria-label="Close"></button>
