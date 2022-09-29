@@ -156,14 +156,15 @@ def save_port(port, typ):
 
 def save_status(arg, typ):
     if arg in ['0', '1']:
-        if typ == 'ftp_server':
-            database.write_data(arg, 'ftp_server')
-        elif typ == 'ftp_create_directory':
-            database.write_data(arg, 'ftp_create_directory')
-        elif typ == 'ftp_store_file':
-            database.write_data(arg, 'ftp_store_file')
-        elif typ == 'login_status':
-            database.write_data(arg, 'login_status')
+        match typ:
+            case 'ftp_server':
+                database.write_data(arg, 'ftp_server')
+            case 'ftp_create_directory':
+                database.write_data(arg, 'ftp_create_directory')
+            case 'ftp_store_file':
+                database.write_data(arg, 'ftp_store_file')
+            case 'login_status':
+                database.write_data(arg, 'login_status')
         logger.info(f'{typ} saved successfully')
     else:
         logger.error(f'The value entered for {typ} is incorrect, it should be 0 or 1')
