@@ -126,3 +126,14 @@ def system_control_password():
         return jsonify(status=18, text='The password must match the verification password'), 200
     database.write_data(sha256(data['password'].encode()).hexdigest(), "password")
     return jsonify(status=200), 200
+
+
+@admin.route('/admin/guest_mode', methods=['POST'])
+@login_required_custom
+@is_admin
+def guest_mode():
+    data = request.json
+    if data['status'] in ['0', '1']:
+        database.write_data(data['status'], 'guest_status')
+        return jsonify(status=200), 200
+    return jsonify(status=21, text='Guest mode must be 0 or 1'), 200
