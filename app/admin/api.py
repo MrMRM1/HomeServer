@@ -128,10 +128,10 @@ def system_control_password():
     return jsonify(status=200), 200
 
 
-@admin.route('/admin/guest_mode', methods=['POST'])
+@admin.route('/admin/set_mode', methods=['POST'])
 @login_required_custom
 @is_admin
-def guest_mode():
+def set_mode():
     data = request.json
     if data['status'] in ['0', '1']:
         database.write_data(data['status'], 'guest_status')
