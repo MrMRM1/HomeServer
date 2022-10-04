@@ -133,10 +133,11 @@ def system_control_password():
 @is_admin
 def set_mode():
     data = request.json
-    if data['status'] in ['0', '1']:
+    status = data['status']
+    if status in ['0', '1']:
         match data['mode']:
             case 'guest':
-                database.write_data(data['status'], 'guest_status')
+                database.write_data(status, 'guest_status')
                 return jsonify(status=200), 200
             case _:
                 return jsonify(status=23, text=f'There is no {data["mode"]} mode')
