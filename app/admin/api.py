@@ -139,6 +139,9 @@ def set_mode():
             case 'guest':
                 database.write_data(status, 'guest_status')
                 return jsonify(status=200), 200
+            case 'login':
+                database.write_data(status, 'login_status')
+                return jsonify(status=200), 200
             case _:
                 return jsonify(status=23, text=f'There is no {data["mode"]} mode')
     return jsonify(status=22, text=f'{data["mode"]} mode must be 0 or 1'), 200
