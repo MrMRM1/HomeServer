@@ -208,7 +208,7 @@ function upload(url, files_number) {
     request.addEventListener("error", function (e) {
 
       reset();
-
+      file_boxes.innerHTML = ''
       show_alert(`Error uploading file`, "warning");
 
     });
