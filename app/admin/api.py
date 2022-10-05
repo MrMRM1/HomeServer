@@ -142,6 +142,9 @@ def set_mode():
             case 'login':
                 database.write_data(status, 'login_status')
                 return jsonify(status=200), 200
+            case 'ftp':
+                database.write_data(status, 'ftp_server')
+                return jsonify(status=200), 200
             case _:
                 return jsonify(status=23, text=f'There is no {data["mode"]} mode')
     return jsonify(status=22, text=f'{data["mode"]} mode must be 0 or 1'), 200
