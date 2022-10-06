@@ -84,6 +84,12 @@ def chdir(self, path, username):
         raise OSError(1, 'Operation not permitted')
 
 
+def path_append(data: str, path: str) -> str:
+    list_path = data.split(',')
+    list_path.append(path)
+    return ','.join(list_path)
+
+
 def mkdir(self, path, username):
     """Create the specified directory."""
     allowed_list = list_dir(ftp=True, username=username)
