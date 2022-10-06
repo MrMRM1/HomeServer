@@ -96,9 +96,11 @@ def mkdir(self, path, username):
     path = path.replace('\\', '/')
     if os.path.dirname(path) in allowed_list:
         os.mkdir(path)
-        list_path = database.get_data()[0].split(',')
-        list_path.append(path)
-        database.write_data(','.join(list_path), 'paths')
+        data = database.get_data()
+        database.write_data(path_append(data[0], path), 'paths')
+        if (data[11] == '1') and (username != data[12]):
+            data_user = database.user_data_by_username(username)
+            database.write_users_data(path_append(data_user[3], path), 'paths', data_user[0])
     else:
         raise OSError(1, 'Operation not permitted')
 
