@@ -8,6 +8,7 @@ from .scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
 from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username, check_password, check_ftp_root
 from app.ftp.ftp_scripts.filesystems import get_root
+from app.scripts.network import check_port_bool
 
 
 @admin.route('/admin/register', methods=['POST'])
@@ -157,3 +158,22 @@ def set_mode():
             case _:
                 return jsonify(status=23, text=f'There is no {data["mode"]} mode')
     return jsonify(status=22, text=f'{data["mode"]} mode must be 0 or 1'), 200
+
+
+@admin.route('/admin/set_port', methods=['POST'])
+@login_required_custom
+@is_admin
+def set_port():
+    data = request.json
+    port = data['port']
+    if check_port_bool(port):
+        match data['type']:
+            case 'web':
+                database.write_data(port, "port")
+            case 'ftp':
+                database.write_data(port, 'port_ftp')
+            case _:
+                return jsonify(status=24, text="The port value must be a number"), 200
+        return jsonify(status=200), 200
+    else:
+        return jsonify(status=25, text="Only able to change web or ftp port"), 200
