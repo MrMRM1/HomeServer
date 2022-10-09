@@ -177,3 +177,21 @@ def set_port():
         return jsonify(status=200), 200
     else:
         return jsonify(status=25, text="Only able to change web or ftp port"), 200
+
+
+@admin.route('/admin/set_ftp_root', methods=['POST'])
+@login_required_custom
+@is_admin
+def set_ftp_root():
+    data = request.json
+    root = data['root']
+    app_data = database.get_data()
+    if app_data[12] == data['username']:
+        roots = get_root(data['advance'], data['username'])
+        if root in roots:
+            database.write_data(root, "ftp_root")
+            return jsonify(status=200), 200
+        else:
+            return jsonify(status=21, text='ftp_root is invalid'), 200
+    else:
+        return jsonify(status=403, text="You do not have permission to edit this user"), 200
