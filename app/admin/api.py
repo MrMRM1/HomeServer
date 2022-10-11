@@ -195,3 +195,11 @@ def set_ftp_root():
             return jsonify(status=21, text='ftp_root is invalid'), 200
     else:
         return jsonify(status=403, text="You do not have permission to edit this user"), 200
+
+
+@admin.route('/admin/get_path_received', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_path_received():
+    data = database.get_data()
+    return jsonify(status=200, path=data[3]), 200
