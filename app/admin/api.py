@@ -4,7 +4,7 @@ from flask import jsonify, request
 from flask_login import current_user
 
 from . import admin
-from .scripts.login import login_required_custom, is_admin
+from app.admin.scripts.login import login_required_custom, is_admin
 from app.scripts.sqllite import database
 from app.admin.scripts.validity_check import check_information, check_paths, check_status, check_username, check_password, check_ftp_root
 from app.ftp.ftp_scripts.filesystems import get_root
