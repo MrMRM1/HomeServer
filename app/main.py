@@ -295,7 +295,7 @@ if __name__ == '__main__':
         list_box.place(x=40, y=100, width=425, height=150)
         button_run = Button(root, text="Run", font=('arial', 10, 'bold'), command=_threading_start)
         button_run.place(x=430, y=260)
-        button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=threading_stop)
+        button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=_threading_stop)
         button_stop["state"] = "disabled"
         button_stop.place(x=375, y=260)
         Label(root, text=f"Enter in the browser:", font=('arial', 10, 'bold')).place(x=40, y=265)
