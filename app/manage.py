@@ -25,6 +25,7 @@ from scripts.sqllite import database
 from scripts.paths import add_path_database, write_paths
 from ftp.ftp_scripts.filesystems import get_root
 from admin.scripts.validity_check import check_username, check_password
+from server import threading_start
 
 v = 6
 connected_network = False
@@ -77,13 +78,7 @@ def _threading_start():
     """
     :return: Function to execute the flask program in the form of threading
     """
-    global run_app
-    global ftp_app
-    data = database.get_data()
-    run_app = Thread(target=run, args=(data[1],))
-    run_app.start()
-    ftp_app = Thread(target=run_ftp, args=(data,))
-    ftp_app.start()
+    threading_start(_run, _run_ftp)
 
 
 def _run(port_app):
