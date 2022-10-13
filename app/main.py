@@ -140,7 +140,7 @@ def _threading_start():
         button_stop["state"] = "normal"
 
 
-def threading_stop():
+def _threading_stop():
     """
     :return: Function to stop the flask program as threading
     """
