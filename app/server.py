@@ -56,3 +56,14 @@ def run_ftp(data, func):
         ftp_server_control.serve_forever(handle_exit=False)
 
     return True
+
+
+def threading_stop():
+    """
+    :return: Function to stop the flask program as threading
+    """
+    http_server.stop(timeout=2)
+    if database.get_data()[6] == '1':
+        ftp_server_control.close_all()
+        ftp_app.join(1)
+    run_app.join()
