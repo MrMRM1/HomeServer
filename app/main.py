@@ -179,7 +179,7 @@ def _run(port_app):
     http_server.serve_forever()
 
 
-def run_ftp():
+def _run_ftp(data):
     """
     :return: According to the settings of the ftp server, it turns on
     """
