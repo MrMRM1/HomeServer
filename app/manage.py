@@ -2,7 +2,6 @@ import getopt
 import logging
 import os
 import sys
-from threading import Thread
 from time import sleep
 from hashlib import sha256
 
@@ -18,8 +17,6 @@ try:
 except ModuleNotFoundError:
     gevent_import = False
 
-from web_app import app
-from ftp import ftp_server
 from scripts.network import get_ip, check_port_bool
 from scripts.sqllite import database
 from scripts.paths import add_path_database, write_paths
