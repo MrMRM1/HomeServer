@@ -86,7 +86,7 @@ def _threading_start():
     ftp_app.start()
 
 
-def run(port_app):
+def _run(port_app):
     """
     :param port_app: Port for the program to run
     :return: Disable different sections of the main window and run the flask program
