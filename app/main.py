@@ -120,7 +120,7 @@ def load_data():
         pass
 
 
-def threading_start():
+def _threading_start():
     """
     :return: Function to execute the flask program in the form of threading
     """
