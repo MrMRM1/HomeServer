@@ -173,8 +173,6 @@ def _run_ftp(data):
     :return: According to the settings of the ftp server, it turns on
     """
     global address_run_ftp
-    global ftp_server_control
-    data = database.get_data()
     if data[6] == '0':
         address_run_ftp = 'disable'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
@@ -185,8 +183,6 @@ def _run_ftp(data):
             address_run_ftp += '  Login anonymously'
         address_run_ftp = Label(root, text=address_run_ftp, font=('arial', 10, 'bold'), fg="blue")
         address_run_ftp.place(x=125, y=290)
-        ftp_server_control = ftp_server(data, ip)
-        ftp_server_control.serve_forever(handle_exit=False)
 
 
 def port():
