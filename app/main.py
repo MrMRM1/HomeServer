@@ -208,7 +208,7 @@ def delete_window():
             root.destroy()
         elif messagebox.askquestion("Quit", "Do you want to quit?\nThis stops the program") == "yes":
             if button_run["state"] == "disabled":
-                threading_stop()
+                _threading_stop()
             root.destroy()
     else:
         root.destroy()
