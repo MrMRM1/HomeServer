@@ -293,7 +293,7 @@ if __name__ == '__main__':
         load_data()
         list_box.bind('<Double-Button>', del_path)
         list_box.place(x=40, y=100, width=425, height=150)
-        button_run = Button(root, text="Run", font=('arial', 10, 'bold'), command=threading_start)
+        button_run = Button(root, text="Run", font=('arial', 10, 'bold'), command=_threading_start)
         button_run.place(x=430, y=260)
         button_stop = Button(root, text="Stop", font=('arial', 10, 'bold'), command=threading_stop)
         button_stop["state"] = "disabled"
