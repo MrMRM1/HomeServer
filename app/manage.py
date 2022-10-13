@@ -106,7 +106,7 @@ def run(port_app):
         app.run(host=ip, port=port_app, debug=False)
 
 
-def run_ftp(data):
+def _run_ftp(data):
     """
     :return: According to the settings of the ftp server, it turns on
     """
