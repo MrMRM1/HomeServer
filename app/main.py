@@ -7,17 +7,12 @@ except:
 import re
 from _tkinter import TclError
 from json import loads
-from threading import Thread
 from tkinter import *
 from tkinter import filedialog, messagebox
 from urllib.error import URLError
 from urllib.request import urlopen, Request
 from webbrowser import open_new
 
-from gevent.pywsgi import WSGIServer
-
-from web_app import app
-from ftp import ftp_server
 from scripts.network import port_flask, get_ip
 from scripts.setting_windows import Setting, check_port
 from scripts.sqllite import database
