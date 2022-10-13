@@ -86,19 +86,13 @@ def _run(port_app):
     :param port_app: Port for the program to run
     :return: Disable different sections of the main window and run the flask program
     """
-    global address_run
-    global http_server
     if port_app == '80':
         address_app = str(ip)
     else:
         address_app = f"{ip}:{port_app}"
     logger.info(f'Web app: http://{address_app}')
-    if gevent_import:
-        http_server = WSGIServer((ip, int(port_app)), app)
-        http_server.serve_forever()
-    else:
+    if not gevent_import:
         logger.warning("Install gevent module for better app performance")
-        app.run(host=ip, port=port_app, debug=False)
 
 
 def _run_ftp(data):
