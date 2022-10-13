@@ -99,8 +99,6 @@ def _run_ftp(data):
     """
     :return: According to the settings of the ftp server, it turns on
     """
-    global address_run_ftp
-    global ftp_server_control
     if data[6] == '0':
         logger.info('FTP server: disabled')
     else:
@@ -108,8 +106,6 @@ def _run_ftp(data):
         if data[11] == '0':
             address_run_ftp += '  Login anonymously'
         logger.info(f'FTP server: {address_run_ftp}')
-        ftp_server_control = ftp_server(data, ip)
-        ftp_server_control.serve_forever(handle_exit=False)
 
 
 def add_path(path):
