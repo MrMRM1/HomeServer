@@ -13,9 +13,9 @@ from urllib.error import URLError
 from urllib.request import urlopen, Request
 from webbrowser import open_new
 
+from scripts.sqllite import database
 from scripts.network import port_flask, get_ip
 from scripts.setting_windows import Setting, check_port
-from scripts.sqllite import database
 from scripts.already_running import SingleInstance
 from scripts.paths import add_path_database, write_paths
 from server import threading_start, threading_stop
