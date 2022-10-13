@@ -142,17 +142,13 @@ def _threading_stop():
     """
     address_run.place_forget()
     address_run_ftp.place_forget()
-    http_server.stop(timeout=2)
-    if database.get_data()[6] == '1':
-        ftp_server_control.close_all()
-        ftp_app.join(1)
+    threading_stop()
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
     button_clear["state"] = "normal"
     port_box["state"] = "normal"
     list_box["state"] = "normal"
     button_stop["state"] = "disabled"
-    run_app.join()
     load_data()
 
 
