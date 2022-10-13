@@ -158,7 +158,6 @@ def _run(port_app):
     :return: Disable different sections of the main window and run the flask program
     """
     global address_run
-    global http_server
     if port_app == '80':
         address_app = str(ip)
     else:
@@ -167,8 +166,6 @@ def _run(port_app):
     address_run.bind("<Button-1>", lambda e: open_new(f"http://{address_app}"))
     address_run.place(x=175, y=265)
     database.write_data(port_app, "port")
-    http_server = WSGIServer((ip, int(port_app)), app)
-    http_server.serve_forever()
 
 
 def _run_ftp(data):
