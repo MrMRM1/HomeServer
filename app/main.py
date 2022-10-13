@@ -23,6 +23,7 @@ from scripts.setting_windows import Setting, check_port
 from scripts.sqllite import database
 from scripts.already_running import SingleInstance
 from scripts.paths import add_path_database, write_paths
+from server import threading_start, threading_stop
 
 v = 6
 connected_network = False
@@ -124,14 +125,9 @@ def _threading_start():
     """
     :return: Function to execute the flask program in the form of threading
     """
-    global run_app
-    global ftp_app
     port_app = check_port(port_box.get())
     if port_app != '':
-        run_app = Thread(target=run, args=(port_app,))
-        run_app.start()
-        ftp_app = Thread(target=run_ftp)
-        ftp_app.start()
+        threading_start(_run, _run_ftp)
         button_run["state"] = "disabled"
         button_Selection["state"] = "disabled"
         button_clear["state"] = "disabled"
