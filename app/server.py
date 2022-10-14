@@ -33,7 +33,6 @@ def run(port_app, func):
     :param port_app: Port for the program to run
     :return: Disable different sections of the main window and run the flask program
     """
-    global address_run
     global http_server
 
     func(port_app)
@@ -48,7 +47,6 @@ def run_ftp(data, func):
     """
     :return: According to the settings of the ftp server, it turns on
     """
-    global address_run_ftp
     global ftp_server_control
     func(data)
     if data[6] != '0':
