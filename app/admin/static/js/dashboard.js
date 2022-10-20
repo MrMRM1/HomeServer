@@ -617,3 +617,7 @@ setting_checkbox_ftp.addEventListener('change', () => {
 settings_checkbox_ftp_create_directory.addEventListener('change', () => {
     set_mode('ftp_create_directory', checkbox_status(settings_checkbox_ftp_create_directory))
 })
+
+settings_checkbox_ftp_store_file.addEventListener('change', () => {
+    set_mode('ftp_store_file', checkbox_status(settings_checkbox_ftp_store_file))
+})
