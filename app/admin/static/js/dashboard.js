@@ -605,3 +605,7 @@ document.getElementById("settings_btn").addEventListener('click', () => {
 setting_checkbox_guest_mode.addEventListener('change', () => {
     set_mode('guest', checkbox_status(setting_checkbox_guest_mode))
 })
+
+setting_checkbox_login.addEventListener('change', () => {
+    set_mode('login', checkbox_status(setting_checkbox_login))
+})
