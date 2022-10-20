@@ -601,3 +601,7 @@ document.getElementById("settings_btn").addEventListener('click', () => {
         set_checkbox_settings(jsonObject['modes'])
     })
 })
+
+setting_checkbox_guest_mode.addEventListener('change', () => {
+    set_mode('guest', checkbox_status(setting_checkbox_guest_mode))
+})
