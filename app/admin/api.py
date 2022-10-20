@@ -203,3 +203,18 @@ def set_ftp_root():
 def get_path_received():
     data = database.get_data()
     return jsonify(status=200, path=data[3]), 200
+
+
+@admin.route('/admin/get_mode', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_mode():
+    data = database.get_data()
+    return jsonify(status=200, modes={
+        "guest": data[14],
+        "login": data[11],
+        "ftp": data[6],
+        "ftp_create_directory": data[8],
+        "ftp_store_file": data[9],
+        "run_background": data[10]
+    })
