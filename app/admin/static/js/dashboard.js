@@ -621,3 +621,7 @@ settings_checkbox_ftp_create_directory.addEventListener('change', () => {
 settings_checkbox_ftp_store_file.addEventListener('change', () => {
     set_mode('ftp_store_file', checkbox_status(settings_checkbox_ftp_store_file))
 })
+
+settings_checkbox_run_background.addEventListener('change', () => {
+    set_mode('run_background', checkbox_status(settings_checkbox_run_background))
+})
