@@ -154,6 +154,15 @@ function set_checkbox_status(data){
     set_checked(update_access_checkbox_store_file, data.ftp_store_file)
 }
 
+function set_checkbox_settings(data){
+    set_checked(setting_checkbox_guest_mode, data.guest)
+    set_checked(settings_checkbox_run_background, data.run_background)
+    set_checked(settings_checkbox_ftp_create_directory, data.ftp_create_directory)
+    set_checked(settings_checkbox_ftp_store_file, data.ftp_store_file)
+    set_checked(setting_checkbox_ftp, data.ftp)
+    set_checked(setting_checkbox_login, data.login)
+}
+
 function set_user_path(user_paths, ftp_root){
     update_access_paths.innerHTML = ''
     user_paths = user_paths.split(',')
