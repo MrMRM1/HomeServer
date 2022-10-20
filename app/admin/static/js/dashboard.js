@@ -559,3 +559,13 @@ document.getElementById('system_control_update_password_save_btn').addEventListe
 
     }
 })
+
+// settings
+
+let setting_checkbox_guest_mode = document.getElementById("settings_checkbox_gust_mode")
+let setting_checkbox_login = document.getElementById("settings_checkbox_login")
+let setting_checkbox_ftp = document.getElementById("settings_checkbox_ftp")
+let settings_checkbox_ftp_create_directory = document.getElementById("settings_checkbox_ftp_create_directory")
+let settings_checkbox_ftp_store_file = document.getElementById("settings_checkbox_ftp_store_file")
+let settings_checkbox_run_background = document.getElementById("settings_checkbox_run_background")
+
