@@ -578,3 +578,8 @@ let settings_checkbox_ftp_create_directory = document.getElementById("settings_c
 let settings_checkbox_ftp_store_file = document.getElementById("settings_checkbox_ftp_store_file")
 let settings_checkbox_run_background = document.getElementById("settings_checkbox_run_background")
 
+document.getElementById("settings_btn").addEventListener('click', () => {
+    post_data('/admin/get_mode', {}).then(jsonObject => {
+        set_checkbox_settings(jsonObject['modes'])
+    })
+})
