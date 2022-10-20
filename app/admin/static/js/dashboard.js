@@ -215,6 +215,20 @@ function edit_info(user){
 }
 window.edit_info = edit_info;
 
+function set_mode(mode, status){
+    post_data('/admin/set_mode', {
+        "mode" : mode,
+        "status": status
+    }).then(jsonObject => {
+        if (jsonObject.status === 200){
+            settings_showAlert(`${mode} updated successfully` , 'alert-success')
+        }
+        else {
+            settings_showAlert(jsonObject.text, 'alert-danger')
+        }
+    })
+}
+
 // dashboard 
 
 function table_dashboard(){
