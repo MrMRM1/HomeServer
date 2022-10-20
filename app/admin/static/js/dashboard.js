@@ -613,3 +613,7 @@ setting_checkbox_login.addEventListener('change', () => {
 setting_checkbox_ftp.addEventListener('change', () => {
     set_mode('ftp', checkbox_status(setting_checkbox_ftp))
 })
+
+settings_checkbox_ftp_create_directory.addEventListener('change', () => {
+    set_mode('ftp_create_directory', checkbox_status(settings_checkbox_ftp_create_directory))
+})
