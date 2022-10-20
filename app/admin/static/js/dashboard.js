@@ -609,3 +609,7 @@ setting_checkbox_guest_mode.addEventListener('change', () => {
 setting_checkbox_login.addEventListener('change', () => {
     set_mode('login', checkbox_status(setting_checkbox_login))
 })
+
+setting_checkbox_ftp.addEventListener('change', () => {
+    set_mode('ftp', checkbox_status(setting_checkbox_ftp))
+})
