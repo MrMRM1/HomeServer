@@ -596,6 +596,7 @@ let settings_checkbox_ftp_create_directory = document.getElementById("settings_c
 let settings_checkbox_ftp_store_file = document.getElementById("settings_checkbox_ftp_store_file")
 let settings_checkbox_run_background = document.getElementById("settings_checkbox_run_background")
 let settings_input_web_app_port = document.getElementById("input_web_app_port")
+let settings_input_ftp_server_port = document.getElementById("input_ftp_server_port")
 
 
 document.getElementById("settings_btn").addEventListener('click', () => {
@@ -605,6 +606,14 @@ document.getElementById("settings_btn").addEventListener('click', () => {
     post_data('/admin/get_port', {'type': 'web_app'}).then(jsonObject => {
         if (jsonObject.status === 200){
             settings_input_web_app_port.value = jsonObject['port']
+        }
+        else {
+            settings_showAlert(jsonObject.text, 'alert-danger')
+        }
+    })
+    post_data('/admin/get_port', {'type': 'ftp_server'}).then(jsonObject => {
+        if (jsonObject.status === 200){
+            settings_input_ftp_server_port.value = jsonObject['port']
         }
         else {
             settings_showAlert(jsonObject.text, 'alert-danger')
