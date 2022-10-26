@@ -218,3 +218,17 @@ def get_mode():
         "ftp_store_file": data[9],
         "run_background": data[10]
     })
+
+
+@admin.route('/admin/get_port', methods=['POST'])
+@login_required_custom
+@is_admin
+def get_port():
+    data = request.json
+    app_data = database.get_data()
+    match data['type']:
+        case "web_app":
+            return jsonify(status=200, port=app_data[1])
+        case "ftp_server":
+            return jsonify(status=200, port=app_data[5])
+    return jsonify(status=26, text="The type requested is not correct.")
