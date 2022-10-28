@@ -646,7 +646,20 @@ settings_checkbox_run_background.addEventListener('change', () => {
 })
 
 settings_input_web_app_port.addEventListener('change', () => {
-    valid_and_invalid(settings_input_web_app_port, settings_input_web_app_port.value !== settings_input_ftp_server_port.value)
+    if (valid_and_invalid(settings_input_web_app_port,
+        settings_input_web_app_port.value !== settings_input_ftp_server_port.value)){
+        post_data('/admin/set_port', {
+            'type': 'web',
+            'port': settings_input_web_app_port.value
+        }).then(jsonObject => {
+            if (jsonObject.status === 200){
+                settings_showAlert('The web app port has been updated successfully', 'alert-success')
+            }
+            else {
+                settings_showAlert(jsonObject.text, 'alert-danger')
+            }
+        })
+    }
 })
 
 settings_input_ftp_server_port.addEventListener('change', () => {
