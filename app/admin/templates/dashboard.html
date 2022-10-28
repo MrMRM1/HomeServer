@@ -8,7 +8,17 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon/icon.ico')}}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
 
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+    </style>
 </head>
 <body class="bg-white">
 
