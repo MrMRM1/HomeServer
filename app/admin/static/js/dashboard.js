@@ -644,3 +644,7 @@ settings_checkbox_ftp_store_file.addEventListener('change', () => {
 settings_checkbox_run_background.addEventListener('change', () => {
     set_mode('run_background', checkbox_status(settings_checkbox_run_background))
 })
+
+settings_input_web_app_port.addEventListener('change', () => {
+    valid_and_invalid(settings_input_web_app_port, settings_input_web_app_port.value !== settings_input_ftp_server_port.value)
+})
