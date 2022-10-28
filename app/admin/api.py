@@ -173,10 +173,10 @@ def set_port():
             case 'ftp':
                 database.write_data(port, 'port_ftp')
             case _:
-                return jsonify(status=24, text="The port value must be a number"), 200
+                return jsonify(status=25, text="Only able to change web or ftp port"), 200
         return jsonify(status=200), 200
     else:
-        return jsonify(status=25, text="Only able to change web or ftp port"), 200
+        return jsonify(status=24, text="The port value must be a number"), 200
 
 
 @admin.route('/admin/set_ftp_root', methods=['POST'])
