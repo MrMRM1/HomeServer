@@ -663,5 +663,18 @@ settings_input_web_app_port.addEventListener('change', () => {
 })
 
 settings_input_ftp_server_port.addEventListener('change', () => {
-    valid_and_invalid(settings_input_ftp_server_port, settings_input_ftp_server_port.value !== settings_input_web_app_port.value)
+    if (valid_and_invalid(settings_input_ftp_server_port,
+        settings_input_ftp_server_port.value !== settings_input_web_app_port.value)){
+        post_data('/admin/set_port', {
+            'type': 'ftp',
+            'port': settings_input_ftp_server_port.value
+        }).then(jsonObject => {
+            if (jsonObject.status === 200){
+                settings_showAlert('The ftp server port has been updated successfully', 'alert-success')
+            }
+            else {
+                settings_showAlert(jsonObject.text, 'alert-danger')
+            }
+        })
+    }
 })
