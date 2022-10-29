@@ -226,6 +226,12 @@ class Setting:
         Button(self.tab_more, text="Save", font=('arial', 10, 'bold'),
                command=self._save_settings_more).place(relx=0.5, rely=0.6, anchor="center")
 
+        Label(self.tab_more, text="Web App Port :", font=('arial', 10, 'bold'), ).place(x=270, y=15)
+
+        self.port_box_web = Entry(self.tab_more, font=('arial', 15, 'bold'))
+        self.port_box_web.insert('end', str(self.data[1]))
+        self.port_box_web.place(x=370, y=10, width=100)
+
     def _save_settings_more(self):
         self.database.write_data(str(self.run_background.get()), 'run_background')
         messagebox.showinfo('successful', 'Changes saved')
