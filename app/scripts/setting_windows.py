@@ -233,8 +233,11 @@ class Setting:
         self.port_box_web.place(x=370, y=10, width=100)
 
     def _save_settings_more(self):
-        self.database.write_data(str(self.run_background.get()), 'run_background')
-        messagebox.showinfo('successful', 'Changes saved')
+        port = check_port(self.port_box_web.get())
+        if port != '':
+            self.database.write_data(port, "port")
+            self.database.write_data(str(self.run_background.get()), 'run_background')
+            messagebox.showinfo('successful', 'Changes saved')
 
     def login_page(self):
 
