@@ -120,15 +120,12 @@ def _threading_start():
     """
     :return: Function to execute the flask program in the form of threading
     """
-    port_app = check_port(port_box.get())
-    if port_app != '':
-        threading_start(_run, _run_ftp)
-        button_run["state"] = "disabled"
-        button_Selection["state"] = "disabled"
-        button_clear["state"] = "disabled"
-        port_box["state"] = "disabled"
-        list_box["state"] = "disabled"
-        button_stop["state"] = "normal"
+    threading_start(_run, _run_ftp)
+    button_run["state"] = "disabled"
+    button_Selection["state"] = "disabled"
+    button_clear["state"] = "disabled"
+    list_box["state"] = "disabled"
+    button_stop["state"] = "normal"
 
 
 def _threading_stop():
