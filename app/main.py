@@ -141,7 +141,6 @@ def _threading_stop():
     button_run["state"] = "normal"
     button_Selection["state"] = "normal"
     button_clear["state"] = "normal"
-    port_box["state"] = "normal"
     list_box["state"] = "normal"
     button_stop["state"] = "disabled"
     load_data()
