@@ -179,20 +179,6 @@ def _run_ftp(data):
         address_run_ftp.place(x=125, y=290)
 
 
-def port():
-    """
-    :return: Get the port stored in the database and display it in the main window
-    """
-    try:
-        data = database.get_data()[1]
-        if data is None:
-            raise NameError('None data')
-        else:
-            port_box.insert(END, data)
-    except NameError:
-        port_box.insert(END, port_flask())
-
-
 def delete_window():
     """
     :return: Stops or hides the program according to the settings
