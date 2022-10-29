@@ -155,7 +155,7 @@ def _run(port_app):
         address_app = f"{ip}:{port_app}"
     address_run = Label(root, text=address_app, font=('arial', 10, 'bold'), fg="blue")
     address_run.bind("<Button-1>", lambda e: open_new(f"http://{address_app}"))
-    address_run.place(x=175, y=265)
+    address_run.place(x=165, y=225)
 
 
 def _run_ftp(data):
