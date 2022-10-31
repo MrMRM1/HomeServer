@@ -597,6 +597,7 @@ let settings_checkbox_ftp_store_file = document.getElementById("settings_checkbo
 let settings_checkbox_run_background = document.getElementById("settings_checkbox_run_background")
 let settings_input_web_app_port = document.getElementById("input_web_app_port")
 let settings_input_ftp_server_port = document.getElementById("input_ftp_server_port")
+let settings_inputFtp_root = document.getElementById("settings_inputFtp_root")
 
 
 document.getElementById("settings_btn").addEventListener('click', () => {
@@ -617,6 +618,15 @@ document.getElementById("settings_btn").addEventListener('click', () => {
         }
         else {
             settings_showAlert(jsonObject.text, 'alert-danger')
+        }
+    })
+    settings_inputFtp_root.innerHTML = '<option selected>Choose...</option>';
+    post_data('/admin/get_ftp_root', {
+        'advance': 2,
+        'username': ''
+    }).then(jsonObject => {
+        for (let i in jsonObject['roots']){
+            settings_inputFtp_root.innerHTML += `<option value="${jsonObject['roots'][i]}">${jsonObject['roots'][i]}</option>`
         }
     })
 })
