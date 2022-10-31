@@ -190,15 +190,12 @@ def set_ftp_root():
     data = request.json
     root = data['root']
     app_data = database.get_data()
-    if app_data[12] == data['username']:
-        roots = get_root(data['advance'], data['username'])
-        if root in roots:
-            database.write_data(root, "ftp_root")
-            return jsonify(status=200), 200
-        else:
-            return jsonify(status=21, text='ftp_root is invalid'), 200
+    roots = get_root(data['advance'], app_data[12])
+    if root in roots:
+        database.write_data(root, "ftp_root")
+        return jsonify(status=200), 200
     else:
-        return jsonify(status=403, text="You do not have permission to edit this user"), 200
+        return jsonify(status=21, text='ftp_root is invalid'), 200
 
 
 @admin.route('/admin/get_path_received', methods=['POST'])
