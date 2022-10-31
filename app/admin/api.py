@@ -89,10 +89,14 @@ def update_password():
 @is_admin
 def get_ftp_root():
     data = request.json
-    user_data = database.user_data_by_username(data['username'])
-    if user_data is None:
-        return jsonify(status=17, text='Username is not available'), 200
-    return jsonify(status=200, roots=get_root(data['advance'], data['username'])), 200
+    if data['username'] == '':
+        username = database.get_data()[12]
+    else:
+        username = data['username']
+        user_data = database.user_data_by_username(username)
+        if user_data is None:
+            return jsonify(status=17, text='Username is not available'), 200
+    return jsonify(status=200, roots=get_root(data['advance'], username)), 200
 
 
 @admin.route('/admin/information_all_users', methods=['POST'])
