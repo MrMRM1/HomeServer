@@ -598,7 +598,7 @@ let settings_checkbox_run_background = document.getElementById("settings_checkbo
 let settings_input_web_app_port = document.getElementById("input_web_app_port")
 let settings_input_ftp_server_port = document.getElementById("input_ftp_server_port")
 let settings_inputFtp_root = document.getElementById("settings_inputFtp_root")
-
+let settings_advance_ftp_root = 2;
 
 document.getElementById("settings_btn").addEventListener('click', () => {
     post_data('/admin/get_mode', {}).then(jsonObject => {
@@ -622,7 +622,7 @@ document.getElementById("settings_btn").addEventListener('click', () => {
     })
     settings_inputFtp_root.innerHTML = '<option selected>Choose...</option>';
     post_data('/admin/get_ftp_root', {
-        'advance': 2,
+        'advance': settings_advance_ftp_root,
         'username': ''
     }).then(jsonObject => {
         for (let i in jsonObject['roots']){
@@ -687,4 +687,16 @@ settings_input_ftp_server_port.addEventListener('change', () => {
             }
         })
     }
+})
+
+settings_inputFtp_root.addEventListener('change', () => {
+    post_data('/admin/set_ftp_root', {
+        'root' : settings_inputFtp_root.value,
+        'advance': settings_advance_ftp_root,
+        'username': ''
+    }).then(jsonObject => {
+        if (jsonObject.status === 200){
+            settings_showAlert('The FTP server root has been updated successfully', 'alert-success')
+        }
+    })
 })
