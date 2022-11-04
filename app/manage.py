@@ -223,6 +223,7 @@ Option    Long option               Meaning
 -m        --receive_path=           Setting the receiving path
 -n        --receive                 Show receiving path
 -p        --port=<int>              Change the web app port. The port must be a number between 0 and 65535 and not already used
+-v        --version                 Display version and update check
     ''')
 
 
