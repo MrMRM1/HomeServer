@@ -16,4 +16,6 @@ def check_last_update():
         changes = data['changes'].split('\\n')
         message += '\n'.join(changes)
         output[0] = True
-        return output.append(message)
+        output.append(message)
+        output.append(data['link'])
+        return output
