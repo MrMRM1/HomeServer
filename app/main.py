@@ -20,6 +20,7 @@ from scripts.already_running import SingleInstance
 from scripts.paths import add_path_database, write_paths
 from server import threading_start, threading_stop
 from about import UPDATE_NUMBER
+from scripts.check_update import check_last_update
 
 connected_network = False
 ip = ''
@@ -43,17 +44,15 @@ def check_update():
      using the latest version will be displayed.
     """
     try:
+        update = check_last_update()
         req = Request(url=f"https://mrmrm.ir/update/Home%20Server.php?v={UPDATE_NUMBER}", headers={'User-Agent': 'Mozilla/5.0'})
         data = loads(urlopen(req).read())
-        if data['changes'] == '':
-            messagebox.showinfo(title="updated", message="You are using the latest version")
-        else:
-            message = "New version available, do you want to download? \nabout this update: \n"
-            changes = data['changes'].split('\\n')
-            message += '\n'.join(changes)
-            ask_update = messagebox.askquestion(title="New version available", message=message)
+        if update[0]:
+            ask_update = messagebox.askquestion(title="New version available", message=update[1])
             if ask_update == 'yes':
                 open_new(data['link'])
+        else:
+            messagebox.showinfo(title="updated", message="You are using the latest version")
     except URLError:
         messagebox.showerror(title="ERROR", message="No connection to the server")
 
