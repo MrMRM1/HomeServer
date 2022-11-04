@@ -6,11 +6,9 @@ except:
     pass
 import re
 from _tkinter import TclError
-from json import loads
 from tkinter import *
 from tkinter import filedialog, messagebox
 from urllib.error import URLError
-from urllib.request import urlopen, Request
 from webbrowser import open_new
 
 from scripts.sqllite import database
@@ -45,12 +43,10 @@ def check_update():
     """
     try:
         update = check_last_update()
-        req = Request(url=f"https://mrmrm.ir/update/Home%20Server.php?v={UPDATE_NUMBER}", headers={'User-Agent': 'Mozilla/5.0'})
-        data = loads(urlopen(req).read())
         if update[0]:
             ask_update = messagebox.askquestion(title="New version available", message=update[1])
             if ask_update == 'yes':
-                open_new(data['link'])
+                open_new(update[2])
         else:
             messagebox.showinfo(title="updated", message="You are using the latest version")
     except URLError:
