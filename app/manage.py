@@ -4,6 +4,7 @@ import os
 import sys
 from time import sleep
 from hashlib import sha256
+from urllib.error import URLError
 
 try:
     import sys
@@ -23,14 +24,16 @@ from scripts.paths import add_path_database, write_paths
 from ftp.ftp_scripts.filesystems import get_root
 from admin.scripts.validity_check import check_username, check_password
 from server import threading_start
+from about import VERSION
+from scripts.check_update import check_last_update
 
 v = 6
 connected_network = False
 ip = ''
 LONG_OPTION = ["help", "port=", "path", "add_path=", "del_path=", "ftp_port=", "ftp_server=", "ftp_root=",
                "ftp_create_directory=", "ftp_store_file=", "login_status=", "username=", "password=", "receive_path=",
-               "receive"]
-OPTION = "hp:ab:d:c:e:f:g:i:j:k:l:m:n"
+               "receive", "version"]
+OPTION = "hp:ab:d:c:e:f:g:i:j:k:l:m:nv"
 
 
 class CustomFormatter(logging.Formatter):
@@ -187,6 +190,19 @@ def save_received_path(path):
         logger.error("The path received is incorrect")
 
 
+def check_update():
+    logger.info('Your version is ' + VERSION)
+    try:
+        update = check_last_update()
+        if update[0]:
+            logger.warning(update[1])
+            logger.warning('Download the latest version of ' + update[2])
+        else:
+            logger.info('You are using the latest version')
+    except URLError:
+        logger.error('No connection to the server')
+
+
 def _help():
     print('''Usage: "python manage.py runserver" to run servers
 or 
@@ -252,6 +268,8 @@ def main(argv):
                     save_received_path(arg)
                 case '-n' | '--receive':
                     print(f"Path of received files: {database.get_data()[3]}")
+                case '-v' | '--version':
+                    check_update()
 
 
 if __name__ == "__main__":
