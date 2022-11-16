@@ -52,10 +52,16 @@ def list_dir(ftp=False, username=None) -> list:
         else:
             return data_to_list(database.user_data_by_username(user)[3])
 
+    def user_ftp(username_ftp):
+        if user_data[11] == '0':
+            if username_ftp == 'guest':
+                return user_data[12]
+        return username_ftp
+
     user_data = database.get_data()
     try:
         if ftp:
-            return get_path_username(username)
+            return get_path_username(user_ftp(username))
         else:
             if user_data[11] == '1':
                 try:
