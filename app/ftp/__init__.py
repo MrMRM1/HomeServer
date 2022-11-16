@@ -27,10 +27,11 @@ def check_login(data, authorizer):
         all_users = database.ftp_users()
         try:
             start = 0
-            if data[14] == '1' and all_users[0][0] == 'guest':
+            if all_users[0][0] == 'guest':
                 start = 1
-                authorizer.add_anonymous(homedir=os.path.realpath(all_users[0][2]),
-                                         perm=perm_generate(all_users[0][3], all_users[0][4]))
+                if data[14] == '1':
+                    authorizer.add_anonymous(homedir=os.path.realpath(all_users[0][2]),
+                                             perm=perm_generate(all_users[0][3], all_users[0][4]))
 
             for i in all_users[start:]:
                 authorizer.add_user(i[0], i[1], os.path.realpath(i[2]), perm=perm_generate(i[3], i[4]))
