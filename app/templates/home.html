@@ -30,22 +30,28 @@
         var j = 0;
         var grp = 0;
         var itm = 0;
+        var len_add_buttons = 0;
         $('#list').append('<div id="group'+grp+'" class="d-md-flex ms-auto me-auto justify-content-md-around"></div>')
         for (let i =0; i < len_buttons; i++){
             if (j == 2){
                 j = 0;
                 grp++
                 $('#list').append('<div id="group'+grp+'" class="d-md-flex ms-auto me-auto justify-content-md-around"></div>')
+                len_add_buttons++;
             }
             if (((i !== len_buttons) && (data_user[i] === '1')) || (login_status === 'False')){
                 if ((key_buttons[i] == 'Dashboard') && (is_admin != 'True')){
                     continue
                 }
                 $('#group'+grp).append(creat_button(itm, buttons[key_buttons[i]]['href'], key_buttons[i], buttons[key_buttons[i]]['icon']));
+                len_add_buttons++;
                 j = j+1;
                 itm++
             }
 
+        }
+        if (len_add_buttons === 0){
+            $('#list').append('<div class="alert alert-danger col-8 ms-auto mt-5 me-auto text-center" role="alert"> You have no access </div>')
         }
     </script>
 {% endblock %}
