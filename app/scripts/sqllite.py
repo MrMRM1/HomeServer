@@ -37,7 +37,7 @@ class Database:
                 f'CREATE TABLE data_user (paths LONGTEXT NULL, port INT DEFAULT {port_flask()}, data_id DEFAULT "1" ,upload DEFAULT "{path_received}", password TEXT NULL, port_ftp INT DEFAULT 8821, ftp_server DEFAULT "0", ftp_root NULL, ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", run_background DEFAULT "0", login_status DEFAULT "0", admin_username TEXT NULL, admin_password TEXT NULL, guest_status DEFAULT "0")')
             self.my_db.execute('INSERT INTO data_user (data_id) VALUES ("1")')
             self.my_db.execute(f'CREATE TABLE users (id INTEGER primary key NOT NULL ,username TEXT NULL UNIQUE, password TEXT NULL, paths LONGTEXT NULL, ftp_status DEFAULT "1", video_status DEFAULT "1", audio_status DEFAULT "1",  pdf_status DEFAULT "1", receive_status DEFAULT "1",  send_status DEFAULT "1",  system_control_status DEFAULT "1",  picture_status DEFAULT "1", ftp_create_directory DEFAULT "0", ftp_store_file DEFAULT "0", ftp_root TEXT NULL)')
-            self.my_db.execute('INSERT INTO users (username, receive_status, system_control_status) VALUES ("guest", "0", "0")')
+            self.my_db.execute('INSERT INTO users (username, receive_status, system_control_status, ftp_root) VALUES ("guest", "0", "0", "/")')
             self.my_db.execute(f'CREATE TABLE secrets (secret LONGTEXT NOT NULL UNIQUE , link TEXT NOT NULL, time DATE NOT NULL, username TEXT NOT NULL, status DEFAULT "1")')
             self.data.commit()
 
